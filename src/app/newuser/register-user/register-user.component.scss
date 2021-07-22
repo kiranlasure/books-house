@@ -1,0 +1,86 @@
+.main{
+    background-image: url("../../../assets/bg.jpg");
+    min-height: 95vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+.container{
+    display: flex;
+    border: 1px solid black;
+    justify-content: center;
+    flex-direction: column;
+    align-items: center;
+    width: 500px;
+
+    background: #fff;
+    padding: 50px;
+    border-radius: 10px;
+    position: relative;
+    .mandetory{
+        color: red;
+    }
+    input{
+        border-radius: 2px solid black;
+        padding: 5px 0px 5px 3px;
+        margin: 5px 0px 5px 0px;
+        
+    }
+    ::placeholder {
+        color: rgb(141, 133, 133);
+    }
+    label{
+       color:rgb(69, 85, 96);;
+    }
+    
+   
+    .personalInfo{
+        display: flex;
+        margin: 10px 0px 10px 0px;
+        flex-direction: row;
+        .fname{
+            margin-right: 3px;
+        }    
+        
+    }
+
+    .otherinfo{
+        display: flex;
+        flex-direction: column;
+        position: relative;
+        right: 86px;
+        margin-bottom: 6px;
+        input{
+            width: calc(100% * 2);
+        }
+        .submit{
+           display: flex;
+           
+           button{
+            margin-top: 5px;
+            background-color: var(--secondary);
+            padding: 5px 0px 5px 0px;
+            border-radius: 3px;
+            cursor: pointer;
+           }
+           .backtologin{
+              position: relative;
+              left: 5px;
+              cursor: pointer;
+           }
+        }
+     
+    }
+   
+}
+}
+.counterapp{
+    display: flex;
+    justify-content: center;
+    margin-top: 5px;
+    button{
+        padding: 5px 3px 5px 3px;
+        background-color: rgb(207, 54, 54);
+        border-radius: 4px;
+    }
+}

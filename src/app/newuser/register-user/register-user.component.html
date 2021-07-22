@@ -1,0 +1,38 @@
+<div class="main">
+    <div class="container">
+        <div class="personalInfo">
+            <div class="fname">
+                <label for="fname">First Name</label> <span class="mandetory">*</span> <br>
+                 <input type="text" id="fname" placeholder="First name" >
+            </div>
+            <div class="lname">
+                <label for="lname">Last Name</label> <span class="mandetory">*</span><br>
+                <input type="text" placeholder="Last name" id="lname">
+            </div>
+        </div>
+        <div class="otherinfo">
+            <div class="workemail">
+                <label for="workemail">Work Email <span class="mandetory">*</span></label> <br>
+                <input type="email" placeholder="i.e abc@gmail.com">
+            </div>
+            <div class="password">
+                <label for="pass">Password <span class="mandetory">*</span></label><br>
+                <input type="password" placeholder="enter password here" >
+            </div> 
+            <div class="orgName">
+                <label for="orgName">Organisation Name <span class="mandetory">*</span></label><br>
+                <input type="text" placeholder="Enter Organisation name here..">
+            </div>
+            <div class="submit">
+                <div class="submitbtn"><button>Register</button></div>
+                <div class="backtologin" (click)="backtologin()"><button >Back to Login</button></div>
+                
+            </div>
+        </div>
+        
+    </div>
+</div>
+
+<div class="counterapp">
+    <button class="counternav" (click)="gotoCounterModule()">gotoCounterApp</button>
+</div>

@@ -1,0 +1,22 @@
+.container{
+    display: flex;
+    justify-content: center;
+    .buttons{
+        display: flex; 
+        button{
+            margin-left: 6px;
+            padding: 8px;
+            border-radius: 2px;
+            border: none;
+        }
+        .increment{
+            background-color: skyblue;
+        }
+        .decrement{
+            background-color: tomato;
+        }
+        .reset{
+            background-color: #32cdb4;
+        }
+    }
+}
