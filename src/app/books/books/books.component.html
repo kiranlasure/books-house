@@ -1,0 +1,46 @@
+<div class="heading">
+    <h2>Book's Data</h2>
+</div>
+<!-- <div class="container1">
+    <ul class="responsive-table">
+      <li class="table-header">
+        <div class="col col-1">book id</div>
+        <div class="col col-2">book Title</div>
+        <div class="col col-3">Description</div>
+        <div class="col col-4">Action</div>
+      </li>
+      <li class="table-row" *ngFor="let book of Books | async">
+        <div class="col col-1" data-label="book id">{{book.id}}</div>
+        <div class="col col-2" data-label="book Title">{{book.title}}</div>
+        <div class="col col-3" data-label="Description">{{book.description}}</div>
+        <div class="col col-4" data-label="Action"><a [routerLink]="['edit',book.id]" (click)="editBook()"><button>Update</button> 
+            <button class="delete" (click)="onDeleteBook(book.id)">delete</button></a></div>
+      </li>
+    </ul>
+  </div> -->
+
+
+  <main class="main-area">    
+    <div class="centered">
+        <section class="cards">
+            <article class="card" *ngFor="let book of Books | async">
+                <a href="#">
+                    <picture class="thumbnail">
+                        <img src="http://www.abbeyjfitzgerald.com/wp-content/uploads/2017/02/image-example-01.jpg" alt="A banana that looks like a bird">
+                    </picture>
+                    <div class="card-content">
+                        <h2>{{book.title}}</h2>
+                        <p>{{book.description}}</p>
+                    </div>
+                </a>
+            </article>       
+
+        </section>
+       
+    </div>
+    
+</main>
+
+<div *ngIf="edit">
+    <router-outlet></router-outlet>
+</div>

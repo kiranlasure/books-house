@@ -10,13 +10,13 @@
             border: none;
         }
         .increment{
-            background-color: skyblue;
+            background-color: var(--secondary);
         }
         .decrement{
-            background-color: tomato;
+            background-color: var(--secondary);
         }
         .reset{
-            background-color: #32cdb4;
+            background-color: var(--secondary);
         }
     }
 }

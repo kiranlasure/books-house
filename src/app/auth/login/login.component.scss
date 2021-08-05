@@ -1,15 +1,24 @@
 
 .container {
-    background-image: url("../../assets/bg.jpg");
-    min-height: 95vh;
+    // background-image: url("../../assets/bg.jpg");
+    background-image: url("../../../assets/bg.jpg");
+    min-height: 100vh;
     display: flex;
     align-items: center;
     justify-content: center;
 
+    .error {
+        font-size: 15px;
+     }
+    
+     .error-msg{
+        color: red;
+        font-size: 12px;
+    }
     .loginContainer {
         height: 150px;
         width: 300px;
-        background: #fff;
+        background: var(--background);
         padding: 50px;
         border-radius: 10px;
         position: relative;
@@ -56,7 +65,3 @@
       }
   }
   
-  
-  
- 
- 

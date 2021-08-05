@@ -6,8 +6,11 @@ import { CounterOutputComponent } from './counter-output/counter-output.componen
 import { CounterButtonsComponent } from './counter-buttons/counter-buttons.component';
 import { StoreModule } from '@ngrx/store';
 import { counterReducer } from './state/counter.reducer';
-
-
+import { CustomCounterInputComponent } from './custom-counter-input/custom-counter-input.component';
+import { FormsModule } from '@angular/forms';
+import { COUNTER_STATE_NAME } from './state/counter.selectors';
+import { StoreDevtoolsModule } from '@ngrx/store-devtools';
+import { environment } from 'src/environments/environment';
 const routes: Routes = [
   {
     path: '',
@@ -19,12 +22,16 @@ const routes: Routes = [
   declarations: [
     CounterComponent,
     CounterOutputComponent,
-    CounterButtonsComponent
+    CounterButtonsComponent,
+    CustomCounterInputComponent,
+
   ],
   imports: [
     CommonModule,
+    FormsModule,
     RouterModule.forChild(routes),
-    StoreModule.forRoot({counter: counterReducer})
+    StoreModule.forFeature(COUNTER_STATE_NAME, counterReducer),
+    StoreDevtoolsModule.instrument({ maxAge: 25, logOnly: environment.production }),
   ]
 })
 export class CounterModule { }

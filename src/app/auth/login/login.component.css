@@ -1,0 +1,83 @@
+.container {
+  background-image: url("../../../assets/bg.jpg");
+  min-height: 89vh;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+}
+
+.container .error {
+  font-size: 15px;
+}
+
+.container .error-msg {
+  color: red;
+  font-size: 12px;
+}
+
+.container .loginContainer {
+  height: 150px;
+  width: 300px;
+  background: var(--background);
+  padding: 50px;
+  border-radius: 10px;
+  position: relative;
+  text-align: center;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  border: 2px solid black;
+}
+
+.container .loginContainer .newUser {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: space-evenly;
+      -ms-flex-pack: space-evenly;
+          justify-content: space-evenly;
+  position: relative;
+  top: 10px;
+}
+
+.container .loginContainer .newUser span {
+  color: #1b556d;
+}
+
+.container .loginContainer .newUser .newuser1, .container .loginContainer .newUser .forgotpass {
+  cursor: pointer;
+}
+
+.container .loginContainer input {
+  border-radius: 2px solid black;
+  padding: 5px 0px 5px 3px;
+  margin: 5px 0px 5px 0px;
+}
+
+.container .loginContainer #nameLable {
+  position: relative;
+  right: 54px;
+}
+
+.container .loginContainer #passLable {
+  position: relative;
+  right: 51px;
+}
+
+.container .loginContainer button {
+  margin-top: 5px;
+  background-color: var(--secondary);
+  padding: 5px 15px 5px 15px;
+  border-radius: 3px;
+}
+/*# sourceMappingURL=login.component.css.map */

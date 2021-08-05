@@ -1,0 +1,38 @@
+
+
+
+<div class="container">
+  <form [formGroup]="loginform" >
+    <div class="loginContainer">    
+      <div class="email">
+        <label for="fname" id="nameLable">Login ID</label> <br>
+        <input type="text" id="fname" placeholder="First name" formControlName="email" >
+        <div *ngIf="loginform.controls['email'].errors && loginform.controls['email'].touched"
+                    class="error-msg">
+            <div class="error" [hidden]="!loginform.controls['email'].errors.required">please enter email</div>
+            </div>
+      </div>
+      <div class="password">
+        <label for="pass" id="passLable">Password </label><br>
+        <input type="password" placeholder="enter password here" formControlName="password">
+        <div *ngIf="loginform.controls['password'].errors && loginform.controls['password'].touched"
+                    class="error-msg">
+            <div class="error" [hidden]="!loginform.controls['password'].errors.required">please enter password</div>
+            </div>
+      </div>
+      <div class="submit">
+        <button type="submit" [disabled]="!loginform.valid" (click)="onLoginSubmit()">Login</button>
+      </div>
+
+      <div class="newUser">
+          <div class="forgotpass">
+              <span [routerLink]="['/forgetPass']">Forget Password?</span>
+          </div>
+          <div class="newuser1">
+              <span (click)="newUser()">new user?</span>
+          </div>
+      </div>
+    </div>
+  </form>
+</div>
+<!-- forgetPass -->

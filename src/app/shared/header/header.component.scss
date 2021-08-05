@@ -1,0 +1,48 @@
+  
+  nav {
+    width: auto;
+    background-color: rgb(81, 67, 87);;
+    padding-left: 30px;
+    padding-right: 10px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    .nav-links {
+        list-style: none;
+        display: flex;
+      }
+
+      .nav-item a {
+        display: inline-block;
+        padding: 5px 15px;
+        text-decoration: none;
+        color: white;
+      }
+
+      .nav-item:hover {
+        background-color: white;
+      }
+
+      .nav-item:hover a {
+        color: rgb(81, 67, 87);
+      }
+      
+  }
+
+/* Responsive Nav Bar */
+@media all and (max-width: 600px) {
+    nav ul {
+        flex-direction: column;
+        // text-align: center;
+        position: relative;
+        left: 80px;
+    }
+    nav ul li {
+        text-align: center;
+        
+    }
+}
+ 
+  
+  

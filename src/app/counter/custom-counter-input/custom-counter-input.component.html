@@ -1,0 +1,11 @@
+<div class="container">
+    <p>{{(channelName$ | async) }}</p><br>
+</div>
+<div class="container">
+    
+    <input type="text" placeholder="enter value" [(ngModel)]="value">
+    <button (click)="onAdd()">Add</button>
+</div>
+<div class="container">
+    <button (click)="changeText()">Change</button>
+</div>

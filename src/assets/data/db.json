@@ -1,0 +1,53 @@
+{
+  "register": [
+    {
+      "fName": "kiran",
+      "lName": "LASURE",
+      "email": "kiranlasure95@gmail.com",
+      "password": "Kittu@Chakuli143",
+      "userType": "admin",
+      "id": 1
+    },
+    {
+      "fName": "kiran",
+      "lName": "LASURE",
+      "email": "kiranlasure94@gmail.com",
+      "password": "Kittu@Chakuli143",
+      "userType": "user",
+      "id": 2
+    },
+    {
+      "fName": "tushar",
+      "lName": "lasure",
+      "email": "tusharlasure95@gmail.com",
+      "password": "12345",
+      "userType": "user",
+      "id": 3
+    },
+    {
+      "fName": "Test",
+      "lName": "TesLastName",
+      "email": "kiranlasure95@gmail.com",
+      "password": "Kittu@Chakuli143",
+      "userType": "admin",
+      "id": 4
+    }
+  ],
+  "books": [
+    {
+      "title": "Chava ",
+      "description": "The Story of Sambhaji Maharaj",
+      "id": 1
+    },
+    {
+      "title": "yayati ",
+      "description": "the story of shivaji maharaj",
+      "id": 2
+    },
+    {
+      "title": "Test",
+      "description": "Test Descrption",
+      "id": 3
+    }
+  ]
+}
