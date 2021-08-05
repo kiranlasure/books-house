@@ -1,0 +1,29 @@
+<div class="container" *ngIf="show"> 
+    <div class="addForm">
+        <form [formGroup]="booksForm" (ngSubmit)="onSubmit()">
+            <h3>Update Book Details</h3>
+            <div class="title">
+                    <label for="fname">Title</label> <br>
+                    <input type="text" id="fname" placeholder="book title"  formControlName="title">
+                    <div *ngIf="booksForm.controls['title'].errors && booksForm.controls['title'].touched"
+                    class="error-msg">
+                    <div class="error" [hidden]="!booksForm.controls['title'].errors.required">please enter book title</div>
+                    <div class="error" [hidden]="!booksForm.controls['title'].errors.minLength">please enter minimum 6 char</div>
+                    </div> 
+                    
+            </div>
+            <div class="description">
+                <label for="lname">Description</label> <span class="mandetory">*</span><br>
+                <textarea rows="4" cols="30" placeholder="book description here"  formControlName="description"></textarea>
+                <div *ngIf="booksForm.controls['description'].errors && booksForm.controls['description'].touched"
+                class="error-msg">
+                <div class="error" [hidden]="!booksForm.controls['description'].errors.required">please enter book Description</div>
+            </div> 
+           
+            </div>
+            <div class="submit">
+                <button type="submit" >Update</button>
+            </div>
+        </form>
+    </div>
+</div>

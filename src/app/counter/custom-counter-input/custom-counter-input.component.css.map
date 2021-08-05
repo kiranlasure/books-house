@@ -1,0 +1,9 @@
+{
+    "version": 3,
+    "mappings": "AAAA,AAAA,UAAU,CAAA;EACN,UAAU,EAAE,GAAG;EACf,OAAO,EAAE,IAAI;EACb,eAAe,EAAE,MAAM;CAS1B;;AAZD,AAII,UAJM,CAIN,KAAK,CAAA;EACD,YAAY,EAAE,GAAG;CACpB;;AANL,AAOI,UAPM,CAON,MAAM,CAAA;EACF,gBAAgB,EAAE,gBAAgB;EAClC,aAAa,EAAE,GAAG;EAClB,OAAO,EAAE,OAAO;CACnB",
+    "sources": [
+        "custom-counter-input.component.scss"
+    ],
+    "names": [],
+    "file": "custom-counter-input.component.css"
+}

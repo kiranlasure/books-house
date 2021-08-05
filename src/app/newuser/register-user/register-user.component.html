@@ -1,38 +1,65 @@
 <div class="main">
-    <div class="container">
-        <div class="personalInfo">
+    <form [formGroup]="registrationForm" (ngSubmit)="onRegister()">
+    <div class="container">  
+        <!-- <div class="personalInfo">
             <div class="fname">
                 <label for="fname">First Name</label> <span class="mandetory">*</span> <br>
-                 <input type="text" id="fname" placeholder="First name" >
+                 <input type="text" id="fname" placeholder="First name" formControlName="fName">
             </div>
             <div class="lname">
                 <label for="lname">Last Name</label> <span class="mandetory">*</span><br>
-                <input type="text" placeholder="Last name" id="lname">
+                <input type="text" placeholder="Last name" id="lname" formControlName="lName">
             </div>
-        </div>
+        </div> -->
         <div class="otherinfo">
+            <div class="fname">
+                <label for="fname">First Name</label> <span class="mandetory">*</span> <br>
+                 <input type="text" id="fname" placeholder="First name" formControlName="fName">
+            </div>
+            <div class="lname">
+                <label for="lname">Last Name</label> <span class="mandetory">*</span><br>
+                <input type="text" placeholder="Last name" id="lname" formControlName="lName">
+            </div>
             <div class="workemail">
-                <label for="workemail">Work Email <span class="mandetory">*</span></label> <br>
-                <input type="email" placeholder="i.e abc@gmail.com">
+                <label for="workemail">Email <span class="mandetory">*</span></label> <br>
+                <input type="email" placeholder="i.e abc@gmail.com" formControlName="email">
             </div>
             <div class="password">
                 <label for="pass">Password <span class="mandetory">*</span></label><br>
-                <input type="password" placeholder="enter password here" >
+                <input type="password" placeholder="enter password here" formControlName="password">
             </div> 
-            <div class="orgName">
-                <label for="orgName">Organisation Name <span class="mandetory">*</span></label><br>
-                <input type="text" placeholder="Enter Organisation name here..">
+            <div class="userType">
+                <label for="userType">User Type <span class="mandetory">*</span></label><br>
+                <select name="userType" id="userType" formControlName="userType">
+                    <option value="admin" selected>Admin</option>
+                    <option value="user">User</option>
+
+                </select>
             </div>
             <div class="submit">
-                <div class="submitbtn"><button>Register</button></div>
+                <div class="submitbtn" type="submit"><button>Register</button></div>
                 <div class="backtologin" (click)="backtologin()"><button >Back to Login</button></div>
                 
             </div>
         </div>
         
     </div>
+</form>
 </div>
 
-<div class="counterapp">
-    <button class="counternav" (click)="gotoCounterModule()">gotoCounterApp</button>
-</div>
+
+<!-- <section>
+    <h1>
+      Register User
+    </h1>
+    <form action="">
+        <label for="fname">First Name</label> <span class="mandetory">*</span> <br>
+        <input type="text" id="fname" placeholder="First name" formControlName="fName">
+        <input type="text" placeholder="Last name" id="lname" formControlName="lName">
+        <input type="email" placeholder="enter email" formControlName="email">
+        <input type="password" placeholder="enter password here" formControlName="password">
+
+      <input type="submit" name="loginBtn" value="login" class="submit-btn">
+      <p>New user <a href="">signup</a></p>
+    </form>
+  </section> -->

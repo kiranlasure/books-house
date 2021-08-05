@@ -1,20 +1,19 @@
 .main{
     background-image: url("../../../assets/bg.jpg");
-    min-height: 95vh;
+    min-height: 100vh;
     display: flex;
     align-items: center;
     justify-content: center;
 
 .container{
+    width: 400px;
+    padding: 10px 0;
+    background: var(--background);
+    border: 2px solid black;
     display: flex;
-    border: 1px solid black;
     justify-content: center;
     flex-direction: column;
     align-items: center;
-    width: 500px;
-
-    background: #fff;
-    padding: 50px;
     border-radius: 10px;
     position: relative;
     .mandetory{
@@ -26,6 +25,7 @@
         margin: 5px 0px 5px 0px;
         
     }
+    
     ::placeholder {
         color: rgb(141, 133, 133);
     }
@@ -47,11 +47,14 @@
     .otherinfo{
         display: flex;
         flex-direction: column;
-        position: relative;
-        right: 86px;
         margin-bottom: 6px;
         input{
-            width: calc(100% * 2);
+            min-width: 200px;
+        }
+        #userType{
+            padding: 5px 0px 5px 3px;
+            margin: 5px 0px 5px 0px;
+            min-width: 210px;
         }
         .submit{
            display: flex;
@@ -74,13 +77,53 @@
    
 }
 }
-.counterapp{
-    display: flex;
-    justify-content: center;
-    margin-top: 5px;
-    button{
-        padding: 5px 3px 5px 3px;
-        background-color: rgb(207, 54, 54);
-        border-radius: 4px;
-    }
-}
+
+
+// *{
+//     box-sizing: border-box;
+// }
+// a{
+//     text-decoration: none;
+//     color: #000;
+// }
+
+// section{
+//    background-image: url("../../../assets/bg.jpg");
+//     height: 89vh;
+//     display: flex;
+//     justify-content: center;
+//     align-items: center;
+//     flex-direction: column;
+//     lable{
+//         display: block;
+//     }
+//     input{
+//         min-width: 100px;
+//         display: block;
+//         margin: 20px;
+//         font-size: 18px;
+//         font-weight: 400;
+//         border-width: 0 0 2px 0;
+//         border-color: #b9b9b9;
+//         outline: none;
+//         transition: border-color 0.2s;
+//     }
+
+//     input:focus{
+//         border-color: #555;
+//     }
+
+//     .submit-btn{
+//         padding: 12px 15px;
+//         border-width: 0;
+//         font-size: 18px;
+//         font-weight: 400;
+//         background-color: #ff9980;
+//         color: #fff;
+//         outline: none;
+//         transition: border-color 0.2s;
+//     }
+//     .submit-btn:focus{
+//        background-color: #d4806b
+//    }
+// }
