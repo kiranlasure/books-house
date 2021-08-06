@@ -31,6 +31,14 @@
       "password": "Kittu@Chakuli143",
       "userType": "admin",
       "id": 4
+    },
+    {
+      "fName": "shahida",
+      "lName": "nadaf",
+      "email": "shahida@gmail.com",
+      "password": "Kittu@Chakuli143",
+      "userType": "user",
+      "id": 5
     }
   ],
   "books": [
@@ -48,6 +56,11 @@
       "title": "Test",
       "description": "Test Descrption",
       "id": 3
+    },
+    {
+      "title": "test",
+      "description": "test1235",
+      "id": 4
     }
   ]
 }

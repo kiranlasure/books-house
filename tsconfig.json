@@ -11,20 +11,26 @@
     "declaration": false,
     "downlevelIteration": true,
     "experimentalDecorators": true,
+    "strictPropertyInitialization": false,
     "moduleResolution": "node",
     "importHelpers": true,
+    "noImplicitAny": false,
     "target": "es2017",
     "module": "es2020",
     "strictPropertyInitialization": false,
     "lib": [
       "es2018",
       "dom"
-    ]
+    ],
+    "types": [
+      "jest"
+  ],
   },
   "angularCompilerOptions": {
     "enableI18nLegacyMessageIdFormat": false,
     "strictInjectionParameters": true,
     "strictInputAccessModifiers": true,
-    "strictTemplates": true
+    "strictTemplates": true,
+    
   }
 }

@@ -8,6 +8,6 @@ export const getBooks = createSelector(getBooksState, (state)=>{
     return state.books;
 });
 
-export const getBookById = createSelector(getBooksState, (state:any , props:any)=>{
-   return state.books.find( (book:any)=> book.id === props.id );
+export const getBookById = createSelector(getBooksState, (state , props)=>{
+   return state.books.find( (book)=> book.id === props.id );
 })

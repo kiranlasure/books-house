@@ -13,7 +13,7 @@ import { addUser } from '../state/newuser.actions';
 })
 export class RegisterUserComponent implements OnInit {
 
-  registrationForm: FormGroup;
+  registrationForm: FormGroup
   constructor(private router: Router,private store: Store<AppState>) { }
 
   ngOnInit(): void {
