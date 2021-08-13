@@ -63,48 +63,79 @@
       "password": "Kittu@Chakuli143",
       "userType": "admin",
       "id": 8
+    },
+    {
+      "fName": "Amol",
+      "lName": "Jadhav",
+      "email": "Amol@gmail.com",
+      "password": "Amol@1234",
+      "userType": "admin",
+      "id": 9
     }
   ],
   "books": [
     {
-      "1": {
-        "id": "1",
-        "name": "testf",
-        "description": "tevhv",
-        "price": "tevh"
-      },
-      "id": 1,
-      "title": "test",
-      "description": "test",
-      "isbn": "test",
-      "price": "test"
+      "id": 0,
+      "title": "Yayati ",
+      "description": "The story shivaji maharaj",
+      "isbn": "1234567",
+      "price": "123.89"
     },
     {
-      "2": {
-        "id": "2",
-        "name": "test",
-        "description": "test",
-        "price": "test"
-      },
       "id": 2,
-      "title": "teste",
-      "description": "tevhv",
-      "isbn": "testf",
-      "price": "tevh"
+      "title": "Chava ",
+      "description": "The story sambhaji maharaj",
+      "isbn": "1234567",
+      "price": "189.89"
+    },
+    {
+      "id": 3,
+      "title": "Legend",
+      "description": "The story of Mr. Swami",
+      "isbn": "1234567",
+      "price": "190.89"
     },
     {
       "id": 4,
-      "title": "test",
-      "description": "test",
-      "isbn": "test",
-      "price": "test"
+      "title": "Knife",
+      "description": "The story of forein lady",
+      "isbn": "1234567",
+      "price": "190.89"
     },
     {
       "id": 5,
-      "title": "test",
-      "description": "test",
-      "isbn": "test",
-      "price": "test"
+      "title": "Tom & jerry",
+      "description": "The story two friends",
+      "isbn": "1234567",
+      "price": "190.89"
+    },
+    {
+      "id": 6,
+      "title": "konfoo",
+      "description": "Love story of Kunal",
+      "isbn": "1234567",
+      "price": "190.89"
+    },
+    {
+      "id": 7,
+      "title": "Kanjor",
+      "description": "Found unknown place in london",
+      "isbn": "1234567",
+      "price": "1908.89"
+    },
+    {
+      "id": 7,
+      "title": "Kanjor",
+      "description": "Found unknown place in london",
+      "isbn": "1234567",
+      "price": "1908.89"
+    },
+    {
+      "id": 8,
+      "title": "Let us C",
+      "description": "C language Reference book",
+      "isbn": "12345",
+      "price": "189"
     }
   ]
 }

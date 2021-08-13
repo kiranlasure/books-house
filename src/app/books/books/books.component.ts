@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Store } from '@ngrx/store';
+import { ToastrService } from 'ngx-toastr';
 import { Observable } from 'rxjs';
 import { DialogService } from 'src/app/dialog-module/dialog/dialog.service';
 import { Books } from 'src/app/shared/header/models/books.model';
@@ -18,11 +19,19 @@ export class BooksComponent implements OnInit {
   edit: boolean = false;
   Books: Observable<Books[]>;
   p: any;
-  constructor(private store: Store<AppState>,public dialog: DialogService) { }
+  loggedIn: boolean = false;
+  user: boolean = false;
+  constructor(private store: Store<AppState>,public dialog: DialogService, private toastr: ToastrService,) { }
 
   ngOnInit(): void {
     this.Books = this.store.select(getBooks);
     this.store.dispatch(loadBooks());
+    if(localStorage.getItem('loggedIn')){
+      this.loggedIn = true;
+    }else{
+      this.user = true;
+    }
+    
   }
 
   
@@ -44,5 +53,12 @@ export class BooksComponent implements OnInit {
       console.log('Dialog closed', result);      
     });
   }
+
+  addtoCart(){
+    this.toastr.success('Added Successfully...View more Books');
+  }
+  // ngOnDestroy(){
+  //   localStorage.clear();
+  // }
 
 }

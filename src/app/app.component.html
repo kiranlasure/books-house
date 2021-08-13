@@ -23,7 +23,12 @@
           <a routerLink="aboutus" routerLinkActive="active">About us</a>
         </li>
         <li class="list-item">
-          <a routerLink="/auth" routerLinkActive="active">Login</a>
+          <!-- <a routerLink="/auth" routerLinkActive="active">Login</a> -->
+          <label for="">Action</label>
+          <select name="" id="" style="background-color: black;color: white;" (change)="selectedAction($event)">
+            <option value="login"  >Login</option>
+            <option value="logout" >logout</option>
+          </select>
         </li>
         <li  class="list-item">
           <a id="mode" (click)="toggleTheme()" style="font-size: 16px;cursor: pointer;">{{themeText}}</a>

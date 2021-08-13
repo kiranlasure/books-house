@@ -1,4 +1,5 @@
 import { Component, ElementRef, OnInit, Renderer2 } from '@angular/core';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-root',
@@ -9,9 +10,13 @@ export class AppComponent implements OnInit {
   
   title= 'training';
   themeText='DARK'
-  constructor(private el: ElementRef,private renderer: Renderer2) {}
+  constructor(private el: ElementRef,private renderer: Renderer2, private router: Router) {}
 
   ngOnInit(): void {
+
+    if(localStorage.getItem('user') === ''){
+      console.log("user is",localStorage.getItem("user"))
+    }
   }
 
   toggleTheme() {
@@ -29,4 +34,24 @@ export class AppComponent implements OnInit {
     }
   }
 
+  logout(){
+    localStorage.clear();
+  }
+  login(){
+    console.log("in")
+    this.router.navigate(['/login'])
+  }
+
+  selectedAction(event: any){
+    let log = event.target.value;
+    // console.log(log);
+    if(log == "logout"){
+      this.router.navigate(['/login']);
+      console.log("logout");
+      localStorage.clear();
+    }else{
+      this.router.navigate(['/login']);
+      console.log("login");
+    }
+  }
 }
