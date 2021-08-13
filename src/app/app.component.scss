@@ -34,7 +34,7 @@
       list-style-type: none;
       .list-item{
         display: inline-block;
-        padding: 0px 7px;
+        // padding: 0px 7px;
       }     
     }
     
@@ -85,6 +85,8 @@ main{
   height: auto;
   footer{ 
     background: #212121;
+    flex-shrink: 0;
+  
     .container1{
       
       width: 100%;
@@ -129,6 +131,14 @@ main{
     @media all and (max-width: 480px){
       .container1{
         flex-direction: column;
+      }
+      .cmp{
+        position: relative;
+        left: -21px;
+      }
+      .hel{
+        position: relative;
+        left: -17px;
       }
     } 
   }

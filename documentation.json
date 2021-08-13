@@ -35,12 +35,12 @@
         },
         {
             "name": "Books",
-            "id": "interface-Books-9df341f52e1b0850f541028539fecf1d",
+            "id": "interface-Books-80cfa5db8d184d0d62b619b454a8d337",
             "file": "src/app/shared/header/models/books.model.ts",
             "deprecated": false,
             "deprecationMessage": "",
             "type": "interface",
-            "sourceCode": "export interface Books{\r\n    id?: string,\r\n    title: string,\r\n    isbn:string,\r\n    price: string,\r\n    description: string\r\n}",
+            "sourceCode": "export interface Books{\r\n    id: string,\r\n    title: string,\r\n    isbn:string,\r\n    price: string,\r\n    description: string\r\n}",
             "properties": [
                 {
                     "name": "description",
@@ -56,7 +56,7 @@
                     "deprecated": false,
                     "deprecationMessage": "",
                     "type": "string",
-                    "optional": true,
+                    "optional": false,
                     "description": "",
                     "line": 2
                 },
@@ -233,7 +233,7 @@
     "injectables": [
         {
             "name": "BooksEffects",
-            "id": "injectable-BooksEffects-c66f0e77935a0a5e21d3646e4492cbad",
+            "id": "injectable-BooksEffects-5a7eeda8083a64f8cdb8f90fe66b4e2e",
             "file": "src/app/books/state/books.effects.ts",
             "properties": [
                 {
@@ -244,17 +244,47 @@
                     "type": "",
                     "optional": false,
                     "description": "",
-                    "line": 26
+                    "line": 30
                 },
                 {
-                    "name": "deletePost$",
+                    "name": "BookRedirect$",
+                    "defaultValue": "createEffect(\r\n        () => {\r\n          return this.action$.pipe(\r\n            ofType(...[deleteBookSucces]),\r\n            tap((action) => {\r\n              this.router.navigate(['/']);\r\n              this.toastr.success(\"Deleted successfully\");\r\n            })\r\n          );\r\n        },\r\n        { dispatch: false }\r\n      )",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "",
+                    "optional": false,
+                    "description": "",
+                    "line": 75
+                },
+                {
+                    "name": "BookRedirect1$",
+                    "defaultValue": "createEffect(\r\n        () => {\r\n          return this.action$.pipe(\r\n            ofType(...[addBooksSuccess],),\r\n            tap((action) => {\r\n              this.toastr.success(\"Book added successfully\");\r\n              this.router.navigate(['/books']);\r\n            })\r\n          );\r\n        },\r\n        { dispatch: false }\r\n      )",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "",
+                    "optional": false,
+                    "description": "",
+                    "line": 88
+                },
+                {
+                    "name": "BookRedirect2$",
+                    "defaultValue": "createEffect(\r\n        () => {\r\n          return this.action$.pipe(\r\n            ofType(...[updateBookSuccess],),\r\n            tap((action) => {\r\n              this.toastr.success(\"Success\");\r\n              this.router.navigate(['/books']);\r\n            })\r\n          );\r\n        },\r\n        { dispatch: false }\r\n      )",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "",
+                    "optional": false,
+                    "description": "",
+                    "line": 101
+                },
+                {
+                    "name": "deleteBook$",
                     "defaultValue": "createEffect(()=>{\r\n        return this.action$.pipe(\r\n            ofType(deleteBook),\r\n            switchMap((action)=>{\r\n                return this.booksService.deleteBook(action.id).pipe(\r\n                    map((data)=>{\r\n                        return deleteBookSucces({ id: action.id});\r\n                    })\r\n                )\r\n            })\r\n        )\r\n    })",
                     "deprecated": false,
                     "deprecationMessage": "",
                     "type": "",
                     "optional": false,
                     "description": "",
-                    "line": 51
+                    "line": 62
                 },
                 {
                     "name": "loadBooks$",
@@ -264,17 +294,17 @@
                     "type": "",
                     "optional": false,
                     "description": "",
-                    "line": 13
+                    "line": 17
                 },
                 {
                     "name": "updateBook$",
-                    "defaultValue": "createEffect(()=>{\r\n        return this.action$.pipe(\r\n            ofType(updateBook),\r\n            switchMap((action)=>{\r\n                return this.booksService.updatePost(action.book).pipe(\r\n                    map((data)=>{\r\n                        return updateBookSuccess({ book: action.book})\r\n                    })\r\n                )\r\n            })\r\n        )\r\n    })",
+                    "defaultValue": "createEffect(()=>{\r\n        return this.action$.pipe(\r\n            ofType(updateBook),\r\n            switchMap((action)=>{\r\n                return this.booksService.updateBook(action.book).pipe(\r\n                    map((data)=>{\r\n                        const updatedBook: Update<Books> = {\r\n                            id: action.book.id,\r\n                            changes:{\r\n                                ...action.book\r\n                            }\r\n                        }\r\n                        return updateBookSuccess({ book: action.book})\r\n                    })\r\n                )\r\n            })\r\n        )\r\n    })",
                     "deprecated": false,
                     "deprecationMessage": "",
                     "type": "",
                     "optional": false,
                     "description": "",
-                    "line": 38
+                    "line": 42
                 }
             ],
             "methods": [],
@@ -282,7 +312,7 @@
             "deprecationMessage": "",
             "description": "",
             "rawdescription": "\n",
-            "sourceCode": "import { Injectable } from \"@angular/core\";\r\nimport { Actions, createEffect, ofType } from \"@ngrx/effects\";\r\nimport { addbooks, addBooksSuccess, deleteBook, deleteBookSucces, loadBooks, loadBookSuccess, updateBook, updateBookSuccess } from \"src/app/books/state/books.actions\";\r\nimport { BooksService } from \"src/app/services/books.service\";\r\nimport { map, mergeMap, switchMap } from 'rxjs/operators';\r\n\r\n@Injectable()\r\nexport class BooksEffects{\r\n\r\n    constructor(private action$:Actions, private booksService: BooksService){\r\n    }\r\n\r\n    loadBooks$ = createEffect(()=>{\r\n        return this.action$.pipe(\r\n            ofType(loadBooks),\r\n            mergeMap((action)=>{\r\n                return this.booksService.getBooks().pipe(\r\n                    map((books)=>{\r\n                        return loadBookSuccess({books});\r\n                    })\r\n                )\r\n            })\r\n        )\r\n    })\r\n\r\n    addBooks$ = createEffect(()=>{\r\n      return  this.action$.pipe(ofType(addbooks), \r\n        mergeMap(action=>{\r\n            return this.booksService.addBooks(action.book).pipe(\r\n                map(data=>{\r\n                    const book = {...action.book, id: data.name};\r\n                    return addBooksSuccess({book});\r\n                })\r\n            )\r\n        }))\r\n    })\r\n\r\n    updateBook$ = createEffect(()=>{\r\n        return this.action$.pipe(\r\n            ofType(updateBook),\r\n            switchMap((action)=>{\r\n                return this.booksService.updatePost(action.book).pipe(\r\n                    map((data)=>{\r\n                        return updateBookSuccess({ book: action.book})\r\n                    })\r\n                )\r\n            })\r\n        )\r\n    })\r\n\r\n    deletePost$ = createEffect(()=>{\r\n        return this.action$.pipe(\r\n            ofType(deleteBook),\r\n            switchMap((action)=>{\r\n                return this.booksService.deleteBook(action.id).pipe(\r\n                    map((data)=>{\r\n                        return deleteBookSucces({ id: action.id});\r\n                    })\r\n                )\r\n            })\r\n        )\r\n    })\r\n}",
+            "sourceCode": "import { Injectable } from \"@angular/core\";\r\nimport { Actions, createEffect, ofType } from \"@ngrx/effects\";\r\nimport { addbooks, addBooksSuccess, deleteBook, deleteBookSucces, loadBooks, loadBookSuccess, updateBook, updateBookSuccess } from \"src/app/books/state/books.actions\";\r\nimport { BooksService } from \"src/app/services/books.service\";\r\nimport { map, mergeMap, switchMap, tap } from 'rxjs/operators';\r\nimport { Update } from '@ngrx/entity';\r\nimport { Books } from \"src/app/shared/header/models/books.model\";\r\nimport { Router } from \"@angular/router\";\r\nimport { ToastrService } from 'ngx-toastr';\r\n\r\n@Injectable()\r\nexport class BooksEffects{\r\n\r\n    constructor(private action$:Actions, private booksService: BooksService,private toastr: ToastrService,\r\n        private router: Router){\r\n    }\r\n    loadBooks$ = createEffect(()=>{\r\n        return this.action$.pipe(\r\n            ofType(loadBooks),\r\n            mergeMap((action)=>{\r\n                return this.booksService.getBooks().pipe(\r\n                    map((books)=>{\r\n                        return loadBookSuccess({books});\r\n                    })\r\n                )\r\n            })\r\n        )\r\n    })\r\n\r\n    addBooks$ = createEffect(()=>{\r\n      return  this.action$.pipe(ofType(addbooks), \r\n        mergeMap(action=>{\r\n            return this.booksService.addBooks(action.book).pipe(\r\n                map(data=>{\r\n                    const book = {...action.book, id: data.name};\r\n                    return addBooksSuccess({book});\r\n                })\r\n            )\r\n        }))\r\n    })\r\n\r\n    updateBook$ = createEffect(()=>{\r\n        return this.action$.pipe(\r\n            ofType(updateBook),\r\n            switchMap((action)=>{\r\n                return this.booksService.updateBook(action.book).pipe(\r\n                    map((data)=>{\r\n                        const updatedBook: Update<Books> = {\r\n                            id: action.book.id,\r\n                            changes:{\r\n                                ...action.book\r\n                            }\r\n                        }\r\n                        return updateBookSuccess({ book: action.book})\r\n                    })\r\n                )\r\n            })\r\n        )\r\n    })\r\n\r\n   \r\n    deleteBook$ = createEffect(()=>{\r\n        return this.action$.pipe(\r\n            ofType(deleteBook),\r\n            switchMap((action)=>{\r\n                return this.booksService.deleteBook(action.id).pipe(\r\n                    map((data)=>{\r\n                        return deleteBookSucces({ id: action.id});\r\n                    })\r\n                )\r\n            })\r\n        )\r\n    })\r\n\r\n    BookRedirect$ = createEffect(\r\n        () => {\r\n          return this.action$.pipe(\r\n            ofType(...[deleteBookSucces]),\r\n            tap((action) => {\r\n              this.router.navigate(['/']);\r\n              this.toastr.success(\"Deleted successfully\");\r\n            })\r\n          );\r\n        },\r\n        { dispatch: false }\r\n      );\r\n    \r\n      BookRedirect1$ = createEffect(\r\n        () => {\r\n          return this.action$.pipe(\r\n            ofType(...[addBooksSuccess],),\r\n            tap((action) => {\r\n              this.toastr.success(\"Book added successfully\");\r\n              this.router.navigate(['/books']);\r\n            })\r\n          );\r\n        },\r\n        { dispatch: false }\r\n      );\r\n\r\n      BookRedirect2$ = createEffect(\r\n        () => {\r\n          return this.action$.pipe(\r\n            ofType(...[updateBookSuccess],),\r\n            tap((action) => {\r\n              this.toastr.success(\"Success\");\r\n              this.router.navigate(['/books']);\r\n            })\r\n          );\r\n        },\r\n        { dispatch: false }\r\n      );\r\n}",
             "constructorObj": {
                 "name": "constructor",
                 "description": "",
@@ -300,9 +330,21 @@
                         "type": "BooksService",
                         "deprecated": false,
                         "deprecationMessage": ""
+                    },
+                    {
+                        "name": "toastr",
+                        "type": "ToastrService",
+                        "deprecated": false,
+                        "deprecationMessage": ""
+                    },
+                    {
+                        "name": "router",
+                        "type": "Router",
+                        "deprecated": false,
+                        "deprecationMessage": ""
                     }
                 ],
-                "line": 8,
+                "line": 12,
                 "jsdoctags": [
                     {
                         "name": "action$",
@@ -321,6 +363,24 @@
                         "tagName": {
                             "text": "param"
                         }
+                    },
+                    {
+                        "name": "toastr",
+                        "type": "ToastrService",
+                        "deprecated": false,
+                        "deprecationMessage": "",
+                        "tagName": {
+                            "text": "param"
+                        }
+                    },
+                    {
+                        "name": "router",
+                        "type": "Router",
+                        "deprecated": false,
+                        "deprecationMessage": "",
+                        "tagName": {
+                            "text": "param"
+                        }
                     }
                 ]
             },
@@ -328,7 +388,7 @@
         },
         {
             "name": "BooksService",
-            "id": "injectable-BooksService-73c3b7c98749865119669dda3dba70b0",
+            "id": "injectable-BooksService-1dff52569fc11d015f797a56df3be9f4",
             "file": "src/app/services/books.service.ts",
             "properties": [],
             "methods": [
@@ -373,7 +433,7 @@
                     "optional": false,
                     "returnType": "any",
                     "typeParameters": [],
-                    "line": 37,
+                    "line": 41,
                     "deprecated": false,
                     "deprecationMessage": "",
                     "jsdoctags": [
@@ -399,7 +459,7 @@
                     "deprecationMessage": ""
                 },
                 {
-                    "name": "updatePost",
+                    "name": "updateBook",
                     "args": [
                         {
                             "name": "book",
@@ -409,7 +469,7 @@
                         }
                     ],
                     "optional": false,
-                    "returnType": "any",
+                    "returnType": "Observable<literal type>",
                     "typeParameters": [],
                     "line": 29,
                     "deprecated": false,
@@ -431,7 +491,7 @@
             "deprecationMessage": "",
             "description": "",
             "rawdescription": "\n",
-            "sourceCode": "import { HttpClient } from '@angular/common/http';\r\nimport { Injectable } from '@angular/core';\r\nimport { Observable } from 'rxjs';\r\nimport { map } from 'rxjs/operators';\r\nimport { Books } from '../shared/header/models/books.model';\r\n\r\n@Injectable({\r\n  providedIn: 'root'\r\n})\r\nexport class BooksService {\r\n\r\n  constructor(private http: HttpClient) { }\r\n\r\n  getBooks(): Observable<Books[]>{\r\n    return this.http.get<Books[]>(`http://localhost:3000/books`)\r\n    .pipe(map((data)=>{\r\n      const books: Books[] = [];\r\n     for(let key in data){\r\n       books.push({...data[key], id: key})\r\n     }\r\n      return books;\r\n    }));\r\n  }\r\n\r\n  addBooks(book : Books): Observable<{ name: string}>{\r\n    return this.http.post<{name : string}>(`http://localhost:3000/books`,book)\r\n  }\r\n\r\n  updatePost(book: Books){\r\n    \r\n    // const bookData = {\r\n    //   [book.id]: { title: book.title, description: book.description },\r\n    // };\r\n    return this.http.patch(`http://localhost:3000/books`,book)\r\n  }\r\n\r\n  deleteBook(id : string){\r\n    return this.http.delete(`http://localhost:3000/books/${id}.json`)\r\n  }\r\n}\r\n",
+            "sourceCode": "import { HttpClient } from '@angular/common/http';\r\nimport { Injectable } from '@angular/core';\r\nimport { Observable } from 'rxjs';\r\nimport { map } from 'rxjs/operators';\r\nimport { Books } from '../shared/header/models/books.model';\r\n\r\n@Injectable({\r\n  providedIn: 'root'\r\n})\r\nexport class BooksService {\r\n\r\n  constructor(private http: HttpClient) { }\r\n\r\n  getBooks(): Observable<Books[]>{\r\n    return this.http.get<Books[]>(`http://localhost:3000/books`)\r\n    .pipe(map((data)=>{\r\n      const books: Books[] = [];\r\n     for(let key in data){\r\n       books.push({...data[key], id: key})\r\n     }\r\n      return books;\r\n    }));\r\n  }\r\n\r\n  addBooks(book : Books): Observable<{ name: string}>{\r\n    return this.http.post<{name : string}>(`http://localhost:3000/books`,book)\r\n  }\r\n\r\n  updateBook(book: Books):  Observable<{name:string}>{\r\n    const bookData = {\r\n      [book.id] : {\r\n          id: book.id,\r\n          name: book.isbn, \r\n          description: book.description, \r\n          price: book.price\r\n      }\r\n  }\r\n    return this.http.patch<{name:string}>(`http://localhost:3000/books/${book.id}`,bookData);\r\n  }\r\n\r\n  deleteBook(id : string){\r\n    return this.http.delete<{name:string}>(`http://localhost:3000/books/${id}`);\r\n  }\r\n\r\n}\r\n",
             "constructorObj": {
                 "name": "constructor",
                 "description": "",
@@ -462,8 +522,8 @@
         },
         {
             "name": "DialogService",
-            "id": "injectable-DialogService-8723e9486b74423d99c82b658ddb82b3",
-            "file": "src/app/dialog-module/dialog.service.ts",
+            "id": "injectable-DialogService-a09e510838c2eb2b2f01d35ff5046595",
+            "file": "src/app/dialog-module/dialog/dialog.service.ts",
             "properties": [
                 {
                     "name": "dialogComponentRef",
@@ -472,7 +532,7 @@
                     "type": "ComponentRef<DialogComponent>",
                     "optional": false,
                     "description": "",
-                    "line": 21
+                    "line": 22
                 }
             ],
             "methods": [
@@ -489,7 +549,7 @@
                     "optional": false,
                     "returnType": "DialogRef",
                     "typeParameters": [],
-                    "line": 37,
+                    "line": 38,
                     "deprecated": false,
                     "deprecationMessage": "",
                     "modifierKind": [
@@ -505,6 +565,19 @@
                                 "text": "param"
                             }
                         }
+                    ]
+                },
+                {
+                    "name": "close",
+                    "args": [],
+                    "optional": false,
+                    "returnType": "void",
+                    "typeParameters": [],
+                    "line": 72,
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "modifierKind": [
+                        122
                     ]
                 },
                 {
@@ -526,7 +599,7 @@
                     "optional": false,
                     "returnType": "DialogRef",
                     "typeParameters": [],
-                    "line": 29,
+                    "line": 30,
                     "deprecated": false,
                     "deprecationMessage": "",
                     "modifierKind": [
@@ -559,7 +632,7 @@
                     "optional": false,
                     "returnType": "void",
                     "typeParameters": [],
-                    "line": 66,
+                    "line": 67,
                     "deprecated": false,
                     "deprecationMessage": "",
                     "modifierKind": [
@@ -571,7 +644,7 @@
             "deprecationMessage": "",
             "description": "",
             "rawdescription": "\n",
-            "sourceCode": "import {\n  Injectable,\n  ComponentFactoryResolver,\n  ApplicationRef,\n  Injector,\n  EmbeddedViewRef,\n  ComponentRef,\n  Type\n} from '@angular/core';\nimport { DialogModule } from './dialog-module.module';\n// import { DialogComponent } from './dialog.component';\nimport { DialogConfig } from './dialog-config';\nimport { DialogInjector } from './dialog-injector';\nimport { DialogRef } from './dialog-ref';\nimport { DialogComponent } from './dialog/dialog.component';\n\n@Injectable({\n  providedIn: DialogModule\n})\nexport class DialogService {\n  dialogComponentRef: ComponentRef<DialogComponent>;\n\n  constructor(\n    private componentFactoryResolver: ComponentFactoryResolver,\n    private appRef: ApplicationRef,\n    private injector: Injector\n  ) {}\n\n  public open(componentType: Type<any>, config: DialogConfig): DialogRef {\n    const dialogRef = this.appendDialogComponentToBody(config);\n\n    this.dialogComponentRef.instance.childComponentType = componentType;\n\n    return dialogRef;\n  }\n\n  private appendDialogComponentToBody(config: DialogConfig): DialogRef {\n    const map = new WeakMap();\n    map.set(DialogConfig, config);\n\n    const dialogRef = new DialogRef();\n    map.set(DialogRef, dialogRef);\n\n    const sub = dialogRef.afterClosed.subscribe(() => {\n      // close the dialog\n      this.removeDialogComponentFromBody();\n      sub.unsubscribe();\n    });\n\n    const componentFactory = this.componentFactoryResolver.resolveComponentFactory(DialogComponent);\n    const componentRef = componentFactory.create(new DialogInjector(this.injector, map));\n    this.appRef.attachView(componentRef.hostView);\n\n    const domElem = (componentRef.hostView as EmbeddedViewRef<any>).rootNodes[0] as HTMLElement;\n    document.body.appendChild(domElem);\n\n    this.dialogComponentRef = componentRef;\n\n    this.dialogComponentRef.instance.onClose.subscribe(() => {\n      this.removeDialogComponentFromBody();\n    });\n    \n    return dialogRef;\n  }\n\n  private removeDialogComponentFromBody(): void {\n    this.appRef.detachView(this.dialogComponentRef.hostView);\n    this.dialogComponentRef.destroy();\n  }\n}",
+            "sourceCode": "import {\r\n    Injectable,\r\n    ComponentFactoryResolver,\r\n    ApplicationRef,\r\n    Injector,\r\n    EmbeddedViewRef,\r\n    ComponentRef,\r\n    Type\r\n  } from '@angular/core';\r\n  import { DialogModule } from './dialog.module';\r\n\r\n  import { DialogConfig } from './dialog-config';\r\n  import { DialogInjector } from './dialog-injector';\r\n  import { DialogRef } from './dialog-ref';\r\nimport { DialogComponent } from './dialog/dialog.component';\r\n  \r\n  @Injectable({\r\n    providedIn: DialogModule\r\n  })\r\n  export class DialogService {\r\n    dialogComponentRef: ComponentRef<DialogComponent>;\r\n  \r\n    constructor(\r\n      private componentFactoryResolver: ComponentFactoryResolver,\r\n      private appRef: ApplicationRef,\r\n      private injector: Injector\r\n    ) {}\r\n  \r\n    public open(componentType: Type<any>, config: DialogConfig): DialogRef {\r\n      const dialogRef = this.appendDialogComponentToBody(config);\r\n  \r\n      this.dialogComponentRef.instance.childComponentType = componentType;\r\n  \r\n      return dialogRef;\r\n    }\r\n  \r\n    private appendDialogComponentToBody(config: DialogConfig): DialogRef {\r\n      const map = new WeakMap();\r\n      map.set(DialogConfig, config);\r\n  \r\n      const dialogRef = new DialogRef();\r\n      map.set(DialogRef, dialogRef);\r\n  \r\n      const sub = dialogRef.afterClosed.subscribe(() => {\r\n        // close the dialog\r\n        this.removeDialogComponentFromBody();\r\n        sub.unsubscribe();\r\n      });\r\n  \r\n      const componentFactory = this.componentFactoryResolver.resolveComponentFactory(DialogComponent);\r\n      const componentRef = componentFactory.create(new DialogInjector(this.injector, map));\r\n      this.appRef.attachView(componentRef.hostView);\r\n  \r\n      const domElem = (componentRef.hostView as EmbeddedViewRef<any>).rootNodes[0] as HTMLElement;\r\n      document.body.appendChild(domElem);\r\n  \r\n      this.dialogComponentRef = componentRef;\r\n  \r\n      this.dialogComponentRef.instance.onClose.subscribe(() => {\r\n        this.removeDialogComponentFromBody();\r\n      });\r\n      \r\n      return dialogRef;\r\n    }\r\n  \r\n    private removeDialogComponentFromBody(): void {\r\n      this.appRef.detachView(this.dialogComponentRef.hostView);\r\n      this.dialogComponentRef.destroy();\r\n    }\r\n\r\n    public close(): void {\r\n        this.dialogComponentRef.instance.onClose.subscribe(() => {\r\n          this.removeDialogComponentFromBody();\r\n        });\r\n        \r\n      }\r\n  }",
             "constructorObj": {
                 "name": "constructor",
                 "description": "",
@@ -597,7 +670,7 @@
                         "deprecationMessage": ""
                     }
                 ],
-                "line": 21,
+                "line": 22,
                 "jsdoctags": [
                     {
                         "name": "componentFactoryResolver",
@@ -715,7 +788,7 @@
         },
         {
             "name": "NewUserEffects",
-            "id": "injectable-NewUserEffects-286c7274b54d5405b33f355ec1db5972",
+            "id": "injectable-NewUserEffects-74a28ab02e8b8ea3147e5847d9060a20",
             "file": "src/app/newuser/state/newuser.effects.ts",
             "properties": [
                 {
@@ -726,7 +799,17 @@
                     "type": "",
                     "optional": false,
                     "description": "",
-                    "line": 13
+                    "line": 16
+                },
+                {
+                    "name": "BookRedirect1$",
+                    "defaultValue": "createEffect(\r\n        () => {\r\n          return this.action$.pipe(\r\n            ofType(...[addUserSuccess],),\r\n            tap((action) => {\r\n              this.toastr.success(\"User added successfully\");\r\n              this.router.navigate(['/login']);\r\n            })\r\n          );\r\n        },\r\n        { dispatch: false }\r\n      )",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "",
+                    "optional": false,
+                    "description": "",
+                    "line": 28
                 }
             ],
             "methods": [],
@@ -734,7 +817,7 @@
             "deprecationMessage": "",
             "description": "",
             "rawdescription": "\n",
-            "sourceCode": "import { Injectable } from \"@angular/core\";\r\nimport { Actions, createEffect, ofType } from \"@ngrx/effects\";\r\nimport { map, mergeMap} from 'rxjs/operators';\r\nimport { RegisterUserService } from \"src/app/services/register-user.service\";\r\nimport { addUser, addUserSuccess } from \"./newuser.actions\";\r\n\r\n@Injectable()\r\nexport class NewUserEffects{\r\n\r\n    constructor(private action$:Actions, private userService: RegisterUserService){\r\n    }\r\n    \r\n    addUser$ = createEffect(()=>{\r\n      return  this.action$.pipe(ofType(addUser), \r\n        mergeMap(action=>{\r\n            return this.userService.addUser(action.user).pipe(\r\n                map(data=>{\r\n                    const user = {...action.user, id: data.name};\r\n                    return addUserSuccess({user});\r\n                })\r\n            )\r\n        }))\r\n    })\r\n\r\n   \r\n\r\n    \r\n}",
+            "sourceCode": "import { Injectable } from \"@angular/core\";\r\nimport { Router } from \"@angular/router\";\r\nimport { Actions, createEffect, ofType } from \"@ngrx/effects\";\r\nimport { ToastrService } from \"ngx-toastr\";\r\nimport { map, mergeMap, tap} from 'rxjs/operators';\r\nimport { RegisterUserService } from \"src/app/services/register-user.service\";\r\nimport { addUser, addUserSuccess } from \"./newuser.actions\";\r\n\r\n@Injectable()\r\nexport class NewUserEffects{\r\n\r\n    constructor(private action$:Actions, private userService: RegisterUserService,private toastr: ToastrService,\r\n        private router: Router){\r\n    }\r\n    \r\n    addUser$ = createEffect(()=>{\r\n      return  this.action$.pipe(ofType(addUser), \r\n        mergeMap(action=>{\r\n            return this.userService.addUser(action.user).pipe(\r\n                map(data=>{\r\n                    const user = {...action.user, id: data.name};\r\n                    return addUserSuccess({user});\r\n                })\r\n            )\r\n        }))\r\n    })\r\n\r\n    BookRedirect1$ = createEffect(\r\n        () => {\r\n          return this.action$.pipe(\r\n            ofType(...[addUserSuccess],),\r\n            tap((action) => {\r\n              this.toastr.success(\"User added successfully\");\r\n              this.router.navigate(['/login']);\r\n            })\r\n          );\r\n        },\r\n        { dispatch: false }\r\n      );\r\n\r\n    \r\n}",
             "constructorObj": {
                 "name": "constructor",
                 "description": "",
@@ -752,9 +835,21 @@
                         "type": "RegisterUserService",
                         "deprecated": false,
                         "deprecationMessage": ""
+                    },
+                    {
+                        "name": "toastr",
+                        "type": "ToastrService",
+                        "deprecated": false,
+                        "deprecationMessage": ""
+                    },
+                    {
+                        "name": "router",
+                        "type": "Router",
+                        "deprecated": false,
+                        "deprecationMessage": ""
                     }
                 ],
-                "line": 8,
+                "line": 10,
                 "jsdoctags": [
                     {
                         "name": "action$",
@@ -768,6 +863,24 @@
                     {
                         "name": "userService",
                         "type": "RegisterUserService",
+                        "deprecated": false,
+                        "deprecationMessage": "",
+                        "tagName": {
+                            "text": "param"
+                        }
+                    },
+                    {
+                        "name": "toastr",
+                        "type": "ToastrService",
+                        "deprecated": false,
+                        "deprecationMessage": "",
+                        "tagName": {
+                            "text": "param"
+                        }
+                    },
+                    {
+                        "name": "router",
+                        "type": "Router",
                         "deprecated": false,
                         "deprecationMessage": "",
                         "tagName": {
@@ -852,12 +965,12 @@
     "classes": [
         {
             "name": "DialogConfig",
-            "id": "class-DialogConfig-05966445135e0d5d173cbe524cabc874",
-            "file": "src/app/dialog-module/dialog-config.ts",
+            "id": "class-DialogConfig-26399407980512474ff546a8cd9c4c23",
+            "file": "src/app/dialog-module/dialog/dialog-config.ts",
             "deprecated": false,
             "deprecationMessage": "",
             "type": "class",
-            "sourceCode": "export class DialogConfig<D = any> {\r\n    data?: D;\r\n  }",
+            "sourceCode": "export class DialogConfig<D = any> {\r\n    data?: D;\r\n    name?: string;\r\n    id?: string;\r\n    description?: string;\r\n    price?:string;\r\n  }",
             "properties": [
                 {
                     "name": "data",
@@ -867,6 +980,42 @@
                     "optional": true,
                     "description": "",
                     "line": 2
+                },
+                {
+                    "name": "description",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "string",
+                    "optional": true,
+                    "description": "",
+                    "line": 5
+                },
+                {
+                    "name": "id",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "string",
+                    "optional": true,
+                    "description": "",
+                    "line": 4
+                },
+                {
+                    "name": "name",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "string",
+                    "optional": true,
+                    "description": "",
+                    "line": 3
+                },
+                {
+                    "name": "price",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "string",
+                    "optional": true,
+                    "description": "",
+                    "line": 6
                 }
             ],
             "methods": [],
@@ -878,12 +1027,12 @@
         },
         {
             "name": "DialogInjector",
-            "id": "class-DialogInjector-52fa54603aa3613273774bfc3a9f51f3",
-            "file": "src/app/dialog-module/dialog-injector.ts",
+            "id": "class-DialogInjector-19a5f6d5884c0b9ab633a5b26ba453a9",
+            "file": "src/app/dialog-module/dialog/dialog-injector.ts",
             "deprecated": false,
             "deprecationMessage": "",
             "type": "class",
-            "sourceCode": "import { Injector, Type, InjectionToken, InjectFlags } from '@angular/core';\r\n\r\nexport class DialogInjector implements Injector {\r\n  constructor(private _parentInjector: Injector, private _additionalTokens: WeakMap<any, any>) {}\r\n\r\n  get<T>(token: Type<T> | InjectionToken<T>, notFoundValue?: T, flags?: InjectFlags): T;\r\n//   get(token: any, notFoundValue?: any);\r\n  get(token: any, notFoundValue?: any, flags?: any) {\r\n    const value = this._additionalTokens.get(token);\r\n\r\n    if (value) return value;\r\n\r\n    return this._parentInjector.get<any>(token, notFoundValue);\r\n  }\r\n}\r\n",
+            "sourceCode": "import { Injector, Type, InjectionToken, InjectFlags } from '@angular/core';\r\n\r\nexport class DialogInjector implements Injector {\r\n  constructor(private _parentInjector: Injector, private _additionalTokens: WeakMap<any, any>) {}\r\n\r\n  get<T>(token: Type<T> | InjectionToken<T>, notFoundValue?: T, flags?: InjectFlags): T;\r\n  get(token: any, notFoundValue?: any): any;\r\n  get(token: any, notFoundValue?: any, flags?: any) {\r\n    const value = this._additionalTokens.get(token);\r\n\r\n    if (value) return value;\r\n\r\n    return this._parentInjector.get<any>(token, notFoundValue);\r\n  }\r\n}\r\n",
             "constructorObj": {
                 "name": "constructor",
                 "description": "",
@@ -1006,6 +1155,51 @@
                             "deprecated": false,
                             "deprecationMessage": "",
                             "optional": true
+                        }
+                    ],
+                    "optional": false,
+                    "returnType": "any",
+                    "typeParameters": [],
+                    "line": 7,
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "jsdoctags": [
+                        {
+                            "name": "token",
+                            "type": "any",
+                            "deprecated": false,
+                            "deprecationMessage": "",
+                            "tagName": {
+                                "text": "param"
+                            }
+                        },
+                        {
+                            "name": "notFoundValue",
+                            "type": "any",
+                            "deprecated": false,
+                            "deprecationMessage": "",
+                            "optional": true,
+                            "tagName": {
+                                "text": "param"
+                            }
+                        }
+                    ]
+                },
+                {
+                    "name": "get",
+                    "args": [
+                        {
+                            "name": "token",
+                            "type": "any",
+                            "deprecated": false,
+                            "deprecationMessage": ""
+                        },
+                        {
+                            "name": "notFoundValue",
+                            "type": "any",
+                            "deprecated": false,
+                            "deprecationMessage": "",
+                            "optional": true
                         },
                         {
                             "name": "flags",
@@ -1066,7 +1260,7 @@
         {
             "name": "DialogRef",
             "id": "class-DialogRef-aabb4a575222c7194f8d1a4bbf048534",
-            "file": "src/app/dialog-module/dialog-ref.ts",
+            "file": "src/app/dialog-module/dialog/dialog-ref.ts",
             "deprecated": false,
             "deprecationMessage": "",
             "type": "class",
@@ -1140,7 +1334,7 @@
         {
             "name": "InsertionDirective",
             "id": "directive-InsertionDirective-f17fd53923b153d2e470dd1f7bcb2be5",
-            "file": "src/app/dialog-module/insertion.directive.ts",
+            "file": "src/app/dialog-module/dialog/insertion.directive.ts",
             "type": "directive",
             "description": "",
             "rawdescription": "\n",
@@ -1199,7 +1393,7 @@
     "components": [
         {
             "name": "AboutusComponent",
-            "id": "component-AboutusComponent-8f7b8a8dc3765e251c6a45049b09d194",
+            "id": "component-AboutusComponent-5e43bb76feee990078ad719e9d8d994f",
             "file": "src/app/shared/aboutus/aboutus.component.ts",
             "encapsulation": [],
             "entryComponents": [],
@@ -1237,7 +1431,7 @@
             "description": "",
             "rawdescription": "\n",
             "type": "component",
-            "sourceCode": "import { Component, OnInit } from '@angular/core';\n\n@Component({\n  selector: 'app-aboutus',\n  templateUrl: './aboutus.component.html',\n  styleUrls: ['./aboutus.component.scss']\n})\nexport class AboutusComponent implements OnInit {\n\n  constructor() { }\n\n  ngOnInit(): void {\n  }\n\n}\n",
+            "sourceCode": "import { Component, OnInit } from '@angular/core';\r\n\r\n@Component({\r\n  selector: 'app-aboutus',\r\n  templateUrl: './aboutus.component.html',\r\n  styleUrls: ['./aboutus.component.scss']\r\n})\r\nexport class AboutusComponent implements OnInit {\r\n\r\n  constructor() { }\r\n\r\n  ngOnInit(): void {\r\n  }\r\n\r\n}\r\n",
             "assetsDirs": [],
             "styleUrlsData": [
                 {
@@ -1257,11 +1451,11 @@
             "implements": [
                 "OnInit"
             ],
-            "templateData": "<div class=\"container\">\n    <div class=\"heading\">\n        <h3>About us</h3>\n    </div>\n    <div class=\"quate\">\n        <h4>\"To learn to read is to light a fire; every syllable that is spelled out is a spark.\"– Victor Hugo.\n        </h4>\n    </div>\n    <div class=\"deatiled\">\n        <p>They say- If you have to enlarge someone's world, make them live 1000 lives, enlighten even the dullest of minds… hand them a book.</p>\n        <p>Book HOus is committed to the same- spreading joy of reading and learning.</p>\n    </div>\n    <div class=\"detailed\">\n        <p>So what are you waiting for, reader?</p>\n        <p>Start exploring, reading and buying now!</p>\n    </div>\n</div>"
+            "templateData": "<div class=\"container\">\r\n    <div class=\"heading\">\r\n        <h3>About us</h3>\r\n    </div>\r\n    <div class=\"quate\">\r\n        <h4>\"To learn to read is to light a fire; every syllable that is spelled out is a spark.\"– Victor Hugo.\r\n        </h4>\r\n    </div>\r\n    <div class=\"deatiled\">\r\n        <p>They say- If you have to enlarge someone's world, make them live 1000 lives, enlighten even the dullest of minds… hand them a book.</p>\r\n        <p>Book HOus is committed to the same- spreading joy of reading and learning.</p>\r\n    </div>\r\n    <div class=\"detailed\">\r\n        <p>So what are you waiting for, reader?</p>\r\n        <p>Start exploring, reading and buying now!</p>\r\n    </div>\r\n</div>"
         },
         {
             "name": "AddbooksComponent",
-            "id": "component-AddbooksComponent-b9555ed1820bcfdcac7b26f1fbdeaf5f",
+            "id": "component-AddbooksComponent-5a827eb7df52ceb679f814a707c4b290",
             "file": "src/app/books/addbooks/addbooks.component.ts",
             "encapsulation": [],
             "entryComponents": [],
@@ -1319,7 +1513,7 @@
             "description": "",
             "rawdescription": "\n",
             "type": "component",
-            "sourceCode": "import { Component, OnInit } from '@angular/core';\r\nimport { FormControl, FormGroup, Validators } from '@angular/forms';\r\nimport { Store } from '@ngrx/store';\r\nimport { Books } from 'src/app/shared/header/models/books.model';\r\nimport { AppState } from 'src/app/store/app.state';\r\nimport { addbooks } from '../state/books.actions';\r\n\r\n\r\n@Component({\r\n  selector: 'app-addbooks',\r\n  templateUrl: './addbooks.component.html',\r\n  styleUrls: ['./addbooks.component.scss']\r\n})\r\nexport class AddbooksComponent implements OnInit {\r\n\r\n  booksForm: FormGroup;\r\n  constructor(private store: Store<AppState>) { }\r\n\r\n  ngOnInit(): void {\r\n    this.booksForm = new FormGroup({\r\n      title: new FormControl(null,\r\n        [Validators.required ]),\r\n\r\n      description: new FormControl(null,[Validators.required]),\r\n      isbn: new FormControl(null,\r\n        [Validators.required ]),\r\n      price: new FormControl(null,\r\n          [Validators.required ]),\r\n    })\r\n  }\r\n\r\n  onAddbooks(){\r\n    if(!this.booksForm.valid){\r\n      return;\r\n    }\r\n    const book : Books ={\r\n      title: this.booksForm.value.title,\r\n      description: this.booksForm.value.description,\r\n      isbn: this.booksForm.value.isbn,\r\n      price: this.booksForm.value.price\r\n    };\r\n\r\n   this.store.dispatch(addbooks({book}))\r\n  }\r\n}\r\n",
+            "sourceCode": "import { Component, OnInit } from '@angular/core';\r\nimport { FormControl, FormGroup, Validators } from '@angular/forms';\r\nimport { Store } from '@ngrx/store';\r\nimport { Books } from 'src/app/shared/header/models/books.model';\r\nimport { AppState } from 'src/app/store/app.state';\r\nimport { addbooks } from '../state/books.actions';\r\n\r\n\r\n@Component({\r\n  selector: 'app-addbooks',\r\n  templateUrl: './addbooks.component.html',\r\n  styleUrls: ['./addbooks.component.scss']\r\n})\r\nexport class AddbooksComponent implements OnInit {\r\n\r\n  booksForm: FormGroup;\r\n  constructor(private store: Store<AppState>) { }\r\n\r\n  ngOnInit(): void {\r\n    this.booksForm = new FormGroup({\r\n      title: new FormControl(null,\r\n        [Validators.required ]),\r\n\r\n      description: new FormControl(null,[Validators.required]),\r\n      isbn: new FormControl(null,\r\n        [Validators.required ]),\r\n      price: new FormControl(null,\r\n          [Validators.required ]),\r\n    })\r\n  }\r\n\r\n  onAddbooks(){\r\n    if(!this.booksForm.valid){\r\n      return;\r\n    }\r\n    const book : Books ={\r\n      id:'',\r\n      title: this.booksForm.value.title,\r\n      description: this.booksForm.value.description,\r\n      isbn: this.booksForm.value.isbn,\r\n      price: this.booksForm.value.price\r\n    };\r\n\r\n   this.store.dispatch(addbooks({book}))\r\n  }\r\n}\r\n",
             "assetsDirs": [],
             "styleUrlsData": [
                 {
@@ -1361,7 +1555,7 @@
         },
         {
             "name": "AppComponent",
-            "id": "component-AppComponent-6275027b66ce33e6efbd8bcffab0bcd0",
+            "id": "component-AppComponent-caa6c5eafbe3f31bbdebc415f7e47276",
             "file": "src/app/app.component.ts",
             "encapsulation": [],
             "entryComponents": [],
@@ -1381,6 +1575,16 @@
             "outputsClass": [],
             "propertiesClass": [
                 {
+                    "name": "themeText",
+                    "defaultValue": "'DARK'",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "string",
+                    "optional": false,
+                    "description": "",
+                    "line": 12
+                },
+                {
                     "name": "title",
                     "defaultValue": "'training'",
                     "deprecated": false,
@@ -1388,17 +1592,75 @@
                     "type": "string",
                     "optional": false,
                     "description": "",
-                    "line": 10
+                    "line": 11
                 }
             ],
             "methodsClass": [
+                {
+                    "name": "login",
+                    "args": [],
+                    "optional": false,
+                    "returnType": "void",
+                    "typeParameters": [],
+                    "line": 40,
+                    "deprecated": false,
+                    "deprecationMessage": ""
+                },
+                {
+                    "name": "logout",
+                    "args": [],
+                    "optional": false,
+                    "returnType": "void",
+                    "typeParameters": [],
+                    "line": 37,
+                    "deprecated": false,
+                    "deprecationMessage": ""
+                },
                 {
                     "name": "ngOnInit",
                     "args": [],
                     "optional": false,
                     "returnType": "void",
                     "typeParameters": [],
-                    "line": 13,
+                    "line": 15,
+                    "deprecated": false,
+                    "deprecationMessage": ""
+                },
+                {
+                    "name": "selectedAction",
+                    "args": [
+                        {
+                            "name": "event",
+                            "type": "any",
+                            "deprecated": false,
+                            "deprecationMessage": ""
+                        }
+                    ],
+                    "optional": false,
+                    "returnType": "void",
+                    "typeParameters": [],
+                    "line": 45,
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "jsdoctags": [
+                        {
+                            "name": "event",
+                            "type": "any",
+                            "deprecated": false,
+                            "deprecationMessage": "",
+                            "tagName": {
+                                "text": "param"
+                            }
+                        }
+                    ]
+                },
+                {
+                    "name": "toggleTheme",
+                    "args": [],
+                    "optional": false,
+                    "returnType": "void",
+                    "typeParameters": [],
+                    "line": 22,
                     "deprecated": false,
                     "deprecationMessage": ""
                 }
@@ -1410,11 +1672,11 @@
             "description": "",
             "rawdescription": "\n",
             "type": "component",
-            "sourceCode": "import { Component, ElementRef, OnInit } from '@angular/core';\r\n\r\n@Component({\r\n  selector: 'app-root',\r\n  templateUrl: './app.component.html',\r\n  styleUrls: ['./app.component.scss']\r\n})\r\nexport class AppComponent implements OnInit {\r\n  \r\n  title= 'training';\r\n  constructor(private ref: ElementRef) {}\r\n\r\n  ngOnInit(): void {\r\n  }\r\n}\r\n",
+            "sourceCode": "import { Component, ElementRef, OnInit, Renderer2 } from '@angular/core';\r\nimport { Router } from '@angular/router';\r\n\r\n@Component({\r\n  selector: 'app-root',\r\n  templateUrl: './app.component.html',\r\n  styleUrls: ['./app.component.scss']\r\n})\r\nexport class AppComponent implements OnInit {\r\n  \r\n  title= 'training';\r\n  themeText='DARK'\r\n  constructor(private el: ElementRef,private renderer: Renderer2, private router: Router) {}\r\n\r\n  ngOnInit(): void {\r\n\r\n    if(localStorage.getItem('user') === ''){\r\n      console.log(\"user is\",localStorage.getItem(\"user\"))\r\n    }\r\n  }\r\n\r\n  toggleTheme() {\r\n    //INCOMPLETE NEEDS IMPROVEMENTS\r\n    if(this.themeText == 'DARK'){\r\n      this.themeText = \"LIGHT\";\r\n      this.renderer.setStyle(this.el.nativeElement.ownerDocument.body, 'backgroundColor', 'black');\r\n      // this.renderer.setStyle(this.el.nativeElement.ownerDocument.body, 'color', 'white');\r\n\r\n      // this.renderer.setStyle(this.el.nativeElement, 'color', 'white');\r\n    }else{\r\n      this.themeText = \"DARK\";\r\n      this.renderer.setStyle(this.el.nativeElement.ownerDocument.body, 'backgroundColor', 'white');\r\n\r\n    }\r\n  }\r\n\r\n  logout(){\r\n    localStorage.clear();\r\n  }\r\n  login(){\r\n    console.log(\"in\")\r\n    this.router.navigate(['/login'])\r\n  }\r\n\r\n  selectedAction(event: any){\r\n    let log = event.target.value;\r\n    // console.log(log);\r\n    if(log == \"logout\"){\r\n      this.router.navigate(['/login']);\r\n      console.log(\"logout\");\r\n      localStorage.clear();\r\n    }else{\r\n      this.router.navigate(['/login']);\r\n      console.log(\"login\");\r\n    }\r\n  }\r\n}\r\n",
             "assetsDirs": [],
             "styleUrlsData": [
                 {
-                    "data": "\r\n.container{\r\n    width: auto;\r\n    height: 100%;\r\n    display: flex;\r\n    flex-direction: column;\r\n    \r\n  }\r\n  .header{\r\n    flex-shrink: 0;\r\n    flex-grow: 0;\r\n  }\r\n  .content{\r\n    flex-shrink: 1;\r\n    flex-grow: 1;\r\n    position: relative;\r\n    overflow-y: auto;\r\n  }\r\n  .navbar{\r\n    width: 100%;\r\n    background: #212121;\r\n    color: white;\r\n    display: flex;\r\n    justify-content: space-between;\r\n    align-items: center;\r\n    font-family: 'Times New Roman', Times, serif;\r\n    font-size: 19px;\r\n    margin-left: 0px;\r\n    .logoimg{\r\n      position: relative;\r\n      left: 20px;\r\n    }\r\n    .nav-list{\r\n      list-style-type: none;\r\n      .list-item{\r\n        display: inline-block;\r\n        padding: 0px 7px;\r\n      }     \r\n    }\r\n    \r\n    .logo{\r\n      height: 36px;\r\n      \r\n    }\r\n\r\n    .menu{\r\n      display: none;\r\n    }\r\n    .menu-line{\r\n      width: 20px;\r\n      height: 3px;\r\n      background-color: white;\r\n      margin-bottom: 4px;\r\n    }\r\n    @media all and (max-width: 480px){\r\n      .navbar{\r\n        flex-direction: column;\r\n        \r\n      }\r\n      .menu{\r\n        display: block;\r\n        position: absolute;\r\n        right: 10px;\r\n        top: 10px;\r\n      }    \r\n    }\r\n  }\r\n  \r\n\r\n  @media all and (max-width: 480px){\r\n    .navbar{\r\n      flex-direction: column;\r\n      .list-item{\r\n        list-style-type: none;\r\n        width: 100%;\r\n        text-align: center;\r\n        padding-top: 10px;\r\n       \r\n      }\r\n    }\r\n  } \r\n\r\n\r\nmain{\r\n  height: auto;\r\n  footer{ \r\n    background: #212121;\r\n    .container1{\r\n      \r\n      width: 100%;\r\n      max-width: 1100px;\r\n      margin: 0 auto;\r\n      display: flex;\r\n      align-items: center;\r\n      justify-content:space-evenly;\r\n      flex-wrap: wrap;\r\n      font-family: 'Times New Roman', Times, serif;\r\n      .ftr{\r\n        h3{\r\n          font-size: 18px;\r\n          color: #fff;\r\n          margin-bottom: -12px;\r\n        }\r\n        .company{\r\n          position: relative;\r\n          left:30px\r\n        }\r\n        .policies{\r\n          position: relative;\r\n          left:40px\r\n        }\r\n        .help{\r\n          position: relative;\r\n          left:40px\r\n        }\r\n        flex-basis: 18%;\r\n      }\r\n      .fcontent{\r\n        list-style: none;\r\n        a{\r\n          text-decoration: none;\r\n          color: #fff;\r\n          opacity: .6;\r\n          font-size: 15px;\r\n        }\r\n      }\r\n\r\n    }\r\n    @media all and (max-width: 480px){\r\n      .container1{\r\n        flex-direction: column;\r\n      }\r\n    } \r\n  }\r\n}\r\n\r\n\r\n    \r\n// end f css\r\n  nav a {\r\n    padding: 0px 10px;\r\n    text-decoration: none;\r\n    display: inline-block;\r\n    border-radius: 4px;\r\n  }\r\n  \r\n  nav a:visited, a:link {\r\n    color: #f8f8f8;\r\n  }\r\n  nav a:hover {\r\n    color: #039be5;\r\n    background-color: #CFD8DC;\r\n  }\r\n  nav a.active {\r\n    color: #039be5;\r\n  }\r\n  \r\n  ",
+                    "data": "\r\n.container{\r\n    width: auto;\r\n    height: 100%;\r\n    display: flex;\r\n    flex-direction: column;\r\n    \r\n  }\r\n  .header{\r\n    flex-shrink: 0;\r\n    flex-grow: 0;\r\n  }\r\n  .content{\r\n    flex-shrink: 1;\r\n    flex-grow: 1;\r\n    position: relative;\r\n    overflow-y: auto;\r\n  }\r\n  .navbar{\r\n    width: 100%;\r\n    background: #212121;\r\n    color: white;\r\n    display: flex;\r\n    justify-content: space-between;\r\n    align-items: center;\r\n    font-family: 'Times New Roman', Times, serif;\r\n    font-size: 19px;\r\n    margin-left: 0px;\r\n    .logoimg{\r\n      position: relative;\r\n      left: 20px;\r\n    }\r\n    .nav-list{\r\n      list-style-type: none;\r\n      .list-item{\r\n        display: inline-block;\r\n        padding: 0px 7px;\r\n      }     \r\n    }\r\n    \r\n    .logo{\r\n      height: 36px;\r\n      \r\n    }\r\n\r\n    .menu{\r\n      display: none;\r\n    }\r\n    .menu-line{\r\n      width: 20px;\r\n      height: 3px;\r\n      background-color: white;\r\n      margin-bottom: 4px;\r\n    }\r\n    @media all and (max-width: 480px){\r\n      .navbar{\r\n        flex-direction: column;\r\n        \r\n      }\r\n      .menu{\r\n        display: block;\r\n        position: absolute;\r\n        right: 10px;\r\n        top: 10px;\r\n      }    \r\n    }\r\n  }\r\n  \r\n\r\n  @media all and (max-width: 480px){\r\n    .navbar{\r\n      flex-direction: column;\r\n      .list-item{\r\n        list-style-type: none;\r\n        width: 100%;\r\n        text-align: center;\r\n        padding-top: 10px;\r\n       \r\n      }\r\n    }\r\n  } \r\n\r\n\r\nmain{\r\n  height: auto;\r\n  footer{ \r\n    background: #212121;\r\n    .container1{\r\n      \r\n      width: 100%;\r\n      max-width: 1100px;\r\n      margin: 0 auto;\r\n      display: flex;\r\n      align-items: center;\r\n      justify-content:space-evenly;\r\n      flex-wrap: wrap;\r\n      font-family: 'Times New Roman', Times, serif;\r\n      .ftr{\r\n        h3{\r\n          font-size: 18px;\r\n          color: #fff;\r\n          margin-bottom: -12px;\r\n        }\r\n        .company{\r\n          position: relative;\r\n          left:39px\r\n        }\r\n        .policies{\r\n          position: relative;\r\n          left:40px\r\n        }\r\n        .help{\r\n          position: relative;\r\n          left:40px\r\n        }\r\n        flex-basis: 18%;\r\n      }\r\n      .fcontent{\r\n        list-style: none;\r\n        a{\r\n          text-decoration: none;\r\n          color: #fff;\r\n          opacity: .6;\r\n          font-size: 15px;\r\n        }\r\n      }\r\n\r\n    }\r\n    @media all and (max-width: 480px){\r\n      .container1{\r\n        flex-direction: column;\r\n      }\r\n    } \r\n  }\r\n}\r\n\r\n\r\n    \r\n// end f css\r\n  nav a {\r\n    padding: 0px 10px;\r\n    text-decoration: none;\r\n    display: inline-block;\r\n    border-radius: 4px;\r\n  }\r\n  \r\n  nav a:visited, a:link {\r\n    color: #f8f8f8;\r\n  }\r\n  nav a:hover {\r\n    color: #039be5;\r\n    background-color: #CFD8DC;\r\n  }\r\n  nav a.active {\r\n    color: #039be5;\r\n  }\r\n  \r\n  ",
                     "styleUrl": "./app.component.scss"
                 }
             ],
@@ -1426,17 +1688,47 @@
                 "deprecationMessage": "",
                 "args": [
                     {
-                        "name": "ref",
+                        "name": "el",
                         "type": "ElementRef",
+                        "deprecated": false,
+                        "deprecationMessage": ""
+                    },
+                    {
+                        "name": "renderer",
+                        "type": "Renderer2",
+                        "deprecated": false,
+                        "deprecationMessage": ""
+                    },
+                    {
+                        "name": "router",
+                        "type": "Router",
                         "deprecated": false,
                         "deprecationMessage": ""
                     }
                 ],
-                "line": 10,
+                "line": 12,
                 "jsdoctags": [
                     {
-                        "name": "ref",
+                        "name": "el",
                         "type": "ElementRef",
+                        "deprecated": false,
+                        "deprecationMessage": "",
+                        "tagName": {
+                            "text": "param"
+                        }
+                    },
+                    {
+                        "name": "renderer",
+                        "type": "Renderer2",
+                        "deprecated": false,
+                        "deprecationMessage": "",
+                        "tagName": {
+                            "text": "param"
+                        }
+                    },
+                    {
+                        "name": "router",
+                        "type": "Router",
                         "deprecated": false,
                         "deprecationMessage": "",
                         "tagName": {
@@ -1448,11 +1740,11 @@
             "implements": [
                 "OnInit"
             ],
-            "templateData": "<div class=\"container\">\r\n    <div class=\"header\">\r\n    <nav class=\"navbar\">\r\n      <div class=\"logoimg\">\r\n        <a href=\"\">\r\n          <img src=\"../app/../assets/logo0.PNG\" alt=\"\"   class=\"logo\">\r\n        </a>\r\n      </div>\r\n      <ul class=\"nav-list\" >\r\n        <li class=\"list-item\">\r\n          <a routerLink=\"/home\" routerLinkActive=\"active\">Home</a>\r\n        </li>\r\n        <li class=\"list-item\"> \r\n          <a routerLink=\"/books\" routerLinkActive=\"active\">Books</a>\r\n        </li>\r\n        <li class=\"list-item\">\r\n          <a routerLink=\"/books/addbooks\" routerLinkActive=\"active\">Add Books</a>\r\n        </li>\r\n        <li class=\"list-item\">\r\n          <a routerLink=\"/newuser\" routerLinkActive=\"active\">Register</a>\r\n        </li>\r\n        <li class=\"list-item\">\r\n          <a routerLink=\"aboutus\" routerLinkActive=\"active\">About us</a>\r\n        </li>\r\n        <li class=\"list-item\">\r\n          <a routerLink=\"/auth\" routerLinkActive=\"active\">Login</a>\r\n        </li>\r\n      </ul>\r\n      <div class=\"menu\">\r\n        <div class=\"menu-line\"></div>\r\n        <div class=\"menu-line\"></div>\r\n        <div class=\"menu-line\"></div>\r\n      </div>\r\n    </nav>\r\n    \r\n    <div class=\"content\">\r\n        <router-outlet></router-outlet>\r\n        <div class=\"push\"></div>\r\n      </div>\r\n      <main>\r\n        <footer>\r\n          <div class=\"container1\">\r\n            <div class=\"ftr\">\r\n              <h3  class=\"company\">Company</h3>\r\n              <ul class=\"fcontent\">              \r\n                <li><a href=\"\">About Us</a></li>\r\n                <li><a href=\"\">Contact Us</a></li>\r\n              </ul>\r\n            </div>\r\n            <div class=\"ftr\">  \r\n              <h3 class=\"policies\">Policies</h3>\r\n              <ul class=\"fcontent\">              \r\n                <li><a href=\"\">Privacy Policy</a></li>\r\n                <li><a href=\"\">Copyright policy</a></li>\r\n              </ul>\r\n            </div>\r\n            <div class=\"ftr\">  \r\n              <h3 class=\"help\">Help</h3>\r\n              <ul class=\"fcontent\">              \r\n                <li><a href=\"\">Shiping</a></li>\r\n                <li><a href=\"\">Contact us</a></li>\r\n              </ul>\r\n            </div>\r\n          </div>\r\n        </footer>\r\n      </main>\r\n  </div>\r\n  \r\n  "
+            "templateData": "<div class=\"container\">\r\n    <div class=\"header\">\r\n    <nav class=\"navbar\">\r\n      <div class=\"logoimg\">\r\n        <a href=\"\">\r\n          <img src=\"../app/../assets/logo0.PNG\" alt=\"\"   class=\"logo\">\r\n        </a>\r\n      </div>\r\n      <ul class=\"nav-list\" >\r\n        <li class=\"list-item\">\r\n          <a routerLink=\"/home\" routerLinkActive=\"active\">Home</a>\r\n        </li>\r\n        <li class=\"list-item\"> \r\n          <a routerLink=\"/books\" routerLinkActive=\"active\">Books</a>\r\n        </li>\r\n        <li class=\"list-item\">\r\n          <a routerLink=\"/books/addbooks\" routerLinkActive=\"active\">Add Books</a>\r\n        </li>\r\n        <li class=\"list-item\">\r\n          <a routerLink=\"/newuser\" routerLinkActive=\"active\">Register</a>\r\n        </li>\r\n        <li class=\"list-item\">\r\n          <a routerLink=\"aboutus\" routerLinkActive=\"active\">About us</a>\r\n        </li>\r\n        <li class=\"list-item\">\r\n          <!-- <a routerLink=\"/auth\" routerLinkActive=\"active\">Login</a> -->\r\n          <label for=\"\">Action</label>\r\n          <select name=\"\" id=\"\" style=\"background-color: black;color: white;\" (change)=\"selectedAction($event)\">\r\n            <option value=\"login\"  >Login</option>\r\n            <option value=\"logout\" >logout</option>\r\n          </select>\r\n        </li>\r\n        <li  class=\"list-item\">\r\n          <a id=\"mode\" (click)=\"toggleTheme()\" style=\"font-size: 16px;cursor: pointer;\">{{themeText}}</a>\r\n        </li>\r\n      </ul>\r\n      <div class=\"menu\">\r\n        <div class=\"menu-line\"></div>\r\n        <div class=\"menu-line\"></div>\r\n        <div class=\"menu-line\"></div>\r\n      </div>\r\n    </nav>\r\n    \r\n    <div class=\"content\">\r\n        <router-outlet></router-outlet>\r\n        <div class=\"push\"></div>\r\n      </div>\r\n      <main>\r\n        <footer>\r\n          <div class=\"container1\">\r\n            <div class=\"ftr\">\r\n              <h3  class=\"company\">Company</h3>\r\n              <ul class=\"fcontent\">              \r\n                <li><a href=\"\">About Us</a></li>\r\n                <li><a href=\"\">Contact Us</a></li>\r\n              </ul>\r\n            </div>\r\n            <div class=\"ftr\">  \r\n              <h3 class=\"policies\">Policies</h3>\r\n              <ul class=\"fcontent\">              \r\n                <li><a href=\"\">Privacy Policy</a></li>\r\n                <li><a href=\"\">Copyright policy</a></li>\r\n              </ul>\r\n            </div>\r\n            <div class=\"ftr\">  \r\n              <h3 class=\"help\">Help</h3>\r\n              <ul class=\"fcontent\">              \r\n                <li><a href=\"\">Shiping</a></li>\r\n                <li><a href=\"\">Contact us</a></li>\r\n              </ul>\r\n            </div>\r\n          </div>\r\n        </footer>\r\n      </main>\r\n  </div>\r\n  \r\n  "
         },
         {
             "name": "BooksComponent",
-            "id": "component-BooksComponent-bda9f324533125df85d5299d939b8b15",
+            "id": "component-BooksComponent-11c360b2ca0d7ade7a3882548215d6bb",
             "file": "src/app/books/books/books.component.ts",
             "encapsulation": [],
             "entryComponents": [],
@@ -1478,7 +1770,7 @@
                     "type": "Observable<Books[]>",
                     "optional": false,
                     "description": "",
-                    "line": 19
+                    "line": 20
                 },
                 {
                     "name": "dialog",
@@ -1487,7 +1779,7 @@
                     "type": "DialogService",
                     "optional": false,
                     "description": "",
-                    "line": 20,
+                    "line": 24,
                     "modifierKind": [
                         122
                     ]
@@ -1500,17 +1792,46 @@
                     "type": "boolean",
                     "optional": false,
                     "description": "",
-                    "line": 18
+                    "line": 19
+                },
+                {
+                    "name": "loggedIn",
+                    "defaultValue": "false",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "boolean",
+                    "optional": false,
+                    "description": "",
+                    "line": 22
+                },
+                {
+                    "name": "p",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "any",
+                    "optional": false,
+                    "description": "",
+                    "line": 21
+                },
+                {
+                    "name": "user",
+                    "defaultValue": "false",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "boolean",
+                    "optional": false,
+                    "description": "",
+                    "line": 23
                 }
             ],
             "methodsClass": [
                 {
-                    "name": "editBook",
+                    "name": "addtoCart",
                     "args": [],
                     "optional": false,
                     "returnType": "void",
                     "typeParameters": [],
-                    "line": 27,
+                    "line": 57,
                     "deprecated": false,
                     "deprecationMessage": ""
                 },
@@ -1520,7 +1841,7 @@
                     "optional": false,
                     "returnType": "void",
                     "typeParameters": [],
-                    "line": 22,
+                    "line": 26,
                     "deprecated": false,
                     "deprecationMessage": ""
                 },
@@ -1529,7 +1850,7 @@
                     "args": [
                         {
                             "name": "id",
-                            "type": "any",
+                            "type": "string",
                             "deprecated": false,
                             "deprecationMessage": ""
                         }
@@ -1537,13 +1858,13 @@
                     "optional": false,
                     "returnType": "void",
                     "typeParameters": [],
-                    "line": 30,
+                    "line": 38,
                     "deprecated": false,
                     "deprecationMessage": "",
                     "jsdoctags": [
                         {
                             "name": "id",
-                            "type": "any",
+                            "type": "string",
                             "deprecated": false,
                             "deprecationMessage": "",
                             "tagName": {
@@ -1553,14 +1874,32 @@
                     ]
                 },
                 {
-                    "name": "openDialog",
-                    "args": [],
+                    "name": "openUpdateDialog",
+                    "args": [
+                        {
+                            "name": "book",
+                            "type": "any",
+                            "deprecated": false,
+                            "deprecationMessage": ""
+                        }
+                    ],
                     "optional": false,
                     "returnType": "void",
                     "typeParameters": [],
-                    "line": 39,
+                    "line": 47,
                     "deprecated": false,
-                    "deprecationMessage": ""
+                    "deprecationMessage": "",
+                    "jsdoctags": [
+                        {
+                            "name": "book",
+                            "type": "any",
+                            "deprecated": false,
+                            "deprecationMessage": "",
+                            "tagName": {
+                                "text": "param"
+                            }
+                        }
+                    ]
                 }
             ],
             "deprecated": false,
@@ -1570,11 +1909,11 @@
             "description": "",
             "rawdescription": "\n",
             "type": "component",
-            "sourceCode": "import { Component, OnInit } from '@angular/core';\r\nimport { Store } from '@ngrx/store';\r\nimport { Observable } from 'rxjs';\r\nimport { DialogService } from 'src/app/dialog-module/dialog.service';\r\nimport { Books } from 'src/app/shared/header/models/books.model';\r\nimport { AppState } from 'src/app/store/app.state';\r\nimport { EditbookComponent } from '../editbook/editbook.component';\r\nimport { deleteBook, loadBooks} from '../state/books.actions';\r\nimport { getBooks } from '../state/books.selector';\r\n\r\n@Component({\r\n  selector: 'app-books',\r\n  templateUrl: './books.component.html',\r\n  styleUrls: ['./books.component.scss']\r\n})\r\nexport class BooksComponent implements OnInit {\r\n\r\n  edit: boolean = false;\r\n  Books: Observable<Books[]>;\r\n  constructor(private store: Store<AppState>,public dialog: DialogService) { }\r\n\r\n  ngOnInit(): void {\r\n    this.Books = this.store.select(getBooks);\r\n    this.store.dispatch(loadBooks());\r\n  }\r\n\r\n  editBook(){\r\n    // this.openDialog(null);\r\n  }\r\n  onDeleteBook(id: any){\r\n    if(confirm('Are you sure you want to delete')){\r\n      this.store.dispatch(deleteBook({ id }));\r\n      console.log(\"delete the post \");\r\n    }\r\n  }\r\n\r\n\r\n\r\n  openDialog() {\r\n    const ref = this.dialog.open(EditbookComponent, {\r\n      data: { message: 'I am a dynamic component inside of a dialog!' }\r\n    });\r\n\r\n    // ref.afterClosed.subscribe((result: any) => {\r\n    //   console.log('Dialog closed', result);\r\n    // });\r\n  }\r\n\r\n}\r\n",
+            "sourceCode": "import { Component, OnInit } from '@angular/core';\r\nimport { Store } from '@ngrx/store';\r\nimport { ToastrService } from 'ngx-toastr';\r\nimport { Observable } from 'rxjs';\r\nimport { DialogService } from 'src/app/dialog-module/dialog/dialog.service';\r\nimport { Books } from 'src/app/shared/header/models/books.model';\r\nimport { AppState } from 'src/app/store/app.state';\r\nimport { EditbookComponent } from '../editbook/editbook.component';\r\nimport { deleteBook, loadBooks} from '../state/books.actions';\r\nimport { getBooks } from '../state/books.selector';\r\n\r\n@Component({\r\n  selector: 'app-books',\r\n  templateUrl: './books.component.html',\r\n  styleUrls: ['./books.component.scss']\r\n})\r\nexport class BooksComponent implements OnInit {\r\n\r\n  edit: boolean = false;\r\n  Books: Observable<Books[]>;\r\n  p: any;\r\n  loggedIn: boolean = false;\r\n  user: boolean = false;\r\n  constructor(private store: Store<AppState>,public dialog: DialogService, private toastr: ToastrService,) { }\r\n\r\n  ngOnInit(): void {\r\n    this.Books = this.store.select(getBooks);\r\n    this.store.dispatch(loadBooks());\r\n    if(localStorage.getItem('loggedIn')){\r\n      this.loggedIn = true;\r\n    }else{\r\n      this.user = true;\r\n    }\r\n    \r\n  }\r\n\r\n  \r\n  onDeleteBook(id : string){\r\n    if(confirm('Are you sure you want to delete')){\r\n      this.store.dispatch(deleteBook({ id }));\r\n      this.Books = this.store.select(getBooks);\r\n    this.store.dispatch(loadBooks());\r\n      console.log(\"delete the post \");\r\n    }\r\n  }\r\n\r\n  openUpdateDialog(book: any){\r\n    const ref = this.dialog.open(EditbookComponent, {\r\n      data: book\r\n    });\r\n\r\n    ref.afterClosed.subscribe(result => {\r\n      console.log('Dialog closed', result);      \r\n    });\r\n  }\r\n\r\n  addtoCart(){\r\n    this.toastr.success('Added Successfully...View more Books');\r\n  }\r\n  // ngOnDestroy(){\r\n  //   localStorage.clear();\r\n  // }\r\n\r\n}\r\n",
             "assetsDirs": [],
             "styleUrlsData": [
                 {
-                    "data": ".heading{\r\n        display: flex;\r\n        align-items: flex-start;\r\n        margin-left: 20px;\r\n        h2{\r\n          color: black !important;\r\n          font-size: 24px;\r\n        }\r\n        font-family: 'Times New Roman', Times, serif;\r\n        \r\n}\r\n\r\n  h2 {\r\n    font-size: 1rem;\r\n    color: #007489;\r\n  }\r\n  \r\n  p {\r\n    margin-bottom: 1.5em;\r\n    color: #898989;\r\n  }\r\n  \r\n  \r\n  \r\n  \r\n  img {\r\n    display: block;\r\n    border: 0;\r\n    width: 100%;\r\n    height: auto;\r\n  }\r\n  \r\n  \r\n  .card {\r\n    background: white;\r\n    margin-bottom: 2em;\t\r\n    border: 1px solid black;\r\n    border-radius: 2px;\r\n    a {\r\n      color: black;\r\n      \r\n      text-decoration: none;\r\n    }\r\n    a:hover {\r\n      box-shadow: 3px 3px 8px hsl(0, 0%, 80%);\r\n    }\r\n  }\r\n  \r\n  \r\n  .card-content {\r\n    font-family: 'Times New Roman', Times, serif;\r\n    padding: 1.4em;\r\n    h2 {\r\n      margin-top: 0;\r\n      margin-bottom: .5em;\r\n      font-weight: bold;\r\n    }\r\n    p {\r\n      font-size: 80%;\r\n    }\r\n    button{\r\n      color: white;\r\n      background-color: #00000099;\r\n      margin-left: 2px;\r\n      cursor: pointer;\r\n    }\r\n  }\r\n  \r\n  \r\n\r\n  \r\n  .cards {\r\n     display: flex;\r\n     flex-wrap: wrap;\r\n     justify-content: space-between;\r\n     margin: 0px 4px 0px 4px;\r\n     \r\n  }\r\n  \r\n  .card {\r\n    flex: 0 1 24%;\r\n  }\r\n  ",
+                    "data": ".heading{\r\n        display: flex;\r\n        align-items: flex-start;\r\n        margin-left: 20px;\r\n        h2{\r\n          color: black !important;\r\n          font-size: 24px;\r\n        }\r\n        font-family: 'Times New Roman', Times, serif;\r\n        \r\n}\r\n\r\n  h2 {\r\n    font-size: 1rem;\r\n    color: #007489;\r\n  }\r\n  \r\n  p {\r\n    margin-bottom: 1.5em;\r\n    color: #898989;\r\n  }\r\n  \r\n  \r\n  \r\n  \r\n  img {\r\n    display: block;\r\n    border: 0;\r\n    width: 100%;\r\n    height: auto;\r\n  }\r\n  \r\n  \r\n  .card {\r\n    background: white;\r\n    margin-bottom: 2em;\t\r\n    border: 1px solid black;\r\n    border-radius: 2px;\r\n    a {\r\n      color: black;\r\n      \r\n      text-decoration: none;\r\n    }\r\n    a:hover {\r\n      box-shadow: 3px 3px 8px hsl(0, 0%, 80%);\r\n    }\r\n  }\r\n  \r\n  \r\n  .card-content {\r\n    font-family: 'Times New Roman', Times, serif;\r\n    padding: 1.4em;\r\n    h2 {\r\n      margin-top: 0;\r\n      margin-bottom: .5em;\r\n      font-weight: bold;\r\n    }\r\n    p {\r\n      font-size: 80%;\r\n    }\r\n    .delete{\r\n      background-color: rgb(233, 143, 143);\r\n    }\r\n    button{\r\n      color: white;\r\n      background-color: #00000099;\r\n      margin-left: 2px;\r\n      padding: 9px;\r\n      cursor: pointer;\r\n      border-radius: 4px;\r\n    }\r\n  }\r\n  \r\n  \r\n\r\n  \r\n  .cards {\r\n     display: flex;\r\n     flex-wrap: wrap;\r\n     justify-content: space-evenly;\r\n     margin: 0px 4px 0px 4px;\r\n     \r\n  }\r\n  \r\n  .card {\r\n    flex: 0 1 24%;\r\n  }\r\n  ",
                     "styleUrl": "./books.component.scss"
                 }
             ],
@@ -1596,9 +1935,15 @@
                         "type": "DialogService",
                         "deprecated": false,
                         "deprecationMessage": ""
+                    },
+                    {
+                        "name": "toastr",
+                        "type": "ToastrService",
+                        "deprecated": false,
+                        "deprecationMessage": ""
                     }
                 ],
-                "line": 19,
+                "line": 23,
                 "jsdoctags": [
                     {
                         "name": "store",
@@ -1617,33 +1962,113 @@
                         "tagName": {
                             "text": "param"
                         }
+                    },
+                    {
+                        "name": "toastr",
+                        "type": "ToastrService",
+                        "deprecated": false,
+                        "deprecationMessage": "",
+                        "tagName": {
+                            "text": "param"
+                        }
                     }
                 ]
             },
             "implements": [
                 "OnInit"
             ],
-            "templateData": "\r\n<div class=\"heading\">\r\n    <h2>Book's Data</h2>\r\n</div>\r\n\r\n  <main class=\"main-area\">    \r\n    <div class=\"centered\" >\r\n        <section class=\"cards\" >\r\n            <article class=\"card\" *ngFor=\"let book of Books | async\">\r\n                <a>\r\n                    <div class=\"card-content\">\r\n                        <h2>Name: {{book.title}}</h2>\r\n                        <p>price:{{book.price}}</p>\r\n                        <p>ISBN: {{book.isbn}}</p>\r\n                        <p>Description: {{book.description}}</p>\r\n                        <button (click)=\"openDialog()\">edit</button>\r\n                        <button>delete</button>\r\n                    </div>\r\n                </a>\r\n            </article>       \r\n        </section>     \r\n    </div>\r\n</main>\r\n\r\n<div *ngIf=\"edit\">\r\n    <router-outlet></router-outlet>\r\n</div>\r\n"
+            "templateData": "\r\n<div class=\"heading\">\r\n    <h2>Book's Data</h2>\r\n</div>\r\n\r\n  <main class=\"main-area\">    \r\n    <div class=\"centered\" >\r\n        <section class=\"cards\" >\r\n            <article class=\"card\" *ngFor=\"let book of Books | async \">\r\n                <a>\r\n                    <div class=\"card-content\">\r\n\r\n                        <h2>Name: {{book.title}}</h2>\r\n                        <p>Id: {{book.id}}</p>\r\n                        <p>price:{{book.price}}</p>\r\n                        <p>ISBN: {{book.isbn}}</p>\r\n                        <p>Description: {{book.description}}</p>\r\n                        <button *ngIf=\"loggedIn\" (click)=\"openUpdateDialog(book)\">Update</button>\r\n                        <button *ngIf=\"loggedIn\" (click)=\"onDeleteBook(book.id)\" class=\"delete\">Delete</button>\r\n                        <button *ngIf=\"user\" (click)=\"addtoCart()\">Add to Cart</button>\r\n                    </div>\r\n                </a>\r\n            </article>       \r\n        </section>     \r\n    </div>\r\n    \r\n</main>\r\n\r\n<div *ngIf=\"edit\">\r\n    <router-outlet></router-outlet>\r\n</div>\r\n"
         },
         {
             "name": "buttonComponent",
-            "id": "component-buttonComponent-bae42a4b027da00773ce70d5b2c1e13c",
+            "id": "component-buttonComponent-a529276c49da7464d0f278ada816a3d8",
             "file": "src/components/button.component.ts",
             "encapsulation": [],
             "entryComponents": [],
             "inputs": [],
             "outputs": [],
             "providers": [],
-            "selector": "app-Button",
+            "selector": "app-button",
             "styleUrls": [
                 "./button.component.scss"
             ],
             "styles": [],
-            "template": "\n<div class=\"container\">\n\n<button>button</button>\n</div>\n\n\n",
+            "template": "<button   type=\"button\"\n   (click)=\"onClick.emit($event)\"\n   [ngClass]=\"classes\"\n   [ngStyle]=\"{ 'background-color': backgroundColor }\"\n >\n   {{ label }}\n </button>",
             "templateUrl": [],
             "viewProviders": [],
-            "inputsClass": [],
-            "outputsClass": [],
+            "inputsClass": [
+                {
+                    "name": "backgroundColor",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "rawdescription": "What background color to use",
+                    "description": "<p>What background color to use</p>\n",
+                    "line": 27,
+                    "type": "string"
+                },
+                {
+                    "name": "label",
+                    "defaultValue": "'Button'",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "jsdoctags": [
+                        {
+                            "pos": 746,
+                            "end": 760,
+                            "flags": 4227072,
+                            "modifierFlagsCache": 0,
+                            "transformFlags": 0,
+                            "kind": 317,
+                            "tagName": {
+                                "pos": 747,
+                                "end": 755,
+                                "flags": 4227072,
+                                "modifierFlagsCache": 0,
+                                "transformFlags": 0,
+                                "kind": 78,
+                                "escapedText": "required"
+                            },
+                            "comment": ""
+                        }
+                    ],
+                    "rawdescription": "Button contents",
+                    "description": "<p>Button contents</p>\n",
+                    "line": 41,
+                    "type": "string"
+                },
+                {
+                    "name": "primary",
+                    "defaultValue": "false",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "rawdescription": "Is this the principal call to action on the page?",
+                    "description": "<p>Is this the principal call to action on the page?</p>\n",
+                    "line": 21,
+                    "type": "boolean"
+                },
+                {
+                    "name": "size",
+                    "defaultValue": "'medium'",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "rawdescription": "How large should the button be?",
+                    "description": "<p>How large should the button be?</p>\n",
+                    "line": 33,
+                    "type": "\"small\" | \"medium\" | \"large\""
+                }
+            ],
+            "outputsClass": [
+                {
+                    "name": "onClick",
+                    "defaultValue": "new EventEmitter<Event>()",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "rawdescription": "\n\nOptional click handler\n",
+                    "description": "<p>Optional click handler</p>\n",
+                    "line": 47,
+                    "type": "EventEmitter"
+                }
+            ],
             "propertiesClass": [],
             "methodsClass": [],
             "deprecated": false,
@@ -1653,15 +2078,26 @@
             "description": "",
             "rawdescription": "\n",
             "type": "component",
-            "sourceCode": "import { Component, Input, Output } from \"@angular/core\";\r\n\r\n@Component({\r\n    selector: 'app-Button',\r\n    template:`\r\n\r\n        <div class=\"container\">\r\n        \r\n        <button>button</button>\r\n        </div>\r\n        \r\n\r\n    `,\r\n    styleUrls:['./button.component.scss'],\r\n})\r\n\r\nexport class buttonComponent{\r\n\r\n}",
+            "sourceCode": "import { Component, Input, Output, EventEmitter } from '@angular/core';\r\n\r\n@Component({\r\n  selector: 'app-button',\r\n  template: ` <button\r\n    type=\"button\"\r\n    (click)=\"onClick.emit($event)\"\r\n    [ngClass]=\"classes\"\r\n    [ngStyle]=\"{ 'background-color': backgroundColor }\"\r\n  >\r\n    {{ label }}\r\n  </button>`,\r\n  styleUrls: ['./button.component.scss'],\r\n})\r\nexport class buttonComponent {\r\n  /**\r\n   * Is this the principal call to action on the page?\r\n   */\r\n  @Input()\r\n  primary = false;\r\n\r\n  /**\r\n   * What background color to use\r\n   */\r\n  @Input()\r\n  backgroundColor?: string;\r\n\r\n  /**\r\n   * How large should the button be?\r\n   */\r\n  @Input()\r\n  size: 'small' | 'medium' | 'large' = 'medium';\r\n\r\n  /**\r\n   * Button contents\r\n   *\r\n   * @required\r\n   */\r\n  @Input()\r\n  label = 'Button';\r\n\r\n  /**\r\n   * Optional click handler\r\n   */\r\n  @Output()\r\n  onClick = new EventEmitter<Event>();\r\n\r\n  public get classes(): string[] {\r\n    const mode = this.primary ? 'storybook-button--primary' : 'storybook-button--secondary';\r\n\r\n    return ['storybook-button', `storybook-button--${this.size}`, mode];\r\n  }\r\n}\r\n",
             "assetsDirs": [],
             "styleUrlsData": [
                 {
-                    "data": ".container{\r\n    button{\r\n        color: white;\r\n        background-color: #0275d8;\r\n        padding: 5px;\r\n        border-radius: 3px;\r\n    }\r\n}",
+                    "data": "\r\n.storybook-button {\r\n    font-family: 'Nunito Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif;\r\n    font-weight: 700;\r\n    border: 0;\r\n    border-radius: 3em;\r\n    cursor: pointer;\r\n    display: inline-block;\r\n    line-height: 1;\r\n  }\r\n  .storybook-button--primary {\r\n    color: white;\r\n    background-color: #1ea7fd;\r\n  }\r\n  .storybook-button--secondary {\r\n    color: #333;\r\n    background-color: transparent;\r\n    box-shadow: rgba(0, 0, 0, 0.15) 0px 0px 0px 1px inset;\r\n  }\r\n  .storybook-button--small {\r\n    font-size: 12px;\r\n    padding: 10px 16px;\r\n  }\r\n  .storybook-button--medium {\r\n    font-size: 14px;\r\n    padding: 11px 20px;\r\n  }\r\n  .storybook-button--large {\r\n    font-size: 16px;\r\n    padding: 12px 24px;\r\n  }\r\n  ",
                     "styleUrl": "./button.component.scss"
                 }
             ],
-            "stylesData": ""
+            "stylesData": "",
+            "accessors": {
+                "classes": {
+                    "name": "classes",
+                    "getSignature": {
+                        "name": "classes",
+                        "type": "[]",
+                        "returnType": "string[]",
+                        "line": 49
+                    }
+                }
+            }
         },
         {
             "name": "ButtonComponent",
@@ -2204,8 +2640,8 @@
         },
         {
             "name": "DialogComponent",
-            "id": "component-DialogComponent-f6b8d558ad1a776b0c1b5364ba74bba9",
-            "file": "src/app/dialog-module/dialog/dialog.component.ts",
+            "id": "component-DialogComponent-abcfaec333f1d6245ad1689d71433cc2",
+            "file": "src/app/dialog-module/dialog/dialog/dialog.component.ts",
             "encapsulation": [],
             "entryComponents": [],
             "inputs": [],
@@ -2406,11 +2842,11 @@
             "description": "",
             "rawdescription": "\n",
             "type": "component",
-            "sourceCode": "import {\n  Component,\n  Type,\n  OnDestroy,\n  AfterViewInit,\n  ComponentRef,\n  ViewChild,\n  ComponentFactoryResolver,\n  ChangeDetectorRef\n} from '@angular/core';\nimport { Subject } from 'rxjs';\nimport { DialogRef } from '../dialog-ref';\nimport { InsertionDirective } from '../insertion.directive';\n// import { DialogRef } from './dialog-ref';\n\n@Component({\n  templateUrl: './dialog.component.html',\n  styleUrls: ['./dialog.component.scss']\n})\nexport class DialogComponent implements AfterViewInit, OnDestroy {\n\n  componentRef: ComponentRef<any>;\n  childComponentType: Type<any>;\n\n  @ViewChild(InsertionDirective) insertionPoint: InsertionDirective;\n\n  private readonly _onClose = new Subject<any>();\n  public onClose = this._onClose.asObservable();\n\n  constructor(\n    private componentFactoryResolver: ComponentFactoryResolver,\n    private cd: ChangeDetectorRef,\n    private dialogRef: DialogRef\n  ) { }\n\n  ngAfterViewInit(): void {\n    this.loadChildComponent(this.childComponentType);\n    this.cd.detectChanges();\n  }\n\n  ngOnDestroy(): void {\n    if (this.componentRef) {\n      this.componentRef.destroy();\n    }\n  }\n\n  onOverlayClicked(evt: MouseEvent): void {\n    this.dialogRef.close();\n  }\n\n  onDialogClicked(evt: MouseEvent): void {\n    evt.stopPropagation();\n  }\n\n  loadChildComponent(componentType: Type<any>): void {\n    let componentFactory = this.componentFactoryResolver.resolveComponentFactory(componentType);\n\n    let viewContainerRef = this.insertionPoint.viewContainerRef;\n    viewContainerRef.clear();\n\n    this.componentRef = viewContainerRef.createComponent(componentFactory);\n  }\n\n  close(): void {\n    this._onClose.next();\n  }\n}",
+            "sourceCode": "import {\r\n  Component,\r\n  Type,\r\n  OnDestroy,\r\n  AfterViewInit,\r\n  ComponentRef,\r\n  ViewChild,\r\n  ComponentFactoryResolver,\r\n  ChangeDetectorRef\r\n} from '@angular/core';\r\nimport { Subject } from 'rxjs';\r\nimport { DialogRef } from '../dialog-ref';\r\nimport { InsertionDirective } from '../insertion.directive';\r\n\r\n\r\n@Component({\r\n  templateUrl: './dialog.component.html',\r\n  styleUrls: ['./dialog.component.scss']\r\n})\r\nexport class DialogComponent implements AfterViewInit, OnDestroy {\r\n\r\n  componentRef: ComponentRef<any>;\r\n  childComponentType: Type<any>;\r\n\r\n  @ViewChild(InsertionDirective) insertionPoint: InsertionDirective;\r\n\r\n  private readonly _onClose = new Subject<any>();\r\n  public onClose = this._onClose.asObservable();\r\n\r\n  constructor(\r\n    private componentFactoryResolver: ComponentFactoryResolver,\r\n    private cd: ChangeDetectorRef,\r\n    private dialogRef: DialogRef\r\n  ) { }\r\n\r\n  ngAfterViewInit(): void {\r\n    this.loadChildComponent(this.childComponentType);\r\n    this.cd.detectChanges();\r\n  }\r\n\r\n  ngOnDestroy(): void {\r\n    if (this.componentRef) {\r\n      this.componentRef.destroy();\r\n    }\r\n  }\r\n\r\n  onOverlayClicked(evt: MouseEvent): void {\r\n    this.dialogRef.close();\r\n  }\r\n\r\n  onDialogClicked(evt: MouseEvent): void {\r\n    evt.stopPropagation();\r\n  }\r\n\r\n  loadChildComponent(componentType: Type<any>): void {\r\n    let componentFactory = this.componentFactoryResolver.resolveComponentFactory(componentType);\r\n\r\n    let viewContainerRef = this.insertionPoint.viewContainerRef;\r\n    viewContainerRef.clear();\r\n\r\n    this.componentRef = viewContainerRef.createComponent(componentFactory);\r\n  }\r\n\r\n  close(): void {\r\n    this._onClose.next();\r\n  }\r\n}",
             "assetsDirs": [],
             "styleUrlsData": [
                 {
-                    "data": "",
+                    "data": ".overlay {\r\n    display: flex;\r\n    flex-direction: column;\r\n    position: fixed;\r\n    top: 0;\r\n    bottom: 0;\r\n    left: 0;\r\n    right: 0;\r\n    background: rgba(0, 0, 0, 0.7);\r\n    align-items: center;\r\n    justify-content: center;\r\n  }\r\n  \r\n  .dialog {\r\n    //box-shadow: 0 14px 28px rgba(0, 0, 0, 0.25), 0 10px 10px rgba(0, 0, 0, 0.22);\r\n    background-color: transparent;\r\n    // width: 50%;\r\n    // height: 50%;\r\n    display: flex;\r\n    flex-direction: column;\r\n    padding: 0px;\r\n  }",
                     "styleUrl": "./dialog.component.scss"
                 }
             ],
@@ -2475,11 +2911,11 @@
                 "AfterViewInit",
                 "OnDestroy"
             ],
-            "templateData": "<div class=\"overlay\" (click)=\"onOverlayClicked($event)\">\n    <div class=\"dialog\" (click)=\"onDialogClicked($event)\">\n      <ng-template appInsertion>\n      </ng-template>\n    </div>\n  </div>\n  "
+            "templateData": "<div class=\"overlay\" (click)=\"onOverlayClicked($event)\">\r\n    <div class=\"dialog\" (click)=\"onDialogClicked($event)\">\r\n      <ng-template appInsertion>\r\n      </ng-template>\r\n    </div>\r\n  </div>\r\n  "
         },
         {
             "name": "EditbookComponent",
-            "id": "component-EditbookComponent-47893ab256f1131dfc1d880cf955c6d3",
+            "id": "component-EditbookComponent-d7c9f891b93ef7c167637d7fe5492e6d",
             "file": "src/app/books/editbook/editbook.component.ts",
             "encapsulation": [],
             "entryComponents": [],
@@ -2505,7 +2941,16 @@
                     "type": "Books",
                     "optional": false,
                     "description": "",
-                    "line": 20
+                    "line": 21
+                },
+                {
+                    "name": "BooksData",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "any",
+                    "optional": false,
+                    "description": "",
+                    "line": 25
                 },
                 {
                     "name": "booksForm",
@@ -2514,7 +2959,7 @@
                     "type": "FormGroup",
                     "optional": false,
                     "description": "",
-                    "line": 21
+                    "line": 22
                 },
                 {
                     "name": "bookSubscription",
@@ -2523,7 +2968,7 @@
                     "type": "Subscription",
                     "optional": false,
                     "description": "",
-                    "line": 22
+                    "line": 23
                 },
                 {
                     "name": "config",
@@ -2532,7 +2977,7 @@
                     "type": "DialogConfig",
                     "optional": false,
                     "description": "",
-                    "line": 25,
+                    "line": 27,
                     "modifierKind": [
                         122
                     ]
@@ -2544,7 +2989,7 @@
                     "type": "DialogRef",
                     "optional": false,
                     "description": "",
-                    "line": 25,
+                    "line": 27,
                     "modifierKind": [
                         122
                     ]
@@ -2557,7 +3002,7 @@
                     "type": "boolean",
                     "optional": false,
                     "description": "",
-                    "line": 23
+                    "line": 24
                 }
             ],
             "methodsClass": [
@@ -2567,7 +3012,7 @@
                     "optional": false,
                     "returnType": "void",
                     "typeParameters": [],
-                    "line": 37,
+                    "line": 41,
                     "deprecated": false,
                     "deprecationMessage": ""
                 },
@@ -2577,7 +3022,7 @@
                     "optional": false,
                     "returnType": "void",
                     "typeParameters": [],
-                    "line": 64,
+                    "line": 76,
                     "deprecated": false,
                     "deprecationMessage": ""
                 },
@@ -2587,7 +3032,17 @@
                     "optional": false,
                     "returnType": "void",
                     "typeParameters": [],
-                    "line": 27,
+                    "line": 29,
+                    "deprecated": false,
+                    "deprecationMessage": ""
+                },
+                {
+                    "name": "onclose",
+                    "args": [],
+                    "optional": false,
+                    "returnType": "void",
+                    "typeParameters": [],
+                    "line": 81,
                     "deprecated": false,
                     "deprecationMessage": ""
                 },
@@ -2597,7 +3052,7 @@
                     "optional": false,
                     "returnType": "void",
                     "typeParameters": [],
-                    "line": 45,
+                    "line": 56,
                     "deprecated": false,
                     "deprecationMessage": ""
                 }
@@ -2609,11 +3064,11 @@
             "description": "",
             "rawdescription": "\n",
             "type": "component",
-            "sourceCode": "import { Component, OnDestroy, OnInit } from '@angular/core';\r\nimport { FormControl, FormGroup, Validators } from '@angular/forms';\r\nimport { ActivatedRoute, Router } from '@angular/router';\r\nimport { Store } from '@ngrx/store';\r\nimport { Subscription } from 'rxjs';\r\nimport { DialogConfig } from 'src/app/dialog-module/dialog-config';\r\nimport { DialogRef } from 'src/app/dialog-module/dialog-ref';\r\nimport { Books } from 'src/app/shared/header/models/books.model';\r\nimport { AppState } from 'src/app/store/app.state';\r\nimport { updateBook } from '../state/books.actions';\r\nimport { getBookById } from '../state/books.selector';\r\n\r\n@Component({\r\n  selector: 'app-editbook',\r\n  templateUrl: './editbook.component.html',\r\n  styleUrls: ['./editbook.component.scss']\r\n})\r\nexport class EditbookComponent implements OnInit,OnDestroy {\r\n\r\n  book: Books;\r\n  booksForm: FormGroup;\r\n  bookSubscription: Subscription;\r\n  show: boolean = true;\r\n  constructor(private route:  ActivatedRoute, private store:Store<AppState>,\r\n    private router: Router,public config: DialogConfig, public dialog: DialogRef) { }\r\n\r\n  ngOnInit(): void { \r\n    // this.route.paramMap.subscribe((parames)=>{\r\n    //   const id = parames.get('id');\r\n    //  this.bookSubscription = this.store.select(getBookById, { id } ).subscribe((data)=>{\r\n    //     this.book = data;\r\n    //     this.createForm();\r\n    //   })\r\n    // })   \r\n  }\r\n\r\n  createForm(){\r\n    this.booksForm = new FormGroup({\r\n      title: new FormControl(this.book.title,\r\n        [Validators.required ]),\r\n      description: new FormControl(this.book.description,[Validators.required])\r\n    })\r\n  }\r\n\r\n  onSubmit(){\r\n    console.log(\"in\");\r\n    if(!this.booksForm.valid){\r\n      return;\r\n    }\r\n    const title = this.booksForm.value.title;\r\n    const description = this.booksForm.value.description;\r\n    const isbn = this.booksForm.value.isbn;\r\n    const price = this.booksForm.value.price\r\n    const book: Books={\r\n      id: this.book.id,\r\n      title,\r\n      description,\r\n      isbn,\r\n      price\r\n    }\r\n\r\n    this.store.dispatch(updateBook({book}))\r\n  }\r\n  ngOnDestroy(){\r\n    this.bookSubscription.unsubscribe();\r\n  }\r\n\r\n}\r\n",
+            "sourceCode": "import { Component, OnDestroy, OnInit } from '@angular/core';\r\nimport { FormControl, FormGroup, Validators } from '@angular/forms';\r\nimport { ActivatedRoute, Router } from '@angular/router';\r\nimport { Store } from '@ngrx/store';\r\nimport { Subscription } from 'rxjs';\r\nimport { DialogConfig } from 'src/app/dialog-module/dialog/dialog-config';\r\nimport { DialogRef } from 'src/app/dialog-module/dialog/dialog-ref';\r\n\r\nimport { Books } from 'src/app/shared/header/models/books.model';\r\nimport { AppState } from 'src/app/store/app.state';\r\nimport { updateBook } from '../state/books.actions';\r\nimport { getBookById } from '../state/books.selector';\r\n\r\n@Component({\r\n  selector: 'app-editbook',\r\n  templateUrl: './editbook.component.html',\r\n  styleUrls: ['./editbook.component.scss']\r\n})\r\nexport class EditbookComponent implements OnInit,OnDestroy {\r\n\r\n  book: Books;\r\n  booksForm: FormGroup;\r\n  bookSubscription: Subscription;\r\n  show: boolean = true;\r\n  BooksData: any;\r\n  constructor(private route:  ActivatedRoute, private store:Store<AppState>,\r\n    private router: Router,public config: DialogConfig, public dialog: DialogRef) { }\r\n\r\n  ngOnInit(): void { \r\n    this.BooksData = this.config.data;\r\n    this.route.paramMap.subscribe((parames)=>{\r\n      const id = parames.get('id');\r\n     this.bookSubscription = this.store.select(getBookById, { id } ).subscribe((data)=>{\r\n        this.book = data;\r\n        this.createForm();\r\n      })\r\n    })   \r\n  }\r\n\r\n\r\n  createForm(){\r\n    this.booksForm = new FormGroup({\r\n      title: new FormControl(this.BooksData.title,\r\n        [Validators.required ]),\r\n\r\n      description: new FormControl(this.BooksData.description,[Validators.required]),\r\n      isbn: new FormControl(this.BooksData.isbn,\r\n        [Validators.required ]),\r\n      price: new FormControl(this.BooksData.price,\r\n          [Validators.required ]),\r\n    })\r\n  }\r\n\r\n\r\n  \r\n  onSubmit(){\r\n    console.log(\"in\");\r\n    if(!this.booksForm.valid){\r\n      return;\r\n    }\r\n    const title = this.booksForm.value.title;\r\n    const description = this.booksForm.value.description;\r\n    const isbn = this.booksForm.value.isbn;\r\n    const price = this.booksForm.value.price\r\n    const book: Books={\r\n      id: this.BooksData.id,\r\n      title,\r\n      description,\r\n      isbn,\r\n      price\r\n    }\r\n\r\n    this.store.dispatch(updateBook({book}));\r\n    this.dialog.close();\r\n  }\r\n  ngOnDestroy(){\r\n    this.bookSubscription.unsubscribe();\r\n  }\r\n\r\n\r\n  onclose(){\r\n    this.dialog.close();\r\n  }\r\n}\r\n",
             "assetsDirs": [],
             "styleUrlsData": [
                 {
-                    "data": ".container{\r\n    display: flex;\r\n    justify-content: center;\r\n    margin-top: 20px;\r\n    form{\r\n        display: flex;\r\n        flex-direction: column;\r\n    }\r\n    button{\r\n        background-color: var(--secondary);\r\n        padding: 5px 5px 5px 5px;\r\n        border-radius: 3px;\r\n        cursor: pointer;\r\n    }\r\n    .error {\r\n        font-size: 15px;\r\n     }\r\n    \r\n     .error-msg{\r\n        color: red;\r\n        font-size: 12px;\r\n    }\r\n}",
+                    "data": "\r\n\r\n.main{\r\n    background-image: url(\"../../../assets/bg.jpg\");\r\n    min-height: 64.2vh;\r\n    display: flex;\r\n    align-items: center;\r\n    justify-content: center;\r\n\r\n.container{\r\n    width: 375px;\r\n    padding: 10px 0;\r\n    display: flex;\r\n    justify-content: center;\r\n    flex-direction: column;\r\n    align-items: center;\r\n    position: relative;\r\n    border: 1px solid black;\r\n    background: var(--background);\r\n    border-radius: 2px;\r\n    padding: 7px 0px 7px 0px;\r\n\r\n    .mandetory{\r\n        color: red;\r\n    }\r\n    input{\r\n        border-radius: 2px solid black;\r\n        padding: 5px 0px 5px 3px;\r\n        margin: 5px 0px 5px 0px;\r\n        \r\n    }\r\n    \r\n    ::placeholder {\r\n        color: rgb(141, 133, 133);\r\n    }\r\n    label{\r\n       color: black;\r\n    }\r\n    \r\n   \r\n    .personalInfo{\r\n        display: flex;\r\n        margin: 10px 0px 10px 0px;\r\n        flex-direction: row;\r\n        .fname{\r\n            margin-right: 3px;\r\n        }    \r\n        \r\n    }\r\n\r\n    .otherinfo{\r\n        display: flex;\r\n        flex-direction: column;\r\n        margin-bottom: 6px;\r\n        input{\r\n            min-width: 250px;\r\n        }\r\n        #userType{\r\n            padding: 5px 0px 5px 3px;\r\n            margin: 5px 0px 5px 0px;\r\n            min-width: 254px;\r\n        }\r\n        div{\r\n            padding: 4px 0px 4px 0px;\r\n        }\r\n        .submit{\r\n           display: flex;\r\n           \r\n           button{\r\n            margin: 5px 0px 0px 4px;\r\n            background-color: #00000099;\r\n            color: white;\r\n            padding: 8px 8px 8px 8px;\r\n            border-radius: 3px;\r\n            cursor: pointer;\r\n            width: 70px;\r\n            \r\n           }\r\n\r\n           .backtologin{\r\n              position: relative;\r\n              left: 5px;\r\n              cursor: pointer;\r\n           }\r\n        }\r\n        .descrption{\r\n            width: 250px;\r\n        }\r\n     \r\n    }\r\n   \r\n}\r\n}\r\n\r\n",
                     "styleUrl": "./editbook.component.scss"
                 }
             ],
@@ -2655,7 +3110,7 @@
                         "deprecationMessage": ""
                     }
                 ],
-                "line": 23,
+                "line": 25,
                 "jsdoctags": [
                     {
                         "name": "route",
@@ -2708,7 +3163,45 @@
                 "OnInit",
                 "OnDestroy"
             ],
-            "templateData": "<!-- <div class=\"container\" *ngIf=\"show\"> \r\n    <div class=\"addForm\">\r\n        <form [formGroup]=\"booksForm\" (ngSubmit)=\"onSubmit()\">\r\n            <h3>Update Book Details</h3>\r\n            <div class=\"title\">\r\n                    <label for=\"fname\">Title</label> <br>\r\n                    <input type=\"text\" id=\"fname\" placeholder=\"book title\"  formControlName=\"title\">\r\n                    <div *ngIf=\"booksForm.controls['title'].errors && booksForm.controls['title'].touched\"\r\n                    class=\"error-msg\">\r\n                    <div class=\"error\" [hidden]=\"!booksForm.controls['title'].errors.required\">please enter book title</div>\r\n                    <div class=\"error\" [hidden]=\"!booksForm.controls['title'].errors.minLength\">please enter minimum 6 char</div>\r\n                    </div> \r\n                    \r\n            </div>\r\n            <div class=\"description\">\r\n                <label for=\"lname\">Description</label> <span class=\"mandetory\">*</span><br>\r\n                <textarea rows=\"4\" cols=\"30\" placeholder=\"book description here\"  formControlName=\"description\"></textarea>\r\n                <div *ngIf=\"booksForm.controls['description'].errors && booksForm.controls['description'].touched\"\r\n                class=\"error-msg\">\r\n                <div class=\"error\" [hidden]=\"!booksForm.controls['description'].errors.required\">please enter book Description</div>\r\n            </div> \r\n           \r\n            </div>\r\n            <div class=\"submit\">\r\n                <button type=\"submit\" >Update</button>\r\n            </div>\r\n        </form>\r\n    </div>\r\n</div> -->\r\n<div class=\"text-wrapper\">\r\n    <p>{{ config.data.message }}</p>\r\n  </div>\r\n  <div class=\"actions\">\r\n    <!-- <button class=\"button\" (click)=\"onClose()\">CANCEL</button>\r\n    <button class=\"button\" (click)=\"onClose()\">OK</button> -->\r\n  </div>"
+            "templateData": "<div class=\"main\">\r\n    <form  [formGroup]=\"booksForm\" (ngSubmit)=\"onSubmit()\">\r\n    <div class=\"container\">  \r\n        <div class=\"otherinfo\">\r\n            <div class=\"fname\">\r\n                <label for=\"fname\">Book Title</label> <br>\r\n                <input type=\"text\" id=\"fname\" placeholder=\"book title\" formControlName=\"title\">\r\n                <div *ngIf=\"booksForm.controls['title'].errors && booksForm.controls['title'].touched\"\r\n                class=\"error-msg\">\r\n                <div class=\"error\" [hidden]=\"!booksForm.controls['title'].errors.required\">please enter book title</div>\r\n                <div class=\"error\" [hidden]=\"!booksForm.controls['title'].errors.minLength\">please enter minimum 6 char</div>\r\n                </div> \r\n            </div>\r\n            <div class=\"lname\">\r\n                <label for=\"lname\">ISBN Number</label> <span class=\"mandetory\">*</span><br>\r\n                <input type=\"text\" placeholder=\"Last name\" id=\"lname\" formControlName=\"isbn\">\r\n            </div>\r\n            <div class=\"workemail\">\r\n                <label for=\"workemail\">Price <span class=\"mandetory\">*</span></label> <br>\r\n                <input type=\"text\" placeholder=\"enter book price\" formControlName=\"price\">\r\n            </div>\r\n            <div class=\"password\">\r\n                <label for=\"lname\">Description</label> <span class=\"mandetory\">*</span><br>\r\n                <textarea rows=\"4\" class=\"descrption\" cols=\"30\" placeholder=\"book description here\" formControlName=\"description\"></textarea>\r\n                <div *ngIf=\"booksForm.controls['description'].errors && booksForm.controls['description'].touched\"\r\n                    class=\"error-msg\">\r\n                    <div class=\"error\" [hidden]=\"!booksForm.controls['description'].errors.required\">please enter book Description</div>\r\n                </div> \r\n            </div> \r\n            <div class=\"submit\">\r\n                <div class=\"submitbtn\" type=\"submit\"><button>Update</button>\r\n                    <button (click)=\"onclose()\">Cancel</button>\r\n                </div>\r\n            </div>\r\n        </div>\r\n        \r\n    </div>\r\n</form>\r\n</div>"
+        },
+        {
+            "name": "footerComponent",
+            "id": "component-footerComponent-48e1d6c62ccdd8cdf07231667bfd52ad",
+            "file": "src/components/footer.component.ts",
+            "encapsulation": [],
+            "entryComponents": [],
+            "inputs": [],
+            "outputs": [],
+            "providers": [],
+            "selector": "app-footer",
+            "styleUrls": [
+                "./footer.component.scss"
+            ],
+            "styles": [],
+            "template": "\n  <footer>\n  <div class=\"container1\">\n    <div class=\"ftr\">\n      <h3  class=\"company\">Company</h3>\n      <ul class=\"fcontent\">\n        <li><a href=\"\">About Us</a></li>\n        <li><a href=\"\">Contact Us</a></li>\n      </ul>\n    </div>\n    <div class=\"ftr\">\n      <h3 class=\"policies\">Policies</h3>\n      <ul class=\"fcontent\">\n        <li><a href=\"\">Privacy Policy</a></li>\n        <li><a href=\"\">Copyright policy</a></li>\n      </ul>\n    </div>\n    <div class=\"ftr\">\n      <h3 class=\"help\">Help</h3>\n      <ul class=\"fcontent\">\n        <li><a href=\"\">Shiping</a></li>\n        <li><a href=\"\">Contact us</a></li>\n      </ul>\n    </div>\n  </div>\n</footer>\n\n",
+            "templateUrl": [],
+            "viewProviders": [],
+            "inputsClass": [],
+            "outputsClass": [],
+            "propertiesClass": [],
+            "methodsClass": [],
+            "deprecated": false,
+            "deprecationMessage": "",
+            "hostBindings": [],
+            "hostListeners": [],
+            "description": "",
+            "rawdescription": "\n",
+            "type": "component",
+            "sourceCode": "import { Component, Input, Output } from \"@angular/core\";\r\n\r\n@Component({\r\n    selector: 'app-footer',\r\n    template:`\r\n\r\n    <footer>\r\n    <div class=\"container1\">\r\n      <div class=\"ftr\">\r\n        <h3  class=\"company\">Company</h3>\r\n        <ul class=\"fcontent\">              \r\n          <li><a href=\"\">About Us</a></li>\r\n          <li><a href=\"\">Contact Us</a></li>\r\n        </ul>\r\n      </div>\r\n      <div class=\"ftr\">  \r\n        <h3 class=\"policies\">Policies</h3>\r\n        <ul class=\"fcontent\">              \r\n          <li><a href=\"\">Privacy Policy</a></li>\r\n          <li><a href=\"\">Copyright policy</a></li>\r\n        </ul>\r\n      </div>\r\n      <div class=\"ftr\">  \r\n        <h3 class=\"help\">Help</h3>\r\n        <ul class=\"fcontent\">              \r\n          <li><a href=\"\">Shiping</a></li>\r\n          <li><a href=\"\">Contact us</a></li>\r\n        </ul>\r\n      </div>\r\n    </div>\r\n  </footer>\r\n\r\n    `,\r\n    styleUrls:['./footer.component.scss'],\r\n})\r\n\r\nexport class footerComponent{\r\n\r\n}",
+            "assetsDirs": [],
+            "styleUrlsData": [
+                {
+                    "data": "footer{ \r\n    background: #212121;\r\n    .container1{\r\n      \r\n      width: 100%;\r\n      max-width: 1100px;\r\n      margin: 0 auto;\r\n      display: flex;\r\n      align-items: center;\r\n      justify-content:space-evenly;\r\n      flex-wrap: wrap;\r\n      font-family: 'Times New Roman', Times, serif;\r\n      .ftr{\r\n        h3{\r\n          font-size: 18px;\r\n          color: #fff;\r\n          margin-bottom: -12px;\r\n        }\r\n        .company{\r\n          position: relative;\r\n          left:30px\r\n        }\r\n        .policies{\r\n          position: relative;\r\n          left:40px\r\n        }\r\n        .help{\r\n          position: relative;\r\n          left:40px\r\n        }\r\n        flex-basis: 18%;\r\n      }\r\n      .fcontent{\r\n        list-style: none;\r\n        a{\r\n          text-decoration: none;\r\n          color: #fff;\r\n          opacity: .6;\r\n          font-size: 15px;\r\n        }\r\n      }\r\n\r\n    }\r\n    @media all and (max-width: 480px){\r\n      .container1{\r\n        flex-direction: column;\r\n      }\r\n    } \r\n  }",
+                    "styleUrl": "./footer.component.scss"
+                }
+            ],
+            "stylesData": ""
         },
         {
             "name": "ForgetPasswordComponent",
@@ -2774,7 +3267,45 @@
         },
         {
             "name": "HeaderComponent",
-            "id": "component-HeaderComponent-246e2a69dc126a3bd76c6328dd3b93e2",
+            "id": "component-HeaderComponent-15ae6b2e07c657d81334bca6c6fc9f03",
+            "file": "src/components/header.component.ts",
+            "encapsulation": [],
+            "entryComponents": [],
+            "inputs": [],
+            "outputs": [],
+            "providers": [],
+            "selector": "app-header",
+            "styleUrls": [
+                "./header.component.scss"
+            ],
+            "styles": [],
+            "template": "  <nav class=\"navbar\">\n  <div class=\"logoimg\">\n    <a href=\"\">\n      <img src=\"../app/../assets/logo0.PNG\" alt=\"\"   class=\"logo\">\n    </a>\n  </div>\n  <ul class=\"nav-list\" >\n    <li class=\"list-item\">\n      <a routerLink=\"/home\" routerLinkActive=\"active\">Home</a>\n    </li>\n    <li class=\"list-item\">\n      <a routerLink=\"/books\" routerLinkActive=\"active\">Books</a>\n    </li>\n    <li class=\"list-item\">\n      <a routerLink=\"/books/addbooks\" routerLinkActive=\"active\">Add Books</a>\n    </li>\n    <li class=\"list-item\">\n      <a routerLink=\"/newuser\" routerLinkActive=\"active\">Register</a>\n    </li>\n    <li class=\"list-item\">\n      <a routerLink=\"aboutus\" routerLinkActive=\"active\">About us</a>\n    </li>\n    <li class=\"list-item\">\n      <a routerLink=\"/auth\" routerLinkActive=\"active\">Login</a>\n    </li>\n  </ul>\n  <div class=\"menu\">\n    <div class=\"menu-line\"></div>\n    <div class=\"menu-line\"></div>\n    <div class=\"menu-line\"></div>\n  </div>\n</nav>\n",
+            "templateUrl": [],
+            "viewProviders": [],
+            "inputsClass": [],
+            "outputsClass": [],
+            "propertiesClass": [],
+            "methodsClass": [],
+            "deprecated": false,
+            "deprecationMessage": "",
+            "hostBindings": [],
+            "hostListeners": [],
+            "description": "",
+            "rawdescription": "\n",
+            "type": "component",
+            "sourceCode": "import { Component, Input, Output, EventEmitter } from '@angular/core';\r\n\r\n@Component({\r\n  selector: 'app-header',\r\n  template: `\r\n  <nav class=\"navbar\">\r\n  <div class=\"logoimg\">\r\n    <a href=\"\">\r\n      <img src=\"../app/../assets/logo0.PNG\" alt=\"\"   class=\"logo\">\r\n    </a>\r\n  </div>\r\n  <ul class=\"nav-list\" >\r\n    <li class=\"list-item\">\r\n      <a routerLink=\"/home\" routerLinkActive=\"active\">Home</a>\r\n    </li>\r\n    <li class=\"list-item\"> \r\n      <a routerLink=\"/books\" routerLinkActive=\"active\">Books</a>\r\n    </li>\r\n    <li class=\"list-item\">\r\n      <a routerLink=\"/books/addbooks\" routerLinkActive=\"active\">Add Books</a>\r\n    </li>\r\n    <li class=\"list-item\">\r\n      <a routerLink=\"/newuser\" routerLinkActive=\"active\">Register</a>\r\n    </li>\r\n    <li class=\"list-item\">\r\n      <a routerLink=\"aboutus\" routerLinkActive=\"active\">About us</a>\r\n    </li>\r\n    <li class=\"list-item\">\r\n      <a routerLink=\"/auth\" routerLinkActive=\"active\">Login</a>\r\n    </li>\r\n  </ul>\r\n  <div class=\"menu\">\r\n    <div class=\"menu-line\"></div>\r\n    <div class=\"menu-line\"></div>\r\n    <div class=\"menu-line\"></div>\r\n  </div>\r\n</nav>\r\n  `,\r\n  styleUrls: ['./header.component.scss'],\r\n})\r\nexport default class HeaderComponent {\r\n \r\n}\r\n",
+            "assetsDirs": [],
+            "styleUrlsData": [
+                {
+                    "data": ".navbar{\r\n    width: 100%;\r\n    background: #212121;\r\n    color: white;\r\n    display: flex;\r\n    justify-content: space-between;\r\n    align-items: center;\r\n    font-family: 'Times New Roman', Times, serif;\r\n    font-size: 19px;\r\n    margin-left: 0px;\r\n    .logoimg{\r\n      position: relative;\r\n      left: 20px;\r\n    }\r\n    .nav-list{\r\n      list-style-type: none;\r\n      .list-item{\r\n        display: inline-block;\r\n        padding: 0px 7px;\r\n      }     \r\n    }\r\n    \r\n    .logo{\r\n      height: 36px;\r\n      \r\n    }\r\n\r\n    .menu{\r\n      display: none;\r\n    }\r\n    .menu-line{\r\n      width: 20px;\r\n      height: 3px;\r\n      background-color: white;\r\n      margin-bottom: 4px;\r\n    }\r\n    @media all and (max-width: 480px){\r\n      .navbar{\r\n        flex-direction: column;\r\n        \r\n      }\r\n      .menu{\r\n        display: block;\r\n        position: absolute;\r\n        right: 10px;\r\n        top: 10px;\r\n      }    \r\n    }\r\n  }",
+                    "styleUrl": "./header.component.scss"
+                }
+            ],
+            "stylesData": ""
+        },
+        {
+            "name": "HeaderComponent",
+            "id": "component-HeaderComponent-246e2a69dc126a3bd76c6328dd3b93e2-1",
             "file": "src/stories/header.component.ts",
             "encapsulation": [],
             "entryComponents": [],
@@ -2842,11 +3373,14 @@
                     "styleUrl": "./header.css"
                 }
             ],
-            "stylesData": ""
+            "stylesData": "",
+            "isDuplicate": true,
+            "duplicateId": 1,
+            "duplicateName": "HeaderComponent-1"
         },
         {
             "name": "HeaderComponent",
-            "id": "component-HeaderComponent-ef95b1c5080dd622951df94b49bd7146-1",
+            "id": "component-HeaderComponent-ef95b1c5080dd622951df94b49bd7146-2",
             "file": "src/app/shared/header/header.component.ts",
             "encapsulation": [],
             "entryComponents": [],
@@ -2926,8 +3460,8 @@
                 "OnInit"
             ],
             "isDuplicate": true,
-            "duplicateId": 1,
-            "duplicateName": "HeaderComponent-1",
+            "duplicateId": 2,
+            "duplicateName": "HeaderComponent-2",
             "templateData": "<nav class=\"navbar\">\r\n    <ul class=\"nav-links\">\r\n      <li class=\"nav-item\"><a [routerLink]=\"['/books']\" routerLinkActive=\"is-active\">Books</a></li> \r\n      <li  class=\"nav-item\"><a [routerLink]=\"['/books/addbooks']\">Add Books</a></li> \r\n      <li class=\"nav-item logout\"><a [routerLink]=\"['/']\">Logout</a></li>\r\n    </ul>\r\n</nav>\r\n<!-- <router-outlet></router-outlet> -->"
         },
         {
@@ -2984,7 +3518,7 @@
             "assetsDirs": [],
             "styleUrlsData": [
                 {
-                    "data": "\r\n.parallax {\r\n  margin-top: -2px;\r\n  background-image: url(\"../../assets/bookstore2.jpg\");\r\n  min-height: 424.5px; \r\n  background-attachment: fixed;\r\n  background-position: center;\r\n  background-repeat: no-repeat;\r\n  background-size: cover;\r\n  .text{\r\n    font-family: 'Times New Roman', Times, serif;\r\n  }\r\n}\r\n\r\n@media only screen and (max-width: 600px) {\r\n  .contain{\r\n    flex-direction: column;\r\n    align-items: center;\r\n  }\r\n}\r\n",
+                    "data": "\r\n.parallax {\r\n  margin-top: -2px;\r\n  background-image: url(\"../../assets/bookstore2.jpg\");\r\n  min-height: 424.5px; \r\n  background-attachment: fixed;\r\n  background-position: center;\r\n  background-repeat: no-repeat;\r\n  background-size: cover;\r\n  .text{\r\n    font-family: 'Times New Roman', Times, serif;\r\n  }\r\n  .buy{\r\n    display: flex;\r\n    justify-content: center;\r\n    position: relative;\r\n    top: 100px;\r\n  }\r\n  .book{\r\n    position: relative;\r\n    top: 40px;\r\n    left: -103px;\r\n    font-size: 50px;\r\n    color: white;\r\n    cursor: pointer;\r\n  }\r\n}\r\n\r\n@media only screen and (max-width: 600px) {\r\n  .buy{\r\n        top: 75px !important;\r\n  }\r\n  .book{\r\n    top: 100px !important;\r\n  }\r\n}\r\n",
                     "styleUrl": "./home.component.scss"
                 }
             ],
@@ -3018,18 +3552,18 @@
             "implements": [
                 "OnInit"
             ],
-            "templateData": "\r\n<div class=\"parallax\">\r\n  <div class=\"text\" style=\"display: flex;justify-content: center;position: relative;\r\n  top: 100px;\">\r\n    <p style=\"color: white;font-size: 50px;cursor: pointer;\" (click)='gotoBooks()' >Buy Your Favourite</p>\r\n    <p style=\"position: relative;\r\n        top: 40px;\r\n    left: -103px;font-size: 50px;color: white;cursor: pointer;\r\n\" (click)='gotoBooks()'> Book From Here</p>\r\n  </div>\r\n</div>\r\n"
+            "templateData": "\r\n<div class=\"parallax\">\r\n  <div class=\"text\" class=\"buy\" >\r\n    <p style=\"color: white;font-size: 50px;cursor: pointer;\" (click)='gotoBooks()' >Buy Your Favourite</p>\r\n    <p (click)='gotoBooks()' class=\"book\"> Book From Here</p>\r\n  </div>\r\n</div>\r\n"
         },
         {
             "name": "inputComponent",
-            "id": "component-inputComponent-1dcf3503fe1bf231634839c389ac6f3e",
+            "id": "component-inputComponent-b86839b95b6d25ba8f17552ca08a388c",
             "file": "src/components/input.component.ts",
             "encapsulation": [],
             "entryComponents": [],
             "inputs": [],
             "outputs": [],
             "providers": [],
-            "selector": "app-task",
+            "selector": "app-input",
             "styleUrls": [],
             "styles": [],
             "template": "<div class=\"btnstory\">\n  <button>Submit</button>\n</div>\n",
@@ -3046,14 +3580,14 @@
             "description": "",
             "rawdescription": "\n",
             "type": "component",
-            "sourceCode": "import { Component, Input, Output, EventEmitter } from '@angular/core';\r\n\r\n@Component({\r\n    selector:\"app-task\",\r\n    template: `\r\n      <div class=\"btnstory\">\r\n        <button>Submit</button>\r\n      </div>\r\n    `,\r\n\r\n})\r\n\r\nexport class inputComponent{\r\n\r\n}\r\n\r\n",
+            "sourceCode": "import { Component, Input, Output, EventEmitter } from '@angular/core';\r\n\r\n@Component({\r\n    selector:\"app-input\",\r\n    template: `\r\n      <div class=\"btnstory\">\r\n        <button>Submit</button>\r\n      </div>\r\n    `,\r\n\r\n})\r\n\r\nexport class inputComponent{\r\n\r\n}\r\n\r\n",
             "assetsDirs": [],
             "styleUrlsData": "",
             "stylesData": ""
         },
         {
             "name": "LoginComponent",
-            "id": "component-LoginComponent-8270ebdf5679ef28b7f117512eaef5eb",
+            "id": "component-LoginComponent-97d9ef1da2fa7d3fdbd1b7ebeeffe925",
             "file": "src/app/auth/login/login.component.ts",
             "encapsulation": [],
             "entryComponents": [],
@@ -3073,13 +3607,22 @@
             "outputsClass": [],
             "propertiesClass": [
                 {
+                    "name": "currentUser",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "any",
+                    "optional": false,
+                    "description": "",
+                    "line": 16
+                },
+                {
                     "name": "loginform",
                     "deprecated": false,
                     "deprecationMessage": "",
                     "type": "FormGroup",
                     "optional": false,
                     "description": "",
-                    "line": 13
+                    "line": 14
                 },
                 {
                     "name": "users",
@@ -3089,7 +3632,7 @@
                     "type": "any",
                     "optional": false,
                     "description": "",
-                    "line": 14
+                    "line": 15
                 }
             ],
             "methodsClass": [
@@ -3099,7 +3642,17 @@
                     "optional": false,
                     "returnType": "void",
                     "typeParameters": [],
-                    "line": 43,
+                    "line": 64,
+                    "deprecated": false,
+                    "deprecationMessage": ""
+                },
+                {
+                    "name": "ngOnDestroy",
+                    "args": [],
+                    "optional": false,
+                    "returnType": "void",
+                    "typeParameters": [],
+                    "line": 67,
                     "deprecated": false,
                     "deprecationMessage": ""
                 },
@@ -3109,7 +3662,7 @@
                     "optional": false,
                     "returnType": "void",
                     "typeParameters": [],
-                    "line": 17,
+                    "line": 20,
                     "deprecated": false,
                     "deprecationMessage": ""
                 },
@@ -3119,7 +3672,7 @@
                     "optional": false,
                     "returnType": "void",
                     "typeParameters": [],
-                    "line": 24,
+                    "line": 27,
                     "deprecated": false,
                     "deprecationMessage": ""
                 }
@@ -3131,11 +3684,11 @@
             "description": "",
             "rawdescription": "\n",
             "type": "component",
-            "sourceCode": "import { Component, OnInit } from '@angular/core';\r\nimport { FormControl, FormGroup, Validators } from '@angular/forms';\r\nimport { Router } from '@angular/router';\r\nimport { LoginService } from 'src/app/services/login.service';\r\n\r\n@Component({\r\n  selector: 'app-login',\r\n  templateUrl: './login.component.html',\r\n  styleUrls: ['./login.component.scss']\r\n})\r\nexport class LoginComponent implements OnInit {\r\n\r\n  loginform: FormGroup;\r\n  users :any= [];\r\n  constructor(private router: Router, private loginService: LoginService) { }\r\n\r\n  ngOnInit(): void {\r\n    this.loginform = new FormGroup({\r\n      email: new FormControl('',[Validators.required]),\r\n      password: new FormControl('',[Validators.required])\r\n    })\r\n  }\r\n\r\n  onLoginSubmit(){\r\n    \r\n    let username = this.loginform.get('email')?.value\r\n    let password = this.loginform.get('password')?.value;\r\n    this.loginService.login(username,password).subscribe(\r\n      data=>{\r\n        if(data){\r\n          this.users = data;\r\n          for(let i=0; i<this.users.length; i++){\r\n            if(this.loginform.value.email = this.users[i][\"email\"] && this.loginform.value.password == this.users[i][\"password\"]){\r\n              localStorage.setItem('usertype',this.users[i]['userType']);\r\n              this.router.navigate(['/home']);\r\n            }\r\n          }\r\n        }\r\n      }\r\n    )\r\n    \r\n  }\r\n  newUser(){\r\n    this.router.navigate(['newuser']);\r\n  }\r\n}\r\n",
+            "sourceCode": "import { Component, OnInit } from '@angular/core';\r\nimport { FormControl, FormGroup, Validators } from '@angular/forms';\r\nimport { Router } from '@angular/router';\r\nimport { ToastrService } from 'ngx-toastr';\r\nimport { LoginService } from 'src/app/services/login.service';\r\n\r\n@Component({\r\n  selector: 'app-login',\r\n  templateUrl: './login.component.html',\r\n  styleUrls: ['./login.component.scss']\r\n})\r\nexport class LoginComponent implements OnInit {\r\n\r\n  loginform: FormGroup;\r\n  users :any= [];\r\n  currentUser: any;\r\n  constructor(private router: Router, private loginService: LoginService,\r\n    private toastr: ToastrService) { }\r\n\r\n  ngOnInit(): void {\r\n    this.loginform = new FormGroup({\r\n      email: new FormControl('',[Validators.required]),\r\n      password: new FormControl('',[Validators.required])\r\n    })\r\n  }\r\n\r\n  onLoginSubmit(){\r\n    \r\n    let username = this.loginform.get('email')?.value\r\n    let password = this.loginform.get('password')?.value;\r\n    this.loginService.login(username,password).subscribe(\r\n      data => {\r\n        let successFlag = false;\r\n        console.log(data);\r\n        if(data){\r\n          this.users = data;\r\n          for(let i=0; i<this.users.length; i++){\r\n            if(username = this.users[i][\"email\"] && password == this.users[i][\"password\"]){\r\n              console.log(\"if\");\r\n              console.log(\"username\", username);\r\n              console.log(this.currentUser);\r\n              localStorage.setItem('user', this.currentUser);\r\n              console.log(localStorage.getItem(\"user\"));\r\n              // this.toastr.success('Login Success');\r\n              successFlag = true;\r\n              localStorage.setItem('loggedIn',username);\r\n              this.router.navigate(['/']);\r\n            }else{\r\n              successFlag = false;\r\n            }\r\n          }\r\n          console.log(successFlag);\r\n          if(!successFlag){\r\n            console.log(successFlag);\r\n            this.toastr.error('Invalid email or password');\r\n          }\r\n        }else{\r\n          console.log(\"Users not found\");\r\n        }\r\n      },\r\n    )\r\n    \r\n  }\r\n  newUser(){\r\n    this.router.navigate(['newuser']);\r\n  }\r\n  ngOnDestroy(){\r\n    if(localStorage.getItem('loggedIn')){\r\n      this.toastr.success('Login Success');\r\n    }\r\n  }\r\n}\r\n",
             "assetsDirs": [],
             "styleUrlsData": [
                 {
-                    "data": "\r\n.container {\r\n    background-image: url(\"../../../assets/bg.jpg\");\r\n    min-height: 73.3vh;\r\n    display: flex;\r\n    align-items: center;\r\n    justify-content: center;\r\n\r\n    .error {\r\n        font-size: 15px;\r\n     }\r\n    \r\n     .error-msg{\r\n        color: red;\r\n        font-size: 12px;\r\n    }\r\n    .loginContainer {\r\n        height: 170px;\r\n        width: 300px;\r\n        background: var(--background);\r\n        padding: 50px;\r\n        border-radius: 10px;\r\n        position: relative;\r\n        text-align: center;\r\n        display: flex;\r\n        flex-direction: column;\r\n        border: 1px solid black;\r\n        font-family: 'Times New Roman', Times, serif;\r\n        \r\n            div{\r\n                padding: 3px 0px 3px 0px;\r\n            }\r\n        \r\n        .newUser{\r\n            display: flex;\r\n            justify-content: space-evenly;\r\n            position: relative;\r\n            top: 10px;\r\n\r\n            span{\r\n                color: #1b556d;\r\n            }\r\n            .newuser1,.forgotpass{\r\n                cursor: pointer;\r\n            }\r\n        }\r\n\r\n\r\n        input{\r\n            border-radius: 2px solid black;\r\n            padding: 5px 0px 5px 3px;\r\n            margin: 5px 0px 5px 0px;   \r\n        }\r\n        #nameLable{\r\n            position: relative;\r\n            right: 54px;\r\n        }\r\n        #passLable{\r\n            position: relative;\r\n            right: 51px;\r\n        }\r\n        button{\r\n            margin-top: 5px;\r\n            background-color: #00000099;\r\n            color: white;\r\n            padding: 8px 8px 8px 8px;\r\n            border-radius: 3px;\r\n            cursor: pointer;\r\n            width: 70px;\r\n        }\r\n        .submit{\r\n            position: relative;\r\n            right: 48px;\r\n        }\r\n      }\r\n  }\r\n  \r\n\r\n\r\n  @media (max-width:320px)  { \r\n    .loginContainer{\r\n        width: 250px;\r\n    }\r\n   }\r\n\r\n\r\n\r\n",
+                    "data": "\r\n.container {\r\n    background-image: url(\"../../../assets/bg.jpg\");\r\n    min-height: 73.3vh;\r\n    display: flex;\r\n    align-items: center;\r\n    justify-content: center;\r\n\r\n    .error {\r\n        font-size: 15px;\r\n     }\r\n    \r\n     .error-msg{\r\n        color: red;\r\n        font-size: 12px;\r\n    }\r\n    .loginContainer {\r\n        height: 170px;\r\n        width: 300px;\r\n        background: var(--background);\r\n        padding: 30px;\r\n        border-radius: 10px;\r\n        position: relative;\r\n        text-align: center;\r\n        display: flex;\r\n        flex-direction: column;\r\n        border: 1px solid black;\r\n        font-family: 'Times New Roman', Times, serif;\r\n        \r\n            div{\r\n                padding: 3px 0px 3px 0px;\r\n            }\r\n        \r\n        .newUser{\r\n            display: flex;\r\n            justify-content: space-evenly;\r\n            position: relative;\r\n            top: 0px;\r\n\r\n            span{\r\n                color: #1b556d;\r\n            }\r\n            .newuser1,.forgotpass{\r\n                cursor: pointer;\r\n            }\r\n        }\r\n\r\n\r\n        input{\r\n            border-radius: 2px solid black;\r\n            padding: 5px 0px 5px 3px;\r\n            margin: 5px 0px 5px 0px;   \r\n        }\r\n        #nameLable{\r\n            position: relative;\r\n            right: 54px;\r\n        }\r\n        #passLable{\r\n            position: relative;\r\n            right: 51px;\r\n        }\r\n        button{\r\n            margin-top: 5px;\r\n            background-color: #00000099;\r\n            color: white;\r\n            padding: 8px 8px 8px 8px;\r\n            border-radius: 3px;\r\n            cursor: pointer;\r\n            width: 70px;\r\n        }\r\n        .submit{\r\n            position: relative;\r\n            right: 48px;\r\n        }\r\n      }\r\n  }\r\n  \r\n\r\n\r\n  @media (max-width:320px)  { \r\n    .loginContainer{\r\n        width: 250px;\r\n    }\r\n   }\r\n\r\n\r\n\r\n",
                     "styleUrl": "./login.component.scss"
                 }
             ],
@@ -3157,9 +3710,15 @@
                         "type": "LoginService",
                         "deprecated": false,
                         "deprecationMessage": ""
+                    },
+                    {
+                        "name": "toastr",
+                        "type": "ToastrService",
+                        "deprecated": false,
+                        "deprecationMessage": ""
                     }
                 ],
-                "line": 14,
+                "line": 16,
                 "jsdoctags": [
                     {
                         "name": "router",
@@ -3173,6 +3732,15 @@
                     {
                         "name": "loginService",
                         "type": "LoginService",
+                        "deprecated": false,
+                        "deprecationMessage": "",
+                        "tagName": {
+                            "text": "param"
+                        }
+                    },
+                    {
+                        "name": "toastr",
+                        "type": "ToastrService",
                         "deprecated": false,
                         "deprecationMessage": "",
                         "tagName": {
@@ -3322,7 +3890,7 @@
         },
         {
             "name": "RegisterUserComponent",
-            "id": "component-RegisterUserComponent-1e7b4070a6bd7d650901c9d5cb82d1fb",
+            "id": "component-RegisterUserComponent-4e470a7d8d0569c3a6debee592e76ff0",
             "file": "src/app/newuser/register-user/register-user.component.ts",
             "encapsulation": [],
             "entryComponents": [],
@@ -3380,7 +3948,7 @@
             "description": "",
             "rawdescription": "\n",
             "type": "component",
-            "sourceCode": "import { Component, OnInit } from '@angular/core';\r\nimport { FormControl, FormGroup, Validators } from '@angular/forms';\r\nimport { Router } from '@angular/router';\r\nimport { Store } from '@ngrx/store';\r\nimport { UserRegister } from 'src/app/shared/header/models/register.model';\r\nimport { AppState } from 'src/app/store/app.state';\r\nimport { addUser } from '../state/newuser.actions';\r\n\r\n@Component({\r\n  selector: 'app-register-user',\r\n  templateUrl: './register-user.component.html',\r\n  styleUrls: ['./register-user.component.scss']\r\n})\r\nexport class RegisterUserComponent implements OnInit {\r\n\r\n  registrationForm: FormGroup;\r\n  constructor(private router: Router,private store: Store<AppState>) { }\r\n\r\n  ngOnInit(): void {\r\n    this.registrationForm = new FormGroup({\r\n      fName: new FormControl(null,[Validators.required ]),\r\n        lName: new FormControl(null,[Validators.required]),\r\n        email: new FormControl(null,[Validators.required]),\r\n        password: new FormControl(null,[Validators.required]),\r\n        userType: new FormControl(\"Admin\"),  \r\n    })\r\n  }\r\n\r\n\r\n  onRegister(){\r\n    if(!this.registrationForm.valid){\r\n      return;\r\n    }\r\n    const user : UserRegister ={\r\n      fName: this.registrationForm.value.fName,\r\n      lName: this.registrationForm.value.lName,\r\n      email: this.registrationForm.value.email,\r\n      password: this.registrationForm.value.password,\r\n      userType: this.registrationForm.value.userType\r\n    };\r\n    this.store.dispatch(addUser({user}))\r\n    console.log(\"user data is\",user)\r\n  }\r\n}\r\n",
+            "sourceCode": "import { Component, OnInit } from '@angular/core';\r\nimport { FormControl, FormGroup, Validators } from '@angular/forms';\r\nimport { Router } from '@angular/router';\r\nimport { Store } from '@ngrx/store';\r\nimport { UserRegister } from 'src/app/shared/header/models/register.model';\r\nimport { AppState } from 'src/app/store/app.state';\r\nimport { addUser } from '../state/newuser.actions';\r\n\r\n@Component({\r\n  selector: 'app-register-user',\r\n  templateUrl: './register-user.component.html',\r\n  styleUrls: ['./register-user.component.scss']\r\n})\r\nexport class RegisterUserComponent implements OnInit {\r\n\r\n  registrationForm: FormGroup;\r\n  constructor(private store: Store<AppState>) { }\r\n\r\n  ngOnInit(): void {\r\n    this.registrationForm = new FormGroup({\r\n      fName: new FormControl(null,[Validators.required ]),\r\n        lName: new FormControl(null,[Validators.required]),\r\n        email: new FormControl(null,[Validators.required]),\r\n        password: new FormControl(null,[Validators.required]),\r\n        userType: new FormControl(\"Admin\"),  \r\n    })\r\n  }\r\n\r\n\r\n  onRegister(){\r\n    if(!this.registrationForm.valid){\r\n      return;\r\n    }\r\n    const user : UserRegister ={\r\n      fName: this.registrationForm.value.fName,\r\n      lName: this.registrationForm.value.lName,\r\n      email: this.registrationForm.value.email,\r\n      password: this.registrationForm.value.password,\r\n      userType: this.registrationForm.value.userType\r\n    };\r\n    this.store.dispatch(addUser({user}))\r\n    console.log(\"user data is\",user)\r\n  }\r\n}\r\n",
             "assetsDirs": [],
             "styleUrlsData": [
                 {
@@ -3396,12 +3964,6 @@
                 "deprecationMessage": "",
                 "args": [
                     {
-                        "name": "router",
-                        "type": "Router",
-                        "deprecated": false,
-                        "deprecationMessage": ""
-                    },
-                    {
                         "name": "store",
                         "type": "Store<AppState>",
                         "deprecated": false,
@@ -3410,15 +3972,6 @@
                 ],
                 "line": 16,
                 "jsdoctags": [
-                    {
-                        "name": "router",
-                        "type": "Router",
-                        "deprecated": false,
-                        "deprecationMessage": "",
-                        "tagName": {
-                            "text": "param"
-                        }
-                    },
                     {
                         "name": "store",
                         "type": "Store<AppState>",
@@ -3439,13 +3992,13 @@
     "modules": [
         {
             "name": "AppModule",
-            "id": "module-AppModule-1b0b9cf3e205db5d69e927f803e95930",
+            "id": "module-AppModule-6fa5b19c133047304ae2f4f54053cc30",
             "description": "",
             "deprecationMessage": "",
             "deprecated": false,
             "file": "src/app/app.module.ts",
             "methods": [],
-            "sourceCode": "import { NgModule } from '@angular/core';\r\nimport { BrowserModule } from '@angular/platform-browser';\r\n\r\nimport { AppRoutingModule } from './app-routing.module';\r\nimport { AppComponent } from './app.component';\r\nimport { HeaderComponent } from './shared/header/header.component';\r\nimport { StoreDevtoolsModule } from '@ngrx/store-devtools';\r\n\r\nimport { environment } from '../environments/environment';\r\nimport { StoreModule } from '@ngrx/store';\r\nimport { appReducer } from './store/app.state';\r\nimport { ReactiveFormsModule } from '@angular/forms';\r\nimport { LoginComponent } from './auth/login/login.component';\r\nimport { HttpClientModule } from '@angular/common/http';\r\nimport { NavigationComponent } from './shared/navigation/navigation.component';\r\nimport { HomeComponent } from './home/home.component';\r\n// import { TestComponent } from './test/test.component';\r\nimport { BrowserAnimationsModule } from '@angular/platform-browser/animations';\r\nimport { AboutusComponent } from './shared/aboutus/aboutus.component';\r\nimport { EditbookComponent } from './books/editbook/editbook.component';\r\nimport { LoginService } from './services/login.service';\r\nimport { BooksService } from './services/books.service';\r\nimport { RegisterUserService } from './services/register-user.service';\r\n@NgModule({\r\n  declarations: [\r\n    AppComponent,\r\n    LoginComponent, \r\n    HeaderComponent, NavigationComponent, HomeComponent, AboutusComponent,\r\n  \r\n  ],\r\n  imports: [\r\n    BrowserModule,\r\n    HttpClientModule,\r\n    AppRoutingModule,\r\n    ReactiveFormsModule,\r\n    StoreModule.forRoot({}),\r\n    StoreDevtoolsModule.instrument({ maxAge: 25, logOnly: environment.production }),\r\n    BrowserAnimationsModule,\r\n  ],\r\n  providers: [LoginService, BooksService,RegisterUserService],\r\n  bootstrap: [AppComponent],\r\n  entryComponents: [EditbookComponent]\r\n})\r\nexport class AppModule { }\r\n",
+            "sourceCode": "import { NgModule } from '@angular/core';\r\nimport { BrowserModule } from '@angular/platform-browser';\r\n\r\nimport { AppRoutingModule } from './app-routing.module';\r\nimport { AppComponent } from './app.component';\r\nimport { HeaderComponent } from './shared/header/header.component';\r\nimport { StoreDevtoolsModule } from '@ngrx/store-devtools';\r\nimport { environment } from '../environments/environment';\r\nimport { StoreModule } from '@ngrx/store';\r\nimport { appReducer } from './store/app.state';\r\nimport { ReactiveFormsModule } from '@angular/forms';\r\nimport { LoginComponent } from './auth/login/login.component';\r\nimport { HttpClientModule } from '@angular/common/http';\r\nimport { NavigationComponent } from './shared/navigation/navigation.component';\r\nimport { HomeComponent } from './home/home.component';\r\nimport { BrowserAnimationsModule } from '@angular/platform-browser/animations';\r\nimport { AboutusComponent } from './shared/aboutus/aboutus.component';\r\nimport { EditbookComponent } from './books/editbook/editbook.component';\r\nimport { LoginService } from './services/login.service';\r\nimport { BooksService } from './services/books.service';\r\nimport { RegisterUserService } from './services/register-user.service';\r\nimport { ToastrModule } from 'ngx-toastr';\r\nimport { NgxPaginationModule } from 'ngx-pagination';\r\n\r\n@NgModule({\r\n  declarations: [\r\n    AppComponent,\r\n    LoginComponent, \r\n    HeaderComponent, NavigationComponent, HomeComponent, AboutusComponent,\r\n  \r\n  ],\r\n  imports: [\r\n    BrowserModule,\r\n    HttpClientModule,\r\n    AppRoutingModule,\r\n    ReactiveFormsModule,\r\n    StoreModule.forRoot({}),\r\n    ToastrModule.forRoot(),\r\n    NgxPaginationModule,\r\n    StoreDevtoolsModule.instrument({ maxAge: 25, logOnly: environment.production }),\r\n    BrowserAnimationsModule,\r\n  ],\r\n  providers: [LoginService, BooksService,RegisterUserService],\r\n  bootstrap: [AppComponent],\r\n  entryComponents: [EditbookComponent]\r\n})\r\nexport class AppModule { }\r\n",
             "children": [
                 {
                     "type": "providers",
@@ -3585,13 +4138,13 @@
         },
         {
             "name": "BooksModule",
-            "id": "module-BooksModule-4559f96642c06a0c5129dcd92ac8af80",
+            "id": "module-BooksModule-dec622b70e74bd0af2fb8324aad4daa9",
             "description": "",
             "deprecationMessage": "",
             "deprecated": false,
             "file": "src/app/books/books.module.ts",
             "methods": [],
-            "sourceCode": "import { NgModule } from '@angular/core';\r\nimport { CommonModule } from '@angular/common';\r\nimport { BooksComponent } from './books/books.component';\r\nimport { RouterModule, Routes } from '@angular/router';\r\nimport { AddbooksComponent } from './addbooks/addbooks.component';\r\nimport { FormsModule, ReactiveFormsModule } from '@angular/forms';\r\nimport { EditbookComponent } from './editbook/editbook.component';\r\nimport { StoreModule } from '@ngrx/store';\r\nimport { booksReducer } from './state/books.reducer';\r\nimport { EffectsModule } from '@ngrx/effects';\r\nimport { BooksEffects } from './state/books.effects';\r\nimport { DialogService } from '../dialog-module/dialog.service';\r\n\r\nconst routes: Routes = [\r\n  {\r\n    path: '',\r\n    component: BooksComponent,\r\n    children:[\r\n      {\r\n        path:'edit/:id',\r\n        component:EditbookComponent\r\n      }\r\n    ]\r\n  },\r\n  {\r\n    path: 'book',\r\n    component: BooksComponent,\r\n  },\r\n  {\r\n    path:'addbooks',\r\n    component:AddbooksComponent\r\n  }\r\n];\r\n\r\n@NgModule({\r\n  declarations: [\r\n    BooksComponent,\r\n    AddbooksComponent,\r\n    EditbookComponent,\r\n   \r\n  ],\r\n  imports: [\r\n    CommonModule,\r\n    RouterModule.forChild(routes),\r\n    StoreModule.forFeature('books',booksReducer),\r\n    ReactiveFormsModule,\r\n    FormsModule,\r\n    EffectsModule.forRoot([BooksEffects])\r\n  ],\r\n  \r\n  providers:[DialogService]\r\n  \r\n})\r\nexport class BooksModule { }\r\n\r\n\r\n",
+            "sourceCode": "import { NgModule } from '@angular/core';\r\nimport { CommonModule } from '@angular/common';\r\nimport { BooksComponent } from './books/books.component';\r\nimport { RouterModule, Routes } from '@angular/router';\r\nimport { AddbooksComponent } from './addbooks/addbooks.component';\r\nimport { FormsModule, ReactiveFormsModule } from '@angular/forms';\r\nimport { EditbookComponent } from './editbook/editbook.component';\r\nimport { StoreModule } from '@ngrx/store';\r\nimport { booksReducer } from './state/books.reducer';\r\nimport { EffectsModule } from '@ngrx/effects';\r\nimport { BooksEffects } from './state/books.effects';\r\nimport { DialogService } from '../dialog-module/dialog/dialog.service';\r\nimport { NgxPaginationModule } from 'ngx-pagination';\r\n\r\nconst routes: Routes = [\r\n  {\r\n    path: '',\r\n    component: BooksComponent,\r\n    children:[\r\n      {\r\n        path:'edit/:id',\r\n        component:EditbookComponent\r\n      }\r\n    ]\r\n  },\r\n  {\r\n    path: 'book',\r\n    component: BooksComponent,\r\n  },\r\n  {\r\n    path:'addbooks',\r\n    component:AddbooksComponent\r\n  }\r\n];\r\n\r\n@NgModule({\r\n  declarations: [\r\n    BooksComponent,\r\n    AddbooksComponent,\r\n    EditbookComponent,\r\n   \r\n  ],\r\n  imports: [\r\n    CommonModule,\r\n    RouterModule.forChild(routes),\r\n    StoreModule.forFeature('books',booksReducer),\r\n    ReactiveFormsModule,\r\n    NgxPaginationModule,\r\n    FormsModule,\r\n    EffectsModule.forRoot([BooksEffects])\r\n  ],\r\n  \r\n  providers:[DialogService]\r\n  \r\n})\r\nexport class BooksModule { }\r\n\r\n\r\n",
             "children": [
                 {
                     "type": "providers",
@@ -3684,13 +4237,13 @@
         },
         {
             "name": "DialogModule",
-            "id": "module-DialogModule-181c727357046e181011484d1af217ab",
+            "id": "module-DialogModule-7d14678e363d1e9445e10d9a80bdea85",
             "description": "",
             "deprecationMessage": "",
             "deprecated": false,
-            "file": "src/app/dialog-module/dialog-module.module.ts",
+            "file": "src/app/dialog-module/dialog/dialog.module.ts",
             "methods": [],
-            "sourceCode": "import { NgModule } from '@angular/core';\nimport { CommonModule } from '@angular/common';\n// import { DialogComponent } from './dialog.component';\nimport { InsertionDirective } from './insertion.directive';\nimport { DialogComponent } from './dialog/dialog.component';\n\n@NgModule({\n  imports: [CommonModule],\n  declarations: [DialogComponent, InsertionDirective],\n  entryComponents: [DialogComponent]\n})\nexport class DialogModule { }\n",
+            "sourceCode": "import { NgModule } from '@angular/core';\r\nimport { CommonModule } from '@angular/common';\r\nimport { InsertionDirective } from './insertion.directive';\r\nimport { DialogComponent } from './dialog/dialog.component';\r\n\r\n@NgModule({\r\n  imports: [CommonModule],\r\n  declarations: [DialogComponent, InsertionDirective],\r\n  entryComponents: [DialogComponent]\r\n})\r\nexport class DialogModule { }\r\n",
             "children": [
                 {
                     "type": "providers",
@@ -3776,7 +4329,7 @@
                 "deprecated": false,
                 "deprecationMessage": "",
                 "type": "",
-                "defaultValue": "createReducer(initialState, on(addBooksSuccess, (state, action)=>{\r\n    let book = {...action.book};\r\n    \r\n    return{\r\n        ...state,\r\n        books:[...state.books,book]\r\n    }\r\n}),\r\non(updateBookSuccess, (state,action)=>{\r\n    const updatedbook = state.books.map((book)=>{\r\n        return action.book.id === book.id ? action.book: book;\r\n    })\r\n    return{\r\n        ...state,\r\n        books: updatedbook\r\n    }\r\n}),\r\non(deleteBookSucces, (state,{id})=>{\r\n    const  updatedbook = state.books.filter(book=>{\r\n        return book.id!==id\r\n    })\r\n    return{\r\n        ...state,   \r\n        books: updatedbook\r\n    }\r\n}),\r\non(loadBookSuccess, (state, action)=>{\r\n    return{\r\n        ...state,\r\n        books: action.books\r\n    }\r\n})\r\n)"
+                "defaultValue": "createReducer(initialState, on(addBooksSuccess, (state, action)=>{\r\n    let book = {...action.book};\r\n    \r\n    return{\r\n        ...state,\r\n        books:[...state.books,book]\r\n    }\r\n}),\r\non(updateBookSuccess, (state,action)=>{\r\n    const updatedbook = state.books.map((book)=>{\r\n        return action.book.id === book.id ? action.book: book;\r\n    })\r\n    return{\r\n        ...state,\r\n        books: updatedbook\r\n    }\r\n}),\r\non(deleteBookSucces, (state,{id})=>{\r\n    const  updatedbook = state.books.filter((book)=>{\r\n        // return book.id!==id\r\n    })\r\n    return{\r\n        ...state,   \r\n        books: updatedbook\r\n    }\r\n}),\r\non(loadBookSuccess, (state, action)=>{\r\n    return{\r\n        ...state,\r\n        books: action.books\r\n    }\r\n})\r\n)"
             },
             {
                 "name": "_counterReducer",
@@ -3797,16 +4350,6 @@
                 "deprecationMessage": "",
                 "type": "",
                 "defaultValue": "createReducer(initialState, on(addUserSuccess, (state, action)=>{\r\n    let book = {...action.user};\r\n    \r\n    return{\r\n        ...state,\r\n        books:[...state.user,book]\r\n    }\r\n}))"
-            },
-            {
-                "name": "actionData",
-                "ctype": "miscellaneous",
-                "subtype": "variable",
-                "file": "src/components/button.stories.ts",
-                "deprecated": false,
-                "deprecationMessage": "",
-                "type": "object",
-                "defaultValue": "{\r\n    onTitleChange: action('onTitleChange'),\r\n    onColorChange: action('onColorChange')\r\n}"
             },
             {
                 "name": "actionData",
@@ -3962,17 +4505,17 @@
                 "name": "Default",
                 "ctype": "miscellaneous",
                 "subtype": "variable",
-                "file": "src/components/input.stories.ts",
+                "file": "src/components/footer.stories.ts",
                 "deprecated": false,
                 "deprecationMessage": "",
                 "type": "",
                 "defaultValue": "Template.bind({})"
             },
             {
-                "name": "Default1",
+                "name": "Default",
                 "ctype": "miscellaneous",
                 "subtype": "variable",
-                "file": "src/components/button.stories.ts",
+                "file": "src/components/input.stories.ts",
                 "deprecated": false,
                 "deprecationMessage": "",
                 "type": "",
@@ -4016,7 +4559,7 @@
                 "deprecated": false,
                 "deprecationMessage": "",
                 "type": "",
-                "defaultValue": "createAction(DELETE_BOOK_ACTION, props<{ id: any}>())"
+                "defaultValue": "createAction(DELETE_BOOK_ACTION, props<{ id: string}>())"
             },
             {
                 "name": "deleteBookSucces",
@@ -4032,21 +4575,21 @@
                 "name": "environment",
                 "ctype": "miscellaneous",
                 "subtype": "variable",
-                "file": "src/environments/environment.prod.ts",
+                "file": "src/environments/environment.ts",
                 "deprecated": false,
                 "deprecationMessage": "",
                 "type": "object",
-                "defaultValue": "{\n  production: true\n}"
+                "defaultValue": "{\r\n  production: false\r\n}"
             },
             {
                 "name": "environment",
                 "ctype": "miscellaneous",
                 "subtype": "variable",
-                "file": "src/environments/environment.ts",
+                "file": "src/environments/environment.prod.ts",
                 "deprecated": false,
                 "deprecationMessage": "",
                 "type": "object",
-                "defaultValue": "{\n  production: false\n}"
+                "defaultValue": "{\n  production: true\n}"
             },
             {
                 "name": "getBookById",
@@ -4056,7 +4599,7 @@
                 "deprecated": false,
                 "deprecationMessage": "",
                 "type": "",
-                "defaultValue": "createSelector(getBooksState, (state:any , props:any)=>{\r\n   return state.books.find( (book:any)=> book.id === props.id );\r\n})"
+                "defaultValue": "createSelector(getBooksState, (state , props)=>{\r\n   return state.books.find( (book)=> book.id === props.id );\r\n})"
             },
             {
                 "name": "getBooks",
@@ -4109,6 +4652,16 @@
                 "defaultValue": "createFeatureSelector<CounterState>(COUNTER_STATE_NAME)"
             },
             {
+                "name": "header",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
+                "file": "src/components/header.stories.ts",
+                "deprecated": false,
+                "deprecationMessage": "",
+                "type": "",
+                "defaultValue": "Template.bind({})"
+            },
+            {
                 "name": "increment",
                 "ctype": "miscellaneous",
                 "subtype": "variable",
@@ -4147,6 +4700,16 @@
                 "deprecationMessage": "",
                 "type": "UserState",
                 "defaultValue": "{\r\n    user: [],\r\n}"
+            },
+            {
+                "name": "Large",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
+                "file": "src/components/button.stories.ts",
+                "deprecated": false,
+                "deprecationMessage": "",
+                "type": "",
+                "defaultValue": "Template.bind({})"
             },
             {
                 "name": "Large",
@@ -4252,6 +4815,16 @@
                 "name": "Primary",
                 "ctype": "miscellaneous",
                 "subtype": "variable",
+                "file": "src/components/button.stories.ts",
+                "deprecated": false,
+                "deprecationMessage": "",
+                "type": "",
+                "defaultValue": "Template.bind({})"
+            },
+            {
+                "name": "Primary",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
                 "file": "src/stories/Button.stories.ts",
                 "deprecated": false,
                 "deprecationMessage": "",
@@ -4272,7 +4845,27 @@
                 "name": "Secondary",
                 "ctype": "miscellaneous",
                 "subtype": "variable",
+                "file": "src/components/button.stories.ts",
+                "deprecated": false,
+                "deprecationMessage": "",
+                "type": "",
+                "defaultValue": "Template.bind({})"
+            },
+            {
+                "name": "Secondary",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
                 "file": "src/stories/Button.stories.ts",
+                "deprecated": false,
+                "deprecationMessage": "",
+                "type": "",
+                "defaultValue": "Template.bind({})"
+            },
+            {
+                "name": "Small",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
+                "file": "src/components/button.stories.ts",
                 "deprecated": false,
                 "deprecationMessage": "",
                 "type": "",
@@ -4296,7 +4889,7 @@
                 "deprecated": false,
                 "deprecationMessage": "",
                 "type": "Story<buttonComponent>",
-                "defaultValue": "orgs=>({\r\n    props:{\r\n        onTitleChange: actionData.onColorChange,\r\n        onColorChange: actionData.onColorChange,\r\n    },\r\n    \r\n})"
+                "defaultValue": "(args: buttonComponent) => ({\r\n  props: args,\r\n})"
             },
             {
                 "name": "Template",
@@ -4307,6 +4900,26 @@
                 "deprecationMessage": "",
                 "type": "Story<cardComponent>",
                 "defaultValue": "orgs=>({\r\n    props:{\r\n        onTitleChange: actionData.onColorChange,\r\n        onColorChange: actionData.onColorChange,\r\n    },\r\n    \r\n})"
+            },
+            {
+                "name": "Template",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
+                "file": "src/components/footer.stories.ts",
+                "deprecated": false,
+                "deprecationMessage": "",
+                "type": "Story<footerComponent>",
+                "defaultValue": "orgs=>({\r\n    props:{}\r\n    \r\n})"
+            },
+            {
+                "name": "Template",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
+                "file": "src/components/header.stories.ts",
+                "deprecated": false,
+                "deprecationMessage": "",
+                "type": "Story<HeaderComponent>",
+                "defaultValue": "(args: HeaderComponent) => ({\r\n  props: args,\r\n})"
             },
             {
                 "name": "Template",
@@ -4326,7 +4939,7 @@
                 "deprecated": false,
                 "deprecationMessage": "",
                 "type": "Story<Button>",
-                "defaultValue": "(args: Button) => ({\n  props: args,\n})"
+                "defaultValue": "(args: Button) => ({\r\n  props: args,\r\n})"
             },
             {
                 "name": "Template",
@@ -4520,7 +5133,7 @@
                     "deprecated": false,
                     "deprecationMessage": "",
                     "type": "",
-                    "defaultValue": "createReducer(initialState, on(addBooksSuccess, (state, action)=>{\r\n    let book = {...action.book};\r\n    \r\n    return{\r\n        ...state,\r\n        books:[...state.books,book]\r\n    }\r\n}),\r\non(updateBookSuccess, (state,action)=>{\r\n    const updatedbook = state.books.map((book)=>{\r\n        return action.book.id === book.id ? action.book: book;\r\n    })\r\n    return{\r\n        ...state,\r\n        books: updatedbook\r\n    }\r\n}),\r\non(deleteBookSucces, (state,{id})=>{\r\n    const  updatedbook = state.books.filter(book=>{\r\n        return book.id!==id\r\n    })\r\n    return{\r\n        ...state,   \r\n        books: updatedbook\r\n    }\r\n}),\r\non(loadBookSuccess, (state, action)=>{\r\n    return{\r\n        ...state,\r\n        books: action.books\r\n    }\r\n})\r\n)"
+                    "defaultValue": "createReducer(initialState, on(addBooksSuccess, (state, action)=>{\r\n    let book = {...action.book};\r\n    \r\n    return{\r\n        ...state,\r\n        books:[...state.books,book]\r\n    }\r\n}),\r\non(updateBookSuccess, (state,action)=>{\r\n    const updatedbook = state.books.map((book)=>{\r\n        return action.book.id === book.id ? action.book: book;\r\n    })\r\n    return{\r\n        ...state,\r\n        books: updatedbook\r\n    }\r\n}),\r\non(deleteBookSucces, (state,{id})=>{\r\n    const  updatedbook = state.books.filter((book)=>{\r\n        // return book.id!==id\r\n    })\r\n    return{\r\n        ...state,   \r\n        books: updatedbook\r\n    }\r\n}),\r\non(loadBookSuccess, (state, action)=>{\r\n    return{\r\n        ...state,\r\n        books: action.books\r\n    }\r\n})\r\n)"
                 }
             ],
             "src/app/counter/state/counter.reducer.ts": [
@@ -4545,38 +5158,6 @@
                     "deprecationMessage": "",
                     "type": "",
                     "defaultValue": "createReducer(initialState, on(addUserSuccess, (state, action)=>{\r\n    let book = {...action.user};\r\n    \r\n    return{\r\n        ...state,\r\n        books:[...state.user,book]\r\n    }\r\n}))"
-                }
-            ],
-            "src/components/button.stories.ts": [
-                {
-                    "name": "actionData",
-                    "ctype": "miscellaneous",
-                    "subtype": "variable",
-                    "file": "src/components/button.stories.ts",
-                    "deprecated": false,
-                    "deprecationMessage": "",
-                    "type": "object",
-                    "defaultValue": "{\r\n    onTitleChange: action('onTitleChange'),\r\n    onColorChange: action('onColorChange')\r\n}"
-                },
-                {
-                    "name": "Default1",
-                    "ctype": "miscellaneous",
-                    "subtype": "variable",
-                    "file": "src/components/button.stories.ts",
-                    "deprecated": false,
-                    "deprecationMessage": "",
-                    "type": "",
-                    "defaultValue": "Template.bind({})"
-                },
-                {
-                    "name": "Template",
-                    "ctype": "miscellaneous",
-                    "subtype": "variable",
-                    "file": "src/components/button.stories.ts",
-                    "deprecated": false,
-                    "deprecationMessage": "",
-                    "type": "Story<buttonComponent>",
-                    "defaultValue": "orgs=>({\r\n    props:{\r\n        onTitleChange: actionData.onColorChange,\r\n        onColorChange: actionData.onColorChange,\r\n    },\r\n    \r\n})"
                 }
             ],
             "src/components/card.stories.ts": [
@@ -4712,7 +5293,7 @@
                     "deprecated": false,
                     "deprecationMessage": "",
                     "type": "",
-                    "defaultValue": "createAction(DELETE_BOOK_ACTION, props<{ id: any}>())"
+                    "defaultValue": "createAction(DELETE_BOOK_ACTION, props<{ id: string}>())"
                 },
                 {
                     "name": "deleteBookSucces",
@@ -4878,7 +5459,7 @@
                     "deprecated": false,
                     "deprecationMessage": "",
                     "type": "",
-                    "defaultValue": "createSelector(getBooksState, (state:any , props:any)=>{\r\n   return state.books.find( (book:any)=> book.id === props.id );\r\n})"
+                    "defaultValue": "createSelector(getBooksState, (state , props)=>{\r\n   return state.books.find( (book)=> book.id === props.id );\r\n})"
                 },
                 {
                     "name": "getBooks",
@@ -4995,6 +5576,40 @@
                     "defaultValue": "createAction('reset')"
                 }
             ],
+            "src/components/footer.stories.ts": [
+                {
+                    "name": "Default",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "src/components/footer.stories.ts",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "",
+                    "defaultValue": "Template.bind({})"
+                },
+                {
+                    "name": "Template",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "src/components/footer.stories.ts",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "Story<footerComponent>",
+                    "defaultValue": "orgs=>({\r\n    props:{}\r\n    \r\n})"
+                }
+            ],
+            "src/environments/environment.ts": [
+                {
+                    "name": "environment",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "src/environments/environment.ts",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "object",
+                    "defaultValue": "{\r\n  production: false\r\n}"
+                }
+            ],
             "src/environments/environment.prod.ts": [
                 {
                     "name": "environment",
@@ -5007,16 +5622,26 @@
                     "defaultValue": "{\n  production: true\n}"
                 }
             ],
-            "src/environments/environment.ts": [
+            "src/components/header.stories.ts": [
                 {
-                    "name": "environment",
+                    "name": "header",
                     "ctype": "miscellaneous",
                     "subtype": "variable",
-                    "file": "src/environments/environment.ts",
+                    "file": "src/components/header.stories.ts",
                     "deprecated": false,
                     "deprecationMessage": "",
-                    "type": "object",
-                    "defaultValue": "{\n  production: false\n}"
+                    "type": "",
+                    "defaultValue": "Template.bind({})"
+                },
+                {
+                    "name": "Template",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "src/components/header.stories.ts",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "Story<HeaderComponent>",
+                    "defaultValue": "(args: HeaderComponent) => ({\r\n  props: args,\r\n})"
                 }
             ],
             "src/app/books/state/books.state.ts": [
@@ -5053,6 +5678,58 @@
                     "deprecationMessage": "",
                     "type": "UserState",
                     "defaultValue": "{\r\n    user: [],\r\n}"
+                }
+            ],
+            "src/components/button.stories.ts": [
+                {
+                    "name": "Large",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "src/components/button.stories.ts",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "",
+                    "defaultValue": "Template.bind({})"
+                },
+                {
+                    "name": "Primary",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "src/components/button.stories.ts",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "",
+                    "defaultValue": "Template.bind({})"
+                },
+                {
+                    "name": "Secondary",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "src/components/button.stories.ts",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "",
+                    "defaultValue": "Template.bind({})"
+                },
+                {
+                    "name": "Small",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "src/components/button.stories.ts",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "",
+                    "defaultValue": "Template.bind({})"
+                },
+                {
+                    "name": "Template",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "src/components/button.stories.ts",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "Story<buttonComponent>",
+                    "defaultValue": "(args: buttonComponent) => ({\r\n  props: args,\r\n})"
                 }
             ],
             "src/stories/Button.stories.ts": [
@@ -5104,7 +5781,7 @@
                     "deprecated": false,
                     "deprecationMessage": "",
                     "type": "Story<Button>",
-                    "defaultValue": "(args: Button) => ({\n  props: args,\n})"
+                    "defaultValue": "(args: Button) => ({\r\n  props: args,\r\n})"
                 }
             ],
             "src/stories/Header.stories.ts": [
@@ -5464,7 +6141,7 @@
         ]
     },
     "coverage": {
-        "count": 0,
+        "count": 1,
         "status": "low",
         "files": [
             {
@@ -5473,7 +6150,7 @@
                 "linktype": "component",
                 "name": "AppComponent",
                 "coveragePercent": 0,
-                "coverageCount": "0/4",
+                "coverageCount": "0/9",
                 "status": "low"
             },
             {
@@ -5491,7 +6168,7 @@
                 "linktype": "component",
                 "name": "LoginComponent",
                 "coveragePercent": 0,
-                "coverageCount": "0/7",
+                "coverageCount": "0/9",
                 "status": "low"
             },
             {
@@ -5509,7 +6186,7 @@
                 "linktype": "component",
                 "name": "BooksComponent",
                 "coveragePercent": 0,
-                "coverageCount": "0/9",
+                "coverageCount": "0/12",
                 "status": "low"
             },
             {
@@ -5518,7 +6195,7 @@
                 "linktype": "component",
                 "name": "EditbookComponent",
                 "coveragePercent": 0,
-                "coverageCount": "0/12",
+                "coverageCount": "0/14",
                 "status": "low"
             },
             {
@@ -5687,7 +6364,7 @@
                 "linktype": "injectable",
                 "name": "BooksEffects",
                 "coveragePercent": 0,
-                "coverageCount": "0/6",
+                "coverageCount": "0/9",
                 "status": "low"
             },
             {
@@ -5935,25 +6612,25 @@
                 "status": "low"
             },
             {
-                "filePath": "src/app/dialog-module/dialog-config.ts",
+                "filePath": "src/app/dialog-module/dialog/dialog-config.ts",
                 "type": "class",
                 "linktype": "classe",
                 "name": "DialogConfig",
                 "coveragePercent": 0,
-                "coverageCount": "0/2",
+                "coverageCount": "0/6",
                 "status": "low"
             },
             {
-                "filePath": "src/app/dialog-module/dialog-injector.ts",
+                "filePath": "src/app/dialog-module/dialog/dialog-injector.ts",
                 "type": "class",
                 "linktype": "classe",
                 "name": "DialogInjector",
                 "coveragePercent": 0,
-                "coverageCount": "0/4",
+                "coverageCount": "0/5",
                 "status": "low"
             },
             {
-                "filePath": "src/app/dialog-module/dialog-ref.ts",
+                "filePath": "src/app/dialog-module/dialog/dialog-ref.ts",
                 "type": "class",
                 "linktype": "classe",
                 "name": "DialogRef",
@@ -5962,16 +6639,16 @@
                 "status": "low"
             },
             {
-                "filePath": "src/app/dialog-module/dialog.service.ts",
+                "filePath": "src/app/dialog-module/dialog/dialog.service.ts",
                 "type": "injectable",
                 "linktype": "injectable",
                 "name": "DialogService",
                 "coveragePercent": 0,
-                "coverageCount": "0/6",
+                "coverageCount": "0/7",
                 "status": "low"
             },
             {
-                "filePath": "src/app/dialog-module/dialog/dialog.component.ts",
+                "filePath": "src/app/dialog-module/dialog/dialog/dialog.component.ts",
                 "type": "component",
                 "linktype": "component",
                 "name": "DialogComponent",
@@ -5980,7 +6657,7 @@
                 "status": "low"
             },
             {
-                "filePath": "src/app/dialog-module/insertion.directive.ts",
+                "filePath": "src/app/dialog-module/dialog/insertion.directive.ts",
                 "type": "directive",
                 "linktype": "directive",
                 "name": "InsertionDirective",
@@ -6052,7 +6729,7 @@
                 "linktype": "injectable",
                 "name": "NewUserEffects",
                 "coveragePercent": 0,
-                "coverageCount": "0/3",
+                "coverageCount": "0/4",
                 "status": "low"
             },
             {
@@ -6190,6 +6867,16 @@
                 "type": "component",
                 "linktype": "component",
                 "name": "buttonComponent",
+                "coveragePercent": 83,
+                "coverageCount": "5/6",
+                "status": "very-good"
+            },
+            {
+                "filePath": "src/components/button.stories.ts",
+                "type": "variable",
+                "linktype": "miscellaneous",
+                "linksubtype": "variable",
+                "name": "Large",
                 "coveragePercent": 0,
                 "coverageCount": "0/1",
                 "status": "low"
@@ -6199,7 +6886,7 @@
                 "type": "variable",
                 "linktype": "miscellaneous",
                 "linksubtype": "variable",
-                "name": "actionData",
+                "name": "Primary",
                 "coveragePercent": 0,
                 "coverageCount": "0/1",
                 "status": "low"
@@ -6209,7 +6896,17 @@
                 "type": "variable",
                 "linktype": "miscellaneous",
                 "linksubtype": "variable",
-                "name": "Default1",
+                "name": "Secondary",
+                "coveragePercent": 0,
+                "coverageCount": "0/1",
+                "status": "low"
+            },
+            {
+                "filePath": "src/components/button.stories.ts",
+                "type": "variable",
+                "linktype": "miscellaneous",
+                "linksubtype": "variable",
+                "name": "Small",
                 "coveragePercent": 0,
                 "coverageCount": "0/1",
                 "status": "low"
@@ -6255,6 +6952,64 @@
             },
             {
                 "filePath": "src/components/card.stories.ts",
+                "type": "variable",
+                "linktype": "miscellaneous",
+                "linksubtype": "variable",
+                "name": "Template",
+                "coveragePercent": 0,
+                "coverageCount": "0/1",
+                "status": "low"
+            },
+            {
+                "filePath": "src/components/footer.component.ts",
+                "type": "component",
+                "linktype": "component",
+                "name": "footerComponent",
+                "coveragePercent": 0,
+                "coverageCount": "0/1",
+                "status": "low"
+            },
+            {
+                "filePath": "src/components/footer.stories.ts",
+                "type": "variable",
+                "linktype": "miscellaneous",
+                "linksubtype": "variable",
+                "name": "Default",
+                "coveragePercent": 0,
+                "coverageCount": "0/1",
+                "status": "low"
+            },
+            {
+                "filePath": "src/components/footer.stories.ts",
+                "type": "variable",
+                "linktype": "miscellaneous",
+                "linksubtype": "variable",
+                "name": "Template",
+                "coveragePercent": 0,
+                "coverageCount": "0/1",
+                "status": "low"
+            },
+            {
+                "filePath": "src/components/header.component.ts",
+                "type": "component",
+                "linktype": "component",
+                "name": "HeaderComponent",
+                "coveragePercent": 0,
+                "coverageCount": "0/1",
+                "status": "low"
+            },
+            {
+                "filePath": "src/components/header.stories.ts",
+                "type": "variable",
+                "linktype": "miscellaneous",
+                "linksubtype": "variable",
+                "name": "header",
+                "coveragePercent": 0,
+                "coverageCount": "0/1",
+                "status": "low"
+            },
+            {
+                "filePath": "src/components/header.stories.ts",
                 "type": "variable",
                 "linktype": "miscellaneous",
                 "linksubtype": "variable",

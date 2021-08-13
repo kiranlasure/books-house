@@ -1,6 +1,6 @@
 .main{
     background-image: url("../../../assets/bg.jpg");
-    min-height: 73.2vh;
+    min-height: 100vh;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -78,6 +78,14 @@
         }
      
     }
+
+
    
+}
+
+@media all and (max-width: 480px){
+    .container{
+        width: 350px;
+    }
 }
 }

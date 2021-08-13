@@ -33,14 +33,6 @@
       "id": 4
     },
     {
-<<<<<<< HEAD
-      "fName": "shahida",
-      "lName": "nadaf",
-      "email": "shahida@gmail.com",
-      "password": "Kittu@Chakuli143",
-      "userType": "user",
-      "id": 5
-=======
       "fName": "kiran",
       "lName": "lasure",
       "email": "kiranlasure95@gmail.com",
@@ -79,7 +71,6 @@
       "password": "Amol@1234",
       "userType": "admin",
       "id": 9
->>>>>>> feature-jest
     }
   ],
   "books": [
@@ -105,16 +96,6 @@
       "price": "190.89"
     },
     {
-<<<<<<< HEAD
-      "title": "Test",
-      "description": "Test Descrption",
-      "id": 3
-    },
-    {
-      "title": "test",
-      "description": "test1235",
-      "id": 4
-=======
       "id": 4,
       "title": "Knife",
       "description": "The story of forein lady",
@@ -148,14 +129,6 @@
       "description": "Found unknown place in london",
       "isbn": "1234567",
       "price": "1908.89"
-    },
-    {
-      "id": 8,
-      "title": "Let us C",
-      "description": "C language Reference book",
-      "isbn": "12345",
-      "price": "189"
->>>>>>> feature-jest
     }
   ]
 }

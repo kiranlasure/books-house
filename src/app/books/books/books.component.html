@@ -1,5 +1,33 @@
-
-<div class="heading">
+<div style="height: 100vh;">
+    <div class="heading">
+        <h2>Book's Data</h2>
+    </div>
+    
+      <main class="main-area">    
+        <div class="centered" >
+            <section class="cards" >
+                <article class="card" *ngFor="let book of Books | async ">
+                    <a>
+                        <div class="card-content">
+    
+                            <h2>Name: {{book.title}}</h2>
+                            <p>Id: {{book.id}}</p>
+                            <p>price:{{book.price}}</p>
+                            <p>ISBN: {{book.isbn}}</p>
+                            <p>Description: {{book.description}}</p>
+                            <button *ngIf="loggedIn" (click)="openUpdateDialog(book)">Update</button>
+                            <button *ngIf="loggedIn" (click)="onDeleteBook(book.id)" class="delete">Delete</button>
+                            <button *ngIf="user" (click)="addtoCart()">Add to Cart</button>
+                        </div>
+                    </a>
+                </article>       
+            </section>     
+        </div>
+        
+    </main>
+    
+</div>
+<!-- <div class="heading">
     <h2>Book's Data</h2>
 </div>
 
@@ -24,7 +52,7 @@
         </section>     
     </div>
     
-</main>
+</main> -->
 
 <div *ngIf="edit">
     <router-outlet></router-outlet>

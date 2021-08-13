@@ -2,7 +2,9 @@
 .parallax {
   margin-top: -2px;
   background-image: url("../../assets/bookstore2.jpg");
-  min-height: 424.5px; 
+  // min-height: 424.5px;
+  min-height: 100vh; 
+
   background-attachment: fixed;
   background-position: center;
   background-repeat: no-repeat;
