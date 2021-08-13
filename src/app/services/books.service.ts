@@ -26,15 +26,20 @@ export class BooksService {
     return this.http.post<{name : string}>(`http://localhost:3000/books`,book)
   }
 
-  updatePost(book: Books){
-    
-    // const bookData = {
-    //   [book.id]: { title: book.title, description: book.description },
-    // };
-    return this.http.patch(`http://localhost:3000/books`,book)
+  updateBook(book: Books):  Observable<{name:string}>{
+    const bookData = {
+      [book.id] : {
+          id: book.id,
+          name: book.isbn, 
+          description: book.description, 
+          price: book.price
+      }
+  }
+    return this.http.patch<{name:string}>(`http://localhost:3000/books/${book.id}`,bookData);
   }
 
   deleteBook(id : string){
-    return this.http.delete(`http://localhost:3000/books/${id}.json`)
+    return this.http.delete<{name:string}>(`http://localhost:3000/books/${id}`);
   }
+
 }

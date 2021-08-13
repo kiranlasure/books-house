@@ -1,4 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { Store } from '@ngrx/store';
 
 import { AddbooksComponent } from './addbooks.component';
 
@@ -8,7 +9,8 @@ describe('AddbooksComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ AddbooksComponent ]
+      declarations: [ AddbooksComponent ],
+      providers:[ Store]
     })
     .compileComponents();
   });

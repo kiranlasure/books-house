@@ -21,7 +21,11 @@ export class AddbooksComponent implements OnInit {
       title: new FormControl(null,
         [Validators.required ]),
 
-      description: new FormControl(null,[Validators.required])
+      description: new FormControl(null,[Validators.required]),
+      isbn: new FormControl(null,
+        [Validators.required ]),
+      price: new FormControl(null,
+          [Validators.required ]),
     })
   }
 
@@ -30,8 +34,11 @@ export class AddbooksComponent implements OnInit {
       return;
     }
     const book : Books ={
+      id:'',
       title: this.booksForm.value.title,
-      description: this.booksForm.value.description
+      description: this.booksForm.value.description,
+      isbn: this.booksForm.value.isbn,
+      price: this.booksForm.value.price
     };
 
    this.store.dispatch(addbooks({book}))

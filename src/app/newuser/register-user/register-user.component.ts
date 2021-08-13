@@ -14,7 +14,7 @@ import { addUser } from '../state/newuser.actions';
 export class RegisterUserComponent implements OnInit {
 
   registrationForm: FormGroup;
-  constructor(private router: Router,private store: Store<AppState>) { }
+  constructor(private store: Store<AppState>) { }
 
   ngOnInit(): void {
     this.registrationForm = new FormGroup({
@@ -40,8 +40,5 @@ export class RegisterUserComponent implements OnInit {
     };
     this.store.dispatch(addUser({user}))
     console.log("user data is",user)
-  }
-  backtologin(){
-    this.router.navigate(['login']);
   }
 }

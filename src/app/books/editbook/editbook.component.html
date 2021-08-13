@@ -1,29 +1,39 @@
-<div class="container" *ngIf="show"> 
-    <div class="addForm">
-        <form [formGroup]="booksForm" (ngSubmit)="onSubmit()">
-            <h3>Update Book Details</h3>
-            <div class="title">
-                    <label for="fname">Title</label> <br>
-                    <input type="text" id="fname" placeholder="book title"  formControlName="title">
-                    <div *ngIf="booksForm.controls['title'].errors && booksForm.controls['title'].touched"
-                    class="error-msg">
-                    <div class="error" [hidden]="!booksForm.controls['title'].errors.required">please enter book title</div>
-                    <div class="error" [hidden]="!booksForm.controls['title'].errors.minLength">please enter minimum 6 char</div>
-                    </div> 
-                    
-            </div>
-            <div class="description">
-                <label for="lname">Description</label> <span class="mandetory">*</span><br>
-                <textarea rows="4" cols="30" placeholder="book description here"  formControlName="description"></textarea>
-                <div *ngIf="booksForm.controls['description'].errors && booksForm.controls['description'].touched"
+<div class="main">
+    <form  [formGroup]="booksForm" (ngSubmit)="onSubmit()">
+    <div class="container">  
+        <div class="otherinfo">
+            <div class="fname">
+                <label for="fname">Book Title</label> <br>
+                <input type="text" id="fname" placeholder="book title" formControlName="title">
+                <div *ngIf="booksForm.controls['title'].errors && booksForm.controls['title'].touched"
                 class="error-msg">
-                <div class="error" [hidden]="!booksForm.controls['description'].errors.required">please enter book Description</div>
+                <div class="error" [hidden]="!booksForm.controls['title'].errors.required">please enter book title</div>
+                <div class="error" [hidden]="!booksForm.controls['title'].errors.minLength">please enter minimum 6 char</div>
+                </div> 
+            </div>
+            <div class="lname">
+                <label for="lname">ISBN Number</label> <span class="mandetory">*</span><br>
+                <input type="text" placeholder="Last name" id="lname" formControlName="isbn">
+            </div>
+            <div class="workemail">
+                <label for="workemail">Price <span class="mandetory">*</span></label> <br>
+                <input type="text" placeholder="enter book price" formControlName="price">
+            </div>
+            <div class="password">
+                <label for="lname">Description</label> <span class="mandetory">*</span><br>
+                <textarea rows="4" class="descrption" cols="30" placeholder="book description here" formControlName="description"></textarea>
+                <div *ngIf="booksForm.controls['description'].errors && booksForm.controls['description'].touched"
+                    class="error-msg">
+                    <div class="error" [hidden]="!booksForm.controls['description'].errors.required">please enter book Description</div>
+                </div> 
             </div> 
-           
-            </div>
             <div class="submit">
-                <button type="submit" >Update</button>
+                <div class="submitbtn" type="submit"><button>Update</button>
+                    <button (click)="onclose()">Cancel</button>
+                </div>
             </div>
-        </form>
+        </div>
+        
     </div>
+</form>
 </div>

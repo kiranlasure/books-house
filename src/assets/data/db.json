@@ -31,23 +31,80 @@
       "password": "Kittu@Chakuli143",
       "userType": "admin",
       "id": 4
+    },
+    {
+      "fName": "kiran",
+      "lName": "lasure",
+      "email": "kiranlasure95@gmail.com",
+      "password": "Kittu@Chakuli143",
+      "userType": "user",
+      "id": 5
+    },
+    {
+      "fName": "kiran",
+      "lName": "lasure",
+      "email": "kiranlasure95@gmail.com",
+      "password": "Kittu@Chakuli143",
+      "userType": "admin",
+      "id": 6
+    },
+    {
+      "fName": "kiran",
+      "lName": "kiran",
+      "email": "kiranlasure95@gmail.com",
+      "password": "Kittu@Chakuli143",
+      "userType": "admin",
+      "id": 7
+    },
+    {
+      "fName": "Bharati ",
+      "lName": "shelke",
+      "email": "kiranlasure95@gmail.com",
+      "password": "Kittu@Chakuli143",
+      "userType": "admin",
+      "id": 8
     }
   ],
   "books": [
     {
-      "title": "Chava ",
-      "description": "The Story of Sambhaji Maharaj",
-      "id": 1
+      "1": {
+        "id": "1",
+        "name": "testf",
+        "description": "tevhv",
+        "price": "tevh"
+      },
+      "id": 1,
+      "title": "test",
+      "description": "test",
+      "isbn": "test",
+      "price": "test"
     },
     {
-      "title": "yayati ",
-      "description": "the story of shivaji maharaj",
-      "id": 2
+      "2": {
+        "id": "2",
+        "name": "test",
+        "description": "test",
+        "price": "test"
+      },
+      "id": 2,
+      "title": "teste",
+      "description": "tevhv",
+      "isbn": "testf",
+      "price": "tevh"
     },
     {
-      "title": "Test",
-      "description": "Test Descrption",
-      "id": 3
+      "id": 4,
+      "title": "test",
+      "description": "test",
+      "isbn": "test",
+      "price": "test"
+    },
+    {
+      "id": 5,
+      "title": "test",
+      "description": "test",
+      "isbn": "test",
+      "price": "test"
     }
   ]
 }

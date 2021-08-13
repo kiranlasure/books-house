@@ -1,4 +1,4 @@
-import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
+import { Component, ElementRef, OnInit, Renderer2 } from '@angular/core';
 
 @Component({
   selector: 'app-root',
@@ -6,44 +6,27 @@ import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
   styleUrls: ['./app.component.scss']
 })
 export class AppComponent implements OnInit {
-  // @ViewChild('menu', {read: ElementRef}) menu: ElementRef;
-  // @ViewChild('toggle', {read: ElementRef}) toggle: ElementRef;
- 
-  // visible: boolean;
-  // state: string;
-
-  title= 'training'
-  constructor(private ref: ElementRef) {}
+  
+  title= 'training';
+  themeText='DARK'
+  constructor(private el: ElementRef,private renderer: Renderer2) {}
 
   ngOnInit(): void {
-      // this.visible = false;
-      // this.state = 'closed';
   }
 
-//   toggleMenu() {
-//     this.visible = true;
-//     setTimeout(() => {
-//         this.state = this.state == "open" ? 'closed' : 'open';
-//     }, 50);
-// }
+  toggleTheme() {
+    //INCOMPLETE NEEDS IMPROVEMENTS
+    if(this.themeText == 'DARK'){
+      this.themeText = "LIGHT";
+      this.renderer.setStyle(this.el.nativeElement.ownerDocument.body, 'backgroundColor', 'black');
+      // this.renderer.setStyle(this.el.nativeElement.ownerDocument.body, 'color', 'white');
 
-// handleClick(event: Event): void {
-//   const menuIsOpen = this.visible && this.state === 'open';
-//   const toggleWasClicked = this.toggle.nativeElement.contains(event.target);
-//   const menuWasClicked = this.menu && this.menu.nativeElement.contains(event.target);
-//   const pageWasClicked = !toggleWasClicked && !menuWasClicked;
-//   const checkOne = (pageWasClicked || toggleWasClicked) && menuIsOpen;
+      // this.renderer.setStyle(this.el.nativeElement, 'color', 'white');
+    }else{
+      this.themeText = "DARK";
+      this.renderer.setStyle(this.el.nativeElement.ownerDocument.body, 'backgroundColor', 'white');
 
-//   const clickedElement = this.ref.nativeElement;
-//   const parentElement = (event.target as HTMLElement).parentElement;
-//   const checkTwo = !clickedElement.contains(event.target) || clickedElement === parentElement;
+    }
+  }
 
-
-//   if (checkOne) { // change this variable between checkOne and checkTwo
-//     this.state = 'closed';
-//     setTimeout(() => {
-//          this.visible = false;
-//     }, 500);
-//   }
-// }
 }

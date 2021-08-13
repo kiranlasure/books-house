@@ -20,8 +20,8 @@ on(updateBookSuccess, (state,action)=>{
     }
 }),
 on(deleteBookSucces, (state,{id})=>{
-    const  updatedbook = state.books.filter(book=>{
-        return book.id!==id
+    const  updatedbook = state.books.filter((book)=>{
+        // return book.id!==id
     })
     return{
         ...state,   

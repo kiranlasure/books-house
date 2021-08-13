@@ -32,7 +32,7 @@ export class LoginComponent implements OnInit {
           for(let i=0; i<this.users.length; i++){
             if(this.loginform.value.email = this.users[i]["email"] && this.loginform.value.password == this.users[i]["password"]){
               localStorage.setItem('usertype',this.users[i]['userType']);
-              this.router.navigate(['/header']);
+              this.router.navigate(['/home']);
             }
           }
         }

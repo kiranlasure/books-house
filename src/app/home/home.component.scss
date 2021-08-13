@@ -1,34 +1,36 @@
 
 .parallax {
+  margin-top: -2px;
   background-image: url("../../assets/bookstore2.jpg");
-  min-height: 500px; 
+  min-height: 424.5px; 
   background-attachment: fixed;
   background-position: center;
   background-repeat: no-repeat;
   background-size: cover;
-}
-.contain{
-  display: flex;
-  height: 30px;
-  justify-content: space-evenly;
-  background-color: black;
-  color: white;
-  font-size: 20px;
-  div{
+  .text{
+    font-family: 'Times New Roman', Times, serif;
+  }
+  .buy{
+    display: flex;
+    justify-content: center;
+    position: relative;
+    top: 100px;
+  }
+  .book{
+    position: relative;
+    top: 40px;
+    left: -103px;
+    font-size: 50px;
+    color: white;
     cursor: pointer;
   }
 }
-.parallax1 {
-  background-image: url("../../assets/bookstore3.jpg");
-  min-height: 500px;
-  background-attachment: fixed;
-  background-position: center;
-  background-repeat: no-repeat;
-  background-size: cover;
-}
+
 @media only screen and (max-width: 600px) {
-  .contain{
-    flex-direction: column;
-    align-items: center;
+  .buy{
+        top: 75px !important;
+  }
+  .book{
+    top: 100px !important;
   }
 }

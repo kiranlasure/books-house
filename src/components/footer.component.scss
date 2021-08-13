@@ -1,0 +1,49 @@
+footer{ 
+    background: #212121;
+    .container1{
+      
+      width: 100%;
+      max-width: 1100px;
+      margin: 0 auto;
+      display: flex;
+      align-items: center;
+      justify-content:space-evenly;
+      flex-wrap: wrap;
+      font-family: 'Times New Roman', Times, serif;
+      .ftr{
+        h3{
+          font-size: 18px;
+          color: #fff;
+          margin-bottom: -12px;
+        }
+        .company{
+          position: relative;
+          left:30px
+        }
+        .policies{
+          position: relative;
+          left:40px
+        }
+        .help{
+          position: relative;
+          left:40px
+        }
+        flex-basis: 18%;
+      }
+      .fcontent{
+        list-style: none;
+        a{
+          text-decoration: none;
+          color: #fff;
+          opacity: .6;
+          font-size: 15px;
+        }
+      }
+
+    }
+    @media all and (max-width: 480px){
+      .container1{
+        flex-direction: column;
+      }
+    } 
+  }
