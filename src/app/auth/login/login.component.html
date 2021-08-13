@@ -6,7 +6,7 @@
     <div class="loginContainer">    
       <div class="email">
         <label for="fname" id="nameLable">Login ID</label> <br>
-        <input type="text" id="fname" placeholder="First name" formControlName="email" >
+        <input type="text" id="fname" class="fname" placeholder="First name" formControlName="email" >
         <div *ngIf="loginform.controls['email'].errors && loginform.controls['email'].touched"
                     class="error-msg">
             <div class="error" [hidden]="!loginform.controls['email'].errors.required">please enter email</div>
@@ -21,7 +21,7 @@
             </div>
       </div>
       <div class="submit">
-        <button type="submit" [disabled]="!loginform.valid" (click)="onLoginSubmit()">Login</button>
+        <button type="submit" class="login" [disabled]="!loginform.valid" (click)="onLoginSubmit()">Login</button>
       </div>
 
       <div class="newUser">

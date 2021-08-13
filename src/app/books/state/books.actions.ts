@@ -15,7 +15,7 @@ export const updateBook = createAction(UPDATE_BOOK_ACTION,
     props<{ book: Books}>());
 export const updateBookSuccess = createAction(UPDATE_BOOK_SUCCESS,  props<{ book: Books}>());
 
-export const deleteBook = createAction(DELETE_BOOK_ACTION, props<{ id: any}>()); 
+export const deleteBook = createAction(DELETE_BOOK_ACTION, props<{ id: string}>()); 
 export const deleteBookSucces = createAction(DELETE_BOOK_SUCCESS, props<{ id: string}>())
 export const loadBooks = createAction(LOAD_BOOK);
 export const loadBookSuccess = createAction(LOAD_BOOK_SUCCESS, props<{ books: Books[]}>());

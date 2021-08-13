@@ -1,6 +1,10 @@
 @import './app/variables.scss';
+@import '~ngx-toastr/toastr';
 
 body{
     margin: 0px 0px 0px 0px;
+    padding: 0px 0px;
 }
 // @import "~bootstrap/dist/css/bootstrap.css"
+html, body { height: 100%; }
+body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }

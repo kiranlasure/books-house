@@ -9,9 +9,8 @@ import { StoreModule } from '@ngrx/store';
 import { booksReducer } from './state/books.reducer';
 import { EffectsModule } from '@ngrx/effects';
 import { BooksEffects } from './state/books.effects';
-
-
-
+import { DialogService } from '../dialog-module/dialog/dialog.service';
+import { NgxPaginationModule } from 'ngx-pagination';
 
 const routes: Routes = [
   {
@@ -38,17 +37,20 @@ const routes: Routes = [
   declarations: [
     BooksComponent,
     AddbooksComponent,
-    EditbookComponent
+    EditbookComponent,
+   
   ],
   imports: [
     CommonModule,
     RouterModule.forChild(routes),
     StoreModule.forFeature('books',booksReducer),
-    // EffectsModule.forFeature([booksEffects]),
     ReactiveFormsModule,
+    NgxPaginationModule,
     FormsModule,
     EffectsModule.forRoot([BooksEffects])
   ],
+  
+  providers:[DialogService]
   
 })
 export class BooksModule { }

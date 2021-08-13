@@ -3,13 +3,14 @@ import { RouterModule, Routes } from '@angular/router';
 import { ForgetPasswordComponent } from './auth/forget-password/forget-password.component';
 import { LoginComponent } from './auth/login/login.component';
 import { HomeComponent } from './home/home.component';
+import { AboutusComponent } from './shared/aboutus/aboutus.component';
 import { HeaderComponent } from './shared/header/header.component';
 import { NavigationComponent } from './shared/navigation/navigation.component';
 
 const routes: Routes = [
-  // { 
-  //   path:'', component:LoginComponent
-  // },
+  { 
+    path:'login', component:LoginComponent
+  },
   {
     path: '',
     redirectTo: '/home',
@@ -32,22 +33,8 @@ const routes: Routes = [
     component:ForgetPasswordComponent
   },
   {
-    path:"navigation",
-    component:NavigationComponent,
-    // children:[
-    //   { 
-    //     path: '', redirectTo: 'book', pathMatch: 'full'
-    //   },
-    //   {
-    //     path: 'books/book',
-    //     component: BooksComponent,
-    //   },
-    //   {
-    //     path:'addbooks',
-    //     component:AddbooksComponent
-    //   },
-      
-    // ]
+    path:'aboutus',
+    component:AboutusComponent
   },
   {
     path: 'counter',
